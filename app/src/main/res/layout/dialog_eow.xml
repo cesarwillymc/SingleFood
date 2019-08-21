@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="500dp"
+    android:background="#ffff"
+    >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/dialog_imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:src="@drawable/ic_add_black_24dp" />
+                <EditText
+                    android:id="@+id/dialog_edit_text_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre del platillo"
+                    android:drawableLeft="@drawable/ic_add_black_24dp"/>
+
+                <EditText
+                    android:id="@+id/dialog_edit_text_precio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:drawableLeft="@drawable/ic_add_black_24dp"
+                    android:hint="Precio"
+                    android:inputType="number" />
+
+                <Spinner
+                    android:id="@+id/dialog_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/planets_array"
+                    android:tooltipText="@string/app_name"></Spinner>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:text="Direccion: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/dialog_text_view_direccion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:text="Ciudad:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/dialog_text_view_ciudad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:text="Latitud:"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/dialog_text_view_latitud"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:text="Longitud:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/dialog_text_view_longitud"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/dialog_no"
+                android:layout_width="175dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|left"
+                android:text="NO" />
+
+            <Button
+                android:id="@+id/dialog_yes"
+                android:layout_width="170dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|right"
+                android:text="SI" />
+        </FrameLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single"
+        >
+        <item
+            android:id="@+id/menu_mapa"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Mapa" />
+        <item
+
+            android:id="@+id/menu_conten"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Contenedores" />
+        <item
+            android:id="@+id/menu_distritos"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Distritos disnibles" />
+        <item
+            android:id="@+id/menu_soon"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Proximamente" />
+        <item
+            android:id="@+id/menu_creditos"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Creditos" />
+    </group>
+
+
+</menu>
