@@ -1,6 +1,9 @@
 package com.singlefood.sinfo.models.productos;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +66,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
         public void bind(final Platillos platillos, final OnItemClickListener listen) {
             mNombre.setText( platillos.getNombrePlatillo());
             mPrecio.setText( platillos.getPrecio() );
-            mImage.setImageResource( R.drawable.ic_place_black_24dp );
+            mImage.setImageBitmap( StringToBitmap( platillos.getImagenbase64() ) );
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -71,8 +74,15 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
                 }
             });
         }
+        public Bitmap StringToBitmap(String imageBytes){
+            byte[] decodedString = Base64.decode(imageBytes, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            return decodedByte;
+        }
     }
     public interface OnItemClickListener{
         void OnClickListener(Platillos platillos, int position);
     }
 }
+
+//*********************************ODOO*****************************************

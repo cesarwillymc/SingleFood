@@ -93,7 +93,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     Bitmap bitmap;
     Marker m;
     private int TAKEFOTO=1;
-
     private RecyclerView.Adapter adapterRview;
     private RecyclerView.LayoutManager layourRview;
     private RecyclerProductoAdapter mAdapter;
@@ -122,7 +121,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     public mapsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -202,14 +200,11 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 //        });
 //        Rview.setLayoutManager(layourRview);
 //        Rview.setAdapter(adapterRview);
-        cargarReclicleyView(Rview);
         mStorageReference= FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
         initFused();
     }
 
-    private void cargarReclicleyView(RecyclerView Rview) {
-    }
 
     //    private Boolean isGpsenabled(){
 //        try {
@@ -274,8 +269,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 for(Marker marker:realTimeMarkers){
                     marker.remove();
                 }
-                ArrayList<Platillos> arrayListPlatillos= new ArrayList<>(  );
-
+                final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>(  );
+                final ArrayList<String> arrayKeys= new ArrayList<>(  );
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
 
 
@@ -287,11 +282,23 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     markerOptions.position(new LatLng(latitud,longitud));
                     markerOptions.icon( BitmapDescriptorFactory.fromResource(R.mipmap.tacho_general));
                     arrayListPlatillos.add( platillos );
+                    arrayKeys.add( snapshot.getKey() );
 // hasta aca*****************************//nuevo adapter****************************************************
                     adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.list_single_card, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
                                             @Override
                                             public void OnClickListener(Platillos platillos, int position) {
-                                                Toast.makeText( getContext(),"Seleccionado:  "+position, Toast.LENGTH_SHORT ).show();
+                                                Toast.makeText( getContext(),"Seleccionado:  "+position+"+"+arrayKeys.get( position ), Toast.LENGTH_SHORT ).show();
+                                                Fragment fragment = new informacionFragment();
+                                                Bundle args = new Bundle();
+                                                args.putSerializable("datos", arrayListPlatillos);
+                                                args.putInt( "key",position );
+                                                fragment.setArguments(args);
+                                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                                transaction.replace(R.id.content_frame, fragment);
+                                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                transaction.addToBackStack(null);
+                                                transaction.commit();
+
                                             }
                                         } );
 
@@ -568,7 +575,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
     }
-
 
 }
 

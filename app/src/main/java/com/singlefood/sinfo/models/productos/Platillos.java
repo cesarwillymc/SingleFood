@@ -2,7 +2,7 @@
 package com.singlefood.sinfo.models.productos;
 
 
-public class Platillos {
+public class Platillos  {
     private String imagenbase64;
     private Imagenbitmap imagenbitmap;
     private String nombrePlatillo;
