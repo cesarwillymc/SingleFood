@@ -60,8 +60,13 @@ public class informacion_platillos extends AppCompatActivity {
     }
 
     public void obtener_datos(){
-        datos =getIntent().getExtras().getStringArrayList("lista");
-        toolbar_info.setTitle( datos.get( 2 ) );
+        try{
+            datos =getIntent().getExtras().getStringArrayList("lista");
+            toolbar_info.setTitle( datos.get( 2 ) );
+        }catch (Exception e){
+
+        }
+
 
     }
 
