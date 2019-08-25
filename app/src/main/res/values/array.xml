@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="planets_array">
-        <item>Platillo Tipico</item>
-        <item>Platillos Marinos</item>
-        <item>Platillos Criollos</item>
-        <item>Platillos Locales</item>
+        <item>Criollo</item>
+        <item>Plato Marinos</item>
+        <item>Plato Tipico</item>
+        <item>Plato de Chachito</item>
     </string-array>
 </resources>
