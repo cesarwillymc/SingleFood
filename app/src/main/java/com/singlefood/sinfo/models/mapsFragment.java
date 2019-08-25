@@ -288,16 +288,27 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                                             @Override
                                             public void OnClickListener(Platillos platillos, int position) {
                                                 Toast.makeText( getContext(),"Seleccionado:  "+position+"+"+arrayKeys.get( position ), Toast.LENGTH_SHORT ).show();
-                                                Fragment fragment = new informacionFragment();
-                                                Bundle args = new Bundle();
-                                                args.putSerializable("datos", arrayListPlatillos);
-                                                args.putInt( "key",position );
-                                                fragment.setArguments(args);
-                                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                                transaction.replace(R.id.content_frame, fragment);
-                                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                                transaction.addToBackStack(null);
-                                                transaction.commit();
+//                                                Fragment fragment = new informacionFragment();
+//                                                Bundle args = new Bundle();
+//                                                args.putSerializable("datos", arrayListPlatillos);
+//                                                args.putInt( "key",position );
+//                                                fragment.setArguments(args);
+//                                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                                                transaction.replace(R.id.content_frame, fragment);
+//                                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                                                transaction.addToBackStack(null);
+//                                                transaction.commit();
+                                                Intent i = new Intent(getActivity(), informacion_platillos.class);
+                                                ArrayList<String> lista = new ArrayList<>(  );
+                                                lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
+                                                lista.add( arrayListPlatillos.get( position ).getPrecio() );
+                                                lista.add( arrayListPlatillos.get( position ).getNombrePlatillo() );
+                                                lista.add( arrayListPlatillos.get( position ).getTipo() );
+                                                lista.add( arrayListPlatillos.get( position ).getPlaces().getDireccion() );
+                                                lista.add( arrayListPlatillos.get( position ).getPlaces().getCiudad() );
+                                                lista.add( arrayListPlatillos.get( position ).getPlaces().getIdUser() );
+                                                i.putStringArrayListExtra( "lista",lista );
+                                                startActivity(i);
 
                                             }
                                         } );
