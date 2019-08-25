@@ -23,7 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
-import com.singlefood.sinfo.models.informacionFragment;
 import com.singlefood.sinfo.models.mapsFragment;
 
 import java.io.ByteArrayOutputStream;
@@ -64,8 +63,8 @@ public class MapsActivity extends AppCompatActivity {
                         transaccion = true;
                         break;
                     case R.id.menu_conten:
-                        frag= new informacionFragment();
-                        transaccion = true;
+//                        frag= new informacionFragment();
+//                        transaccion = true;
                         break;
                     case R.id.menu_distritos:
                         // frag= new distritos();
