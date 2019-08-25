@@ -4,8 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -39,10 +41,6 @@ public class informacion_platillos extends AppCompatActivity {
         obtener_datos();
         configToolbar();
         cargarImage();
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        RecyclerView.LayoutManager layoutManager= linearLayoutManager;
-//        recyclerView_info.setLayoutManager( layoutManager );
-
 
     }
 
@@ -63,6 +61,17 @@ public class informacion_platillos extends AppCompatActivity {
         datos =getIntent().getExtras().getStringArrayList("lista");
         toolbar_info.setTitle( datos.get( 2 ) );
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }
