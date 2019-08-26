@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +54,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,6 +67,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.models.productos.Platillos;
 import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
@@ -113,7 +114,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     EditText dialog_et_precio;
     Spinner dialog_spinner_tipo;
     ImageView dialog_iv_foto;
-    RatingBar ratingBar_dialog;
 
     private ArrayList<Marker> tmpRealTimeMarkers = new ArrayList<>(); //Array Marcadores temporales de almacenamiento para hacer llamado
     private ArrayList<Marker> realTimeMarkers = new ArrayList<>();     //Marcadores tiempo real
@@ -193,6 +193,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
         initFused();
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -365,9 +366,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 String platillo=dialog_et_nombre.getText().toString().trim();
                 String precio=dialog_et_precio.getText().toString().trim();
 
-                if (platillo.equals( "" ) && precio.equals( "" )&&ratingBar_dialog.getRating()==0){
+                if (platillo.equals( "" ) && precio.equals( "" )){
                     progressDialog.dismiss();
-                    Toast.makeText( getContext(),"Datos faltan llenar+"+platillo+"+"+precio , Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( getContext(),"Complete la información del platillo" , Toast.LENGTH_SHORT ).show();
                 }else {
                     guardarDatosFirebaseDialogNotDatabase(platillo,precio );
                 }
@@ -385,18 +386,15 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         }
     }
+
     private void guardarDatosFirebaseDialogNotDatabase(String platillo, String precio)  {
         final Map<String,Object> datos=new HashMap<>(  );
         final Map<String,Object> base_datos=new HashMap<>(  );
-        final Map<String,Object> comentarios=new HashMap<>(  );
         base_datos.put( "ciudad", address.get( 0 ).getAddressLine( 0 ) );
         base_datos.put( "direccion", address.get( 0 ).getLocality() );
         base_datos.put( "latitud", address.get( 0 ).getLatitude() );
         base_datos.put( "longitud", address.get( 0 ).getLongitude() );
         base_datos.put( "id_user", "prueba001" );
-        comentarios.put( "id_comentarios","prueba001" );
-        comentarios.put( "texto","" );
-        comentarios.put( "rating",ratingBar_dialog.getRating() );
 
         if(bitmap!=null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -408,10 +406,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             datos.put( "nombrePlatillo", platillo );
             datos.put( "precio", precio );
             datos.put( "tipo", dialog_spinner_tipo.getSelectedItem().toString() );
+            datos.put( "imagenbitmap", bitmap );
             datos.put( "imagenbase64", imageString );
             datos.put( "places",base_datos);
-            datos.put( "comentarios_platillo",comentarios );
-
 
             mDatabase.child( "Platillos" ).push().setValue( datos ).addOnCompleteListener( new OnCompleteListener<Void>() {
                 @Override
@@ -445,7 +442,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         Button dialogButtonno=(Button) dialog.findViewById( R.id.dialog_no );
         TextView dialogTextDireccion=dialog.findViewById( R.id.dialog_text_view_direccion );
         TextView dialogTextCiudad=dialog.findViewById( R.id.dialog_text_view_ciudad );
-        ratingBar_dialog=dialog.findViewById( R.id.dialog_rating_bar );
+        TextView dialogTextLatitud=dialog.findViewById( R.id.dialog_text_view_latitud );
+        TextView dialogTextLongitud=dialog.findViewById( R.id.dialog_text_view_longitud );
         //on click
         dialog_iv_foto.setOnClickListener( this );
         dialogButtonsi.setOnClickListener( this );
@@ -458,6 +456,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         //dar valor a los tv
         dialogTextCiudad.setText( adress );
         dialogTextDireccion.setText( city );
+        dialogTextLatitud.setText( Double.toString( latitud ) );
+        dialogTextLongitud.setText( Double.toString( longitud )  );
 
         dialog.show();
     }

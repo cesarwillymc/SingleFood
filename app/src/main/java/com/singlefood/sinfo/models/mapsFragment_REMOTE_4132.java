@@ -84,7 +84,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class mapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
+public class mapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener {
     View view;
     MapView mapView;
     Dialog dialog;
@@ -129,7 +129,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
          fab = (FloatingActionButton) view.findViewById( R.id.floatingbar_save );
          fab.setOnClickListener(this );
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-
+//            fab.show();
+//            Toast.makeText( getContext(),"Presiona Boton GPS y Activa permiso",Toast.LENGTH_LONG ).show();
             new AlertDialog.Builder( getContext() )
                     .setTitle( "Activa Permiso" )
                     .setMessage( "Permiso desabilitado!! " )
@@ -158,7 +159,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     } )
                     .show();
         }
-
+//        }else {
+//            fab.hide();
+//        }
         return view;
     }
     private void borrar(int position){
@@ -188,7 +191,15 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 //        this.nombres = getAllnames();
         layourRview = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         Rview.setLayoutManager(layourRview);
-
+//        adapterRview = new MyAdapter(nombres, R.layout.list_single_card, new MyAdapter.OnItemClickListener() {
+//            @Override
+//            public void OnClickListener(String name, int position) {
+//                borrar(position);
+//
+//            }
+//        });
+//        Rview.setLayoutManager(layourRview);
+//        Rview.setAdapter(adapterRview);
         mStorageReference= FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
         initFused();
@@ -211,18 +222,15 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+//        mMap.isMyLocationEnabled();
         if (ActivityCompat.checkSelfPermission( getContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( getContext(), Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
         mMap.setMyLocationEnabled( true );
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         mMap.getUiSettings().setCompassEnabled( false );
         mMap.getUiSettings().setIndoorLevelPickerEnabled( false );
-        mMap.setOnMarkerClickListener(this);
-
         mDatabase.child("Platillos").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -230,46 +238,45 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 for(Marker marker:realTimeMarkers){
                     marker.remove();
                 }
-                final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
-                final ArrayList<String> arrayKeys= new ArrayList<>();
-
+                final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>(  );
+                final ArrayList<String> arrayKeys= new ArrayList<>(  );
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+
+
+///no modificar************************************************************
                     Platillos platillos= snapshot.getValue(Platillos.class);
                     Double latitud = platillos.getPlaces().getLatitud();
                     Double longitud = platillos.getPlaces().getLongitud();
-
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(new LatLng(latitud,longitud));
                     markerOptions.icon( BitmapDescriptorFactory.fromResource(R.mipmap.tacho_general));
-
                     arrayListPlatillos.add( platillos );
                     arrayKeys.add( snapshot.getKey() );
+// hasta aca*****************************//nuevo adapter****************************************************
+                    adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.list_single_card, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
+                                            @Override
+                                            public void OnClickListener(Platillos platillos, int position) {
+                                                Toast.makeText( getContext(),"Seleccionado:  "+position+"+"+arrayKeys.get( position ), Toast.LENGTH_SHORT ).show();
+                                                Intent i = new Intent(getActivity(), informacion_platillos.class);
+                                                ArrayList<String> lista = new ArrayList<>(  );
+                                                lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
+                                                lista.add( arrayListPlatillos.get( position ).getPrecio() );
+                                                lista.add( arrayListPlatillos.get( position ).getNombrePlatillo() );
+                                                lista.add( arrayListPlatillos.get( position ).getTipo() );
+                                                lista.add( arrayListPlatillos.get( position ).getPlaces().getDireccion() );
+                                                lista.add( arrayListPlatillos.get( position ).getPlaces().getCiudad() );
+                                                lista.add( arrayListPlatillos.get( position ).getPlaces().getIdUser() );
+                                                i.putStringArrayListExtra( "lista",lista );
+                                                startActivity(i);
+
+                                            }
+                                        } );
+
+                    Rview.setAdapter(adapterRview);
 
                     markerOptions.title("Be Clean, with RotClean");
                     tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
                 }
-
-                adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.list_single_card, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
-                    @Override
-                    public void OnClickListener(Platillos platillos, int position) {
-
-                        Intent i = new Intent(getActivity(), informacion_platillos.class);
-                        ArrayList<String> lista = new ArrayList<>(  );
-                        lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
-                        lista.add( arrayListPlatillos.get( position ).getPrecio() );
-                        lista.add( arrayListPlatillos.get( position ).getNombrePlatillo() );
-                        lista.add( arrayListPlatillos.get( position ).getTipo() );
-                        lista.add( arrayListPlatillos.get( position ).getPlaces().getDireccion() );
-                        lista.add( arrayListPlatillos.get( position ).getPlaces().getCiudad() );
-                        lista.add( arrayListPlatillos.get( position ).getPlaces().getIdUser() );
-                        i.putStringArrayListExtra( "lista",lista );
-                        startActivity(i);
-
-                    }
-                } );
-
-                Rview.setAdapter(adapterRview);
-
                 realTimeMarkers.clear();
                 realTimeMarkers.addAll(tmpRealTimeMarkers);
             }
@@ -347,6 +354,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public boolean onMyLocationButtonClick() {
+        Toast.makeText(getActivity(), "Mi ubicacion", Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -358,10 +366,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 break;
             case  R.id.dialog_yes:
                 progressDialog=new ProgressDialog( getContext());
-                progressDialog.setMessage( "Compartiendo tu recomendación" );
+                progressDialog.setMessage( "Subiendo a la Nube" );
                 progressDialog.setCancelable( false );
                 progressDialog.show();
-
                 String platillo=dialog_et_nombre.getText().toString().trim();
                 String precio=dialog_et_precio.getText().toString().trim();
 
@@ -474,27 +481,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         }else {
             Toast.makeText( getContext(),"Error de data no se obtuvo" ,Toast.LENGTH_SHORT).show();
         }
+        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
     }
 
-    /**
-     * Method: onMarkerClick
-     * Detail: Se ejecuta cuando hay un click sobre un marcador del puntero de GoogleMaps
-     * */
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        Intent i = new Intent(getActivity(), informacion_platillos.class);
-        ArrayList<String> lista = new ArrayList<>(  );
-        lista.add( "" );
-        lista.add("4.3" );
-        lista.add( "nombre platillo" );
-        lista.add( "tipo" );
-        lista.add( "direccion" );
-        lista.add( "ciudad" );
-        lista.add( "id user" );
-        i.putStringArrayListExtra( "lista",lista );
-        startActivity(i);
-
-        return false;
-    }
 }
