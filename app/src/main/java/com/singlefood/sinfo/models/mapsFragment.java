@@ -259,6 +259,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                                                 Toast.makeText( getContext(),"Seleccionado:  "+position+"+"+arrayKeys.get( position ), Toast.LENGTH_SHORT ).show();
                                                 Intent i = new Intent(getActivity(), informacion_platillos.class);
                                                 ArrayList<String> lista = new ArrayList<>(  );
+                                                ArrayList<String> Comentarios = new ArrayList<>(  );
                                                 lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
                                                 lista.add( arrayListPlatillos.get( position ).getPrecio() );
                                                 lista.add( arrayListPlatillos.get( position ).getNombrePlatillo() );
@@ -266,7 +267,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                                                 lista.add( arrayListPlatillos.get( position ).getPlaces().getDireccion() );
                                                 lista.add( arrayListPlatillos.get( position ).getPlaces().getCiudad() );
                                                 lista.add( arrayListPlatillos.get( position ).getPlaces().getIdUser() );
+                                                i.putExtra( "key",arrayKeys.get( position ) );
                                                 i.putStringArrayListExtra( "lista",lista );
+                                                i.putExtra( "posicion",position );
                                                 startActivity(i);
 
                                             }

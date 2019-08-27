@@ -9,6 +9,7 @@ public class Platillos  {
     private Places places;
     private String precio;
     private String tipo;
+    private ComentariosPlatillo comentariosPlatillo;
 
 
     public String getImagenbase64() {
@@ -41,6 +42,13 @@ public class Platillos  {
 
     public void setPlaces(Places places) {
         this.places = places;
+    }
+    public ComentariosPlatillo getComentariosPlatillo() {
+        return comentariosPlatillo;
+    }
+
+    public void setComentariosPlatillo(ComentariosPlatillo comentariosPlatillo) {
+        this.comentariosPlatillo = comentariosPlatillo;
     }
 
     public String getPrecio() {

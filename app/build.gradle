@@ -28,6 +28,9 @@ ext {
     versionAndroid = '1.0.0'
     versionFirebase = '16.0.4'
     butternifeVersion = "10.0.0"
+    designVersion = "28.0.0"
+    retrofitVersion="2.4.0"
+    daggerVersion="2.11"
 }
 
 dependencies {
@@ -40,6 +43,7 @@ dependencies {
     implementation "com.google.android.material:material:$versionAndroid"
     implementation "androidx.legacy:legacy-support-v4:$versionAndroid"
     implementation "androidx.constraintlayout:constraintlayout:1.1.3"
+    implementation "com.android.support:design:$designVersion"
     //Firebase
     implementation "com.google.android.gms:play-services-maps:17.0.0"
     implementation "com.google.firebase:firebase-auth:$versionFirebase"
@@ -56,5 +60,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //Parseo de JSON
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    //Logging HTTP
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+    //Reactive x
+    implementation "io.reactivex.rxjava2:rxjava:2.x.y"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
 
 }

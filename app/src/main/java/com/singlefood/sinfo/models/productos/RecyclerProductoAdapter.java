@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,11 +55,13 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
     public class ProductViewHolder extends RecyclerView.ViewHolder  {
         TextView mPrecio,mNombre;
         ImageView mImage;
+        RatingBar ratingBar;
         public ProductViewHolder(@NonNull View itemView) {
             super( itemView );
             mNombre=(TextView) itemView.findViewById( R.id.TVname );
             mPrecio=(TextView) itemView.findViewById( R.id.TVprecio );
             mImage =(ImageView) itemView.findViewById( R.id.itemImage );
+            ratingBar=(RatingBar)itemView.findViewById( R.id.rtScore );
 
         }
 
@@ -67,6 +70,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
             mNombre.setText( platillos.getNombrePlatillo());
             mPrecio.setText( platillos.getPrecio() );
             mImage.setImageBitmap( StringToBitmap( platillos.getImagenbase64() ) );
+           // ratingBar.setRating( platillos.getComentariosPlatillo().getRating().floatValue());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

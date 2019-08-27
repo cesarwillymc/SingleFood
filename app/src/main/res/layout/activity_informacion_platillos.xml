@@ -41,31 +41,20 @@
                 android:theme="@style/AppTheme.AppBarOverlay" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:clipToPadding="true">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/scrim"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/blue_grey"/>
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-
+    <RatingBar
+        android:id="@+id/rating_bar_info_platillos"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:progressTint="@color/colorPrimary"
+        android:layout_marginTop="15dp"
+        app:layout_anchorGravity="top|right"
+        app:layout_anchor="@id/appbar_info"
+        android:rating="4.3"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-       android:id="@+id/floating_button_info"
+        android:id="@+id/floating_button_info"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:clickable="true"
@@ -75,5 +64,104 @@
         app:layout_anchor="@id/appbar_info"
         android:src="@drawable/ic_add_black_24dp"
         app:layout_anchorGravity="bottom|right|end"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:clipToPadding="true">
+        <LinearLayout
+            android:layout_marginTop="@dimen/pading_info_platillos_linear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <View
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+            <TextView
+                android:id="@+id/text_view_info_ciudad_fecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:text="Puno, 23 de diciembre"
+                android:layout_marginTop="@dimen/margin_top_5dp"
+                android:layout_marginBottom="@dimen/margin_top_5dp"
+
+                />
+            <TextView
+                android:id="@+id/text_view_info_restaurant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/texto_info_platillos"
+                android:text="Puno, 23 de diciembre"
+                android:layout_marginTop="@dimen/margin_top_5dp"
+                android:layout_marginBottom="@dimen/margin_top_5dp"
+                android:drawableLeft="@drawable/ic_action_name"
+                android:drawablePadding="@dimen/drawable_15dp"
+                android:paddingLeft="@dimen/drawable_15dp"
+                />
+            <TextView
+                android:id="@+id/text_view_info_platillo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/texto_info_platillos"
+                android:text="Puno, 23 de diciembre"
+                android:layout_marginTop="@dimen/margin_top_5dp"
+                android:layout_marginBottom="@dimen/margin_top_5dp"
+                android:drawableLeft="@drawable/ic_action_name"
+                android:drawablePadding="@dimen/drawable_15dp"
+                android:paddingLeft="@dimen/drawable_15dp"
+                />
+            <TextView
+                android:id="@+id/text_view_info_direccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/texto_info_platillos"
+                android:text="Puno, 23 de diciembre"
+                android:drawableLeft="@drawable/ic_action_name"
+                android:drawablePadding="@dimen/drawable_15dp"
+                android:paddingLeft="@dimen/drawable_15dp"
+                android:layout_marginTop="@dimen/margin_top_5dp"
+                android:layout_marginBottom="@dimen/margin_top_5dp"
+
+                />
+            <TextView
+                android:id="@+id/text_view_info_precio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/texto_info_platillos"
+                android:text="Puno, 23 de diciembre"
+                android:layout_marginTop="@dimen/margin_top_5dp"
+                android:layout_marginBottom="@dimen/margin_top_5dp"
+                android:drawableLeft="@drawable/ic_action_name"
+                android:drawablePadding="@dimen/drawable_15dp"
+                android:paddingLeft="@dimen/drawable_15dp"
+                />
+            <View
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_info_platillos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+
+
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
