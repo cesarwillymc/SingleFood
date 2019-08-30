@@ -74,7 +74,6 @@ import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -243,7 +242,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.getUiSettings().setCompassEnabled( false );
         mMap.getUiSettings().setIndoorLevelPickerEnabled( false );
         mMap.setOnMarkerClickListener(this);
-
+        ArrayList<String> llaves= new ArrayList<>();
         mDatabase.child("Platillos").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -253,25 +252,18 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 }
                 final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
                 ArrayList<Comentarios> arrayListComentarios= new ArrayList<>();
+
                 final ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Platillos platillos= snapshot.getValue(Platillos.class);
-//                    Comentarios comentarios=snapshot.child( "Comentarios" ).getValue(Comentarios.class);
                     Double latitud = platillos.getPlaces().getLatitud();
                     Double longitud = platillos.getPlaces().getLongitud();
-
-//                    for (DataSnapshot come: snapshot.child( "Comentarios" ).getChildren()){
-//                        Comentarios comentarios=come.getValue(Comentarios.class);
-//                        arrayListComentarios.add( comentarios );
-//                        System.out.println( "add : "+ arrayListComentarios.get( 0 ).getTexto());
-//                    }
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(new LatLng(latitud,longitud));
                     markerOptions.icon( BitmapDescriptorFactory.fromResource(R.mipmap.tacho_general));
-//                    arrayListComentarios.add( comentarios );
+                    llaves.add( snapshot.getKey() );
                     arrayListPlatillos.add( platillos );
                     arrayKeys.add( getCommts( snapshot.getKey() ) );
-                    //arrayListComentarios.clear();
 
 
                     markerOptions.title("Be Clean, with RotClean");
@@ -283,6 +275,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     @Override
                     public void OnClickListener(Platillos platillos, ArrayList<Comentarios> arrayComentarios, int position) {
                           //  Toast.makeText( getContext(),"Prueba: "+arrayComentarios.get( 0 ).getTexto(),Toast.LENGTH_SHORT ).show();
+                       // Toast.makeText( getContext(),"Prueba: "+llaves.get( 0 ),Toast.LENGTH_SHORT ).show();
                         Intent i = new Intent(getActivity(), informacion_platillos.class);
                         ArrayList<String> lista = new ArrayList<>(  );
                         lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
@@ -293,8 +286,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                         lista.add( arrayListPlatillos.get( position ).getPlaces().getCiudad() );
                         lista.add( arrayListPlatillos.get( position ).getPlaces().getIdUser() );
                         i.putStringArrayListExtra( "lista",lista );
-                        i.putExtra( "comentarios",arrayComentarios );
-                        i.putExtra( "clase", (Serializable) platillos );
+                        i.putExtra( "key",llaves.get( position ) );
+
                         startActivity(i);
 
                     }
@@ -325,7 +318,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     Comentarios coment=snapshot.getValue(Comentarios.class);
                     comentariosPlatillos.add( coment );
                 }
-                Toast.makeText( getContext(),"Completo",Toast.LENGTH_SHORT ).show();
 
             }
 

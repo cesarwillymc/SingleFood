@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class informacion_platillos extends AppCompatActivity {
     private ArrayList<String> datos;
     String Key;
     int posicion;
+    private ArrayList<Comentarios> comentariosPlatillos;
     ArrayList<Platillos> arrayListPlatillos;
     @BindView( R.id.appbar_info )
     AppBarLayout appBarLayout;
@@ -61,10 +63,13 @@ public class informacion_platillos extends AppCompatActivity {
     TextView text_view_direccion;
     @BindView( R.id.recycler_view_info_platillos )
     RecyclerView Rview_info;
+    @BindView( R.id.rating_bar_info_platillos )
+    RatingBar ratingBar;
     RecyclerView.Adapter adapterRview;
     private RecyclerView.LayoutManager layourRview;
 //    @Optional @BindView( R.id.recycler_view_info )
 //    RecyclerView recyclerView_info;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -74,9 +79,8 @@ public class informacion_platillos extends AppCompatActivity {
             getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN );
         }
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         obtener_datos();
-        cargarRecliclerView(mDatabase);
+        getCommts();
         configToolbar();
         cargarImage();
         cargarDatos_texto();
@@ -86,12 +90,7 @@ public class informacion_platillos extends AppCompatActivity {
 
     }
 
-    private void cargarDatos_texto() {
-        text_view_restaurant.setText( datos.get( 3 ) );
-        text_view_precio.setText( datos.get( 1 ) );
-        text_view_platillo.setText( datos.get( 2 ) );
-        text_view_direccion.setText( datos.get( 4 ) );
-    }
+
     private void PublicComment( Map<String,Object> datos){
         DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
         final DatabaseReference commentRef=coment.push();
@@ -112,19 +111,32 @@ public class informacion_platillos extends AppCompatActivity {
 
 
     }
-    private void cargarRecliclerView(DatabaseReference mDatabase) {
-        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
+    public void obtener_datos(){
+        try{
+            datos =getIntent().getStringArrayListExtra(  "lista");
+            Key = getIntent().getStringExtra("key");
+            toolbar_info.setTitle( datos.get( 2 ) );
 
-        coment.addValueEventListener( new ValueEventListener() {
+            //  ArrayList<Comentarios> arrayComentarios= (ArrayList<Comentarios>) getIntent().getSerializableExtra( "comentarios" );
+        }catch (Exception e){
+        }
+
+    }
+
+    private void getCommts() {
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
+        comentariosPlatillos= new ArrayList<>(  );
+        coment.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<Comentarios> comentariosPlatillos= new ArrayList<>(  );
+
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Comentarios coment=snapshot.getValue(Comentarios.class);
                     comentariosPlatillos.add( coment );
                 }
-                Toast.makeText( informacion_platillos.this,"Completo",Toast.LENGTH_SHORT ).show();
-
+                ratingBar.setRating( promedioRating());
+                //Toast.makeText( informacion_platillos.this,"key: "+ comentariosPlatillos.get( 0 ).getTexto(),Toast.LENGTH_SHORT ).show();
+                Toast.makeText( informacion_platillos.this,"Prueba: "+comentariosPlatillos.size(),Toast.LENGTH_SHORT ).show();
             }
 
             @Override
@@ -133,7 +145,25 @@ public class informacion_platillos extends AppCompatActivity {
             }
         } );
     }
+    private void cargarDatos_texto() {
+        text_view_restaurant.setText( datos.get( 3 ) );
+        text_view_precio.setText( datos.get( 1 ) );
+        text_view_platillo.setText( datos.get( 2 ) );
+        text_view_direccion.setText( datos.get( 4 ) );
 
+
+    }
+    public Float promedioRating(){
+        float temp=0;
+        Toast.makeText( this,"Tamanñ array: "+ comentariosPlatillos.size(),Toast.LENGTH_SHORT ).show();
+        for (int i=0;i<comentariosPlatillos.size();i++){
+            temp=temp+comentariosPlatillos.get(  i).getRating();
+            Toast.makeText( this,"rating: "+ temp,Toast.LENGTH_SHORT ).show();
+        }
+        Toast.makeText( this,"rating complete: "+ temp,Toast.LENGTH_SHORT ).show();
+        return temp/comentariosPlatillos.size();
+
+    }
     private void cargarImage() {
         byte[] decodedString = Base64.decode(datos.get( 0 ), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -145,22 +175,6 @@ public class informacion_platillos extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
     }
 
-    public void obtener_datos(){
-        
-        
-        try{
-            //esto averiguar
-            //Platillos platillos= (Platillos) getIntent().getSerializableExtra( "clase" );
-            datos =getIntent().getExtras().getStringArrayList("lista");
-            Key = getIntent().getExtras().getString("key");
-	        posicion = getIntent().getExtras().getInt("posicion");
-	        toolbar_info.setTitle( datos.get( 2 ) );
-          //  ArrayList<Comentarios> arrayComentarios= (ArrayList<Comentarios>) getIntent().getSerializableExtra( "comentarios" );
-        }catch (Exception e){
-            Toast.makeText( this,"error en cargar datos", Toast.LENGTH_SHORT ).show();
-        }
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

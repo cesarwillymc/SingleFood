@@ -11,7 +11,7 @@ public class Comentarios {
     private String idComentarios;
     @SerializedName("rating")
     @Expose
-    private Double rating;
+    private float rating;
     @SerializedName("texto")
     @Expose
     private String texto;
@@ -24,11 +24,11 @@ public class Comentarios {
         this.idComentarios = idComentarios;
     }
 
-    public Double getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
