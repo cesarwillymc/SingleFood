@@ -22,12 +22,14 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
     private Context mcontex;
     private  int layoutResources;
     private ArrayList<Platillos> arrayPlatillos;
+    private ArrayList<ArrayList<Comentarios>> arrayKeys;
     private OnItemClickListener Listen;
 
-    public RecyclerProductoAdapter(Context mcontex, int layoutResources, ArrayList<Platillos> arrayPlatillos, OnItemClickListener Listen) {
+    public RecyclerProductoAdapter(Context mcontex, int layoutResources, ArrayList<Platillos> arrayPlatillos,ArrayList<ArrayList<Comentarios>> arrayKeys, OnItemClickListener Listen) {
         this.mcontex = mcontex;
         this.layoutResources = layoutResources;
         this.arrayPlatillos = arrayPlatillos;
+        this.arrayKeys = arrayKeys;
         this.Listen = Listen;
     }
 
@@ -40,7 +42,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        holder.bind(arrayPlatillos.get(position),Listen);
+        holder.bind(arrayPlatillos.get(position),Listen,arrayKeys.get( position ));
 
     }
 
@@ -66,15 +68,15 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
         }
 
 
-        public void bind(final Platillos platillos, final OnItemClickListener listen) {
+        public void bind(final Platillos platillos, final OnItemClickListener listen, ArrayList<Comentarios> arrayComentarios) {
             mNombre.setText( platillos.getNombrePlatillo());
             mPrecio.setText( platillos.getPrecio() );
             mImage.setImageBitmap( StringToBitmap( platillos.getImagenbase64() ) );
-           // ratingBar.setRating( platillos.getComentariosPlatillo().getRating().floatValue());
+            ratingBar.setRating( promedioRating(arrayComentarios));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listen.OnClickListener(platillos,getAdapterPosition());
+                    listen.OnClickListener(platillos,arrayComentarios,getAdapterPosition());
                 }
             });
         }
@@ -83,9 +85,17 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             return decodedByte;
         }
+        public Float promedioRating(ArrayList<Comentarios> arrayComentarios){
+            float temp=0;
+            for (int i=0;i<arrayComentarios.size();i++){
+                temp+=arrayComentarios.get(  i).getRating();
+            }
+            return temp/arrayComentarios.size();
+
+        }
     }
     public interface OnItemClickListener{
-        void OnClickListener(Platillos platillos, int position);
+        void OnClickListener(Platillos platillos, ArrayList<Comentarios> arrayComentarios, int position);
     }
 }
 

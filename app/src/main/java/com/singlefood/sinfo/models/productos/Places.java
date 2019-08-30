@@ -1,11 +1,25 @@
 
 package com.singlefood.sinfo.models.productos;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Places {
+
+    @SerializedName("ciudad")
+    @Expose
     private String ciudad;
+    @SerializedName("direccion")
+    @Expose
     private String direccion;
+    @SerializedName("id_user")
+    @Expose
     private String idUser;
+    @SerializedName("latitud")
+    @Expose
     private Double latitud;
+    @SerializedName("longitud")
+    @Expose
     private Double longitud;
 
     public String getCiudad() {

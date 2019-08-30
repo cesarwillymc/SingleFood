@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -24,9 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.singlefood.sinfo.R;
+import com.singlefood.sinfo.models.productos.Comentarios;
 import com.singlefood.sinfo.models.productos.Platillos;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,31 +92,46 @@ public class informacion_platillos extends AppCompatActivity {
         text_view_platillo.setText( datos.get( 2 ) );
         text_view_direccion.setText( datos.get( 4 ) );
     }
+    private void PublicComment( Map<String,Object> datos){
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
+        final DatabaseReference commentRef=coment.push();
+        commentRef.setValue( datos).addOnFailureListener( new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(informacion_platillos.this,"Error: "+e ,Toast.LENGTH_SHORT ).show();
+            }
+        } ).addOnCompleteListener( new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(informacion_platillos.this,"Entro: "+task.getResult() ,Toast.LENGTH_SHORT ).show();
+                }
 
+            }
+        } );
+
+
+    }
     private void cargarRecliclerView(DatabaseReference mDatabase) {
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
 
-        mDatabase.child("Platillos").addValueEventListener(new ValueEventListener() {
+        coment.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                arrayListPlatillos= new ArrayList<>(  );
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-
-
-///no modificar************************************************************
-                    Platillos platillos= snapshot.getValue(Platillos.class);
-
-                    arrayListPlatillos.add( platillos );
-// hasta aca*****************************//nuevo adapter****************************************************
-
-
+                ArrayList<Comentarios> comentariosPlatillos= new ArrayList<>(  );
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Comentarios coment=snapshot.getValue(Comentarios.class);
+                    comentariosPlatillos.add( coment );
                 }
+                Toast.makeText( informacion_platillos.this,"Completo",Toast.LENGTH_SHORT ).show();
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        } );
     }
 
     private void cargarImage() {
@@ -128,12 +149,15 @@ public class informacion_platillos extends AppCompatActivity {
         
         
         try{
+            //esto averiguar
+            //Platillos platillos= (Platillos) getIntent().getSerializableExtra( "clase" );
             datos =getIntent().getExtras().getStringArrayList("lista");
             Key = getIntent().getExtras().getString("key");
 	        posicion = getIntent().getExtras().getInt("posicion");
 	        toolbar_info.setTitle( datos.get( 2 ) );
+          //  ArrayList<Comentarios> arrayComentarios= (ArrayList<Comentarios>) getIntent().getSerializableExtra( "comentarios" );
         }catch (Exception e){
-
+            Toast.makeText( this,"error en cargar datos", Toast.LENGTH_SHORT ).show();
         }
 
     }

@@ -1,16 +1,37 @@
 
 package com.singlefood.sinfo.models.productos;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-public class Platillos  {
+public class Platillos {
+
+    @SerializedName("Comentarios")
+    @Expose
+    private Comentarios comentarios;
+    @SerializedName("imagenbase64")
+    @Expose
     private String imagenbase64;
-    private Imagenbitmap imagenbitmap;
+    @SerializedName("nombrePlatillo")
+    @Expose
     private String nombrePlatillo;
+    @SerializedName("places")
+    @Expose
     private Places places;
+    @SerializedName("precio")
+    @Expose
     private String precio;
+    @SerializedName("tipo")
+    @Expose
     private String tipo;
-    private ComentariosPlatillo comentariosPlatillo;
 
+    public Comentarios getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(Comentarios comentarios) {
+        this.comentarios = comentarios;
+    }
 
     public String getImagenbase64() {
         return imagenbase64;
@@ -18,14 +39,6 @@ public class Platillos  {
 
     public void setImagenbase64(String imagenbase64) {
         this.imagenbase64 = imagenbase64;
-    }
-
-    public Imagenbitmap getImagenbitmap() {
-        return imagenbitmap;
-    }
-
-    public void setImagenbitmap(Imagenbitmap imagenbitmap) {
-        this.imagenbitmap = imagenbitmap;
     }
 
     public String getNombrePlatillo() {
@@ -43,13 +56,6 @@ public class Platillos  {
     public void setPlaces(Places places) {
         this.places = places;
     }
-    public ComentariosPlatillo getComentariosPlatillo() {
-        return comentariosPlatillo;
-    }
-
-    public void setComentariosPlatillo(ComentariosPlatillo comentariosPlatillo) {
-        this.comentariosPlatillo = comentariosPlatillo;
-    }
 
     public String getPrecio() {
         return precio;
@@ -66,6 +72,5 @@ public class Platillos  {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-
 
 }

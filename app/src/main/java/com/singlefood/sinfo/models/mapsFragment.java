@@ -68,11 +68,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.singlefood.sinfo.R;
+import com.singlefood.sinfo.models.productos.Comentarios;
 import com.singlefood.sinfo.models.productos.Platillos;
 import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,35 +87,35 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class mapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
-    View view;
-    MapView mapView;
-    Dialog dialog;
-    Uri fileImage;
-    Bitmap bitmap;
-    Marker m;
+    private View view;
+    private MapView mapView;
+    private Dialog dialog;
+    private Uri fileImage;
+    private Bitmap bitmap;
+    private Marker m;
     private int TAKEFOTO=1;
     private RecyclerView.Adapter adapterRview;
     private RecyclerView.LayoutManager layourRview;
     private RecyclerProductoAdapter mAdapter;
     private RecyclerView Rview;
     private GoogleMap mMap;
-    ProgressDialog progressDialog;
-    FloatingActionButton fab;
-    List<Address> address;
+    private ProgressDialog progressDialog;
+    private FloatingActionButton fab;
+    private List<Address> address;
     private List<String> nombres;
-    Geocoder geocoder;
+    private Geocoder geocoder;
     private StorageReference mStorageReference;
     private DatabaseReference mDatabase; //FIREBASE
-    FusedLocationProviderClient fusedLocationProviderClient; //Ultima Ubicacion
-    LocationRequest locationRequest; //Actualizar posicion
-    LocationCallback locationCallback; //ACtualizar posicion
-    Location location;
+    private FusedLocationProviderClient fusedLocationProviderClient; //Ultima Ubicacion
+    private LocationRequest locationRequest; //Actualizar posicion
+    private LocationCallback locationCallback; //ACtualizar posicion
+    private Location location;
     //Dialog datos
-    EditText dialog_et_nombre;
-    EditText dialog_et_precio;
-    Spinner dialog_spinner_tipo;
-    ImageView dialog_iv_foto;
-    RatingBar ratingBar_dialog;
+    private EditText dialog_et_nombre;
+    private EditText dialog_et_precio;
+    private  Spinner dialog_spinner_tipo;
+    private ImageView dialog_iv_foto;
+    private RatingBar ratingBar_dialog;
 
     private ArrayList<Marker> tmpRealTimeMarkers = new ArrayList<>(); //Array Marcadores temporales de almacenamiento para hacer llamado
     private ArrayList<Marker> realTimeMarkers = new ArrayList<>();     //Marcadores tiempo real
@@ -207,7 +209,26 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         buildLocationCallBack();
         fusedLocationProviderClient.requestLocationUpdates( locationRequest, locationCallback, Looper.myLooper() );
     }
+    private void PublicComment( Map<String,Object> datos,String Key){
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
+        final DatabaseReference commentRef=coment.push();
+        commentRef.setValue( datos).addOnFailureListener( new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(),"Error: " ,Toast.LENGTH_SHORT ).show();
+            }
+        } ).addOnCompleteListener( new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(getContext(),"Entro: "+task.getResult() ,Toast.LENGTH_SHORT ).show();
+                }
 
+            }
+        } );
+
+
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -231,29 +252,37 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     marker.remove();
                 }
                 final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
-                final ArrayList<String> arrayKeys= new ArrayList<>();
-
+                ArrayList<Comentarios> arrayListComentarios= new ArrayList<>();
+                final ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Platillos platillos= snapshot.getValue(Platillos.class);
+//                    Comentarios comentarios=snapshot.child( "Comentarios" ).getValue(Comentarios.class);
                     Double latitud = platillos.getPlaces().getLatitud();
                     Double longitud = platillos.getPlaces().getLongitud();
 
+//                    for (DataSnapshot come: snapshot.child( "Comentarios" ).getChildren()){
+//                        Comentarios comentarios=come.getValue(Comentarios.class);
+//                        arrayListComentarios.add( comentarios );
+//                        System.out.println( "add : "+ arrayListComentarios.get( 0 ).getTexto());
+//                    }
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(new LatLng(latitud,longitud));
                     markerOptions.icon( BitmapDescriptorFactory.fromResource(R.mipmap.tacho_general));
-
+//                    arrayListComentarios.add( comentarios );
                     arrayListPlatillos.add( platillos );
-                    arrayKeys.add( snapshot.getKey() );
+                    arrayKeys.add( getCommts( snapshot.getKey() ) );
+                    //arrayListComentarios.clear();
 
 
                     markerOptions.title("Be Clean, with RotClean");
                     tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
                 }
 
-                adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.list_single_card, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
-                    @Override
-                    public void OnClickListener(Platillos platillos, int position) {
 
+                adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.list_single_card, arrayListPlatillos,arrayKeys, new RecyclerProductoAdapter.OnItemClickListener() {
+                    @Override
+                    public void OnClickListener(Platillos platillos, ArrayList<Comentarios> arrayComentarios, int position) {
+                          //  Toast.makeText( getContext(),"Prueba: "+arrayComentarios.get( 0 ).getTexto(),Toast.LENGTH_SHORT ).show();
                         Intent i = new Intent(getActivity(), informacion_platillos.class);
                         ArrayList<String> lista = new ArrayList<>(  );
                         lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
@@ -264,6 +293,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                         lista.add( arrayListPlatillos.get( position ).getPlaces().getCiudad() );
                         lista.add( arrayListPlatillos.get( position ).getPlaces().getIdUser() );
                         i.putStringArrayListExtra( "lista",lista );
+                        i.putExtra( "comentarios",arrayComentarios );
+                        i.putExtra( "clase", (Serializable) platillos );
                         startActivity(i);
 
                     }
@@ -283,6 +314,29 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         buildLocationRequest();
         buildLocationCallBack();
     }
+    private ArrayList<Comentarios> getCommts(String Key) {
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
+        ArrayList<Comentarios> comentariosPlatillos= new ArrayList<>(  );
+        coment.addListenerForSingleValueEvent( new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Comentarios coment=snapshot.getValue(Comentarios.class);
+                    comentariosPlatillos.add( coment );
+                }
+                Toast.makeText( getContext(),"Completo",Toast.LENGTH_SHORT ).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        } );
+        return comentariosPlatillos;
+    }
+
     private void buildLocationCallBack(){
 
         locationCallback = new LocationCallback() {
@@ -396,8 +450,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         base_datos.put( "longitud", address.get( 0 ).getLongitude() );
         base_datos.put( "id_user", "prueba001" );
         comentarios.put( "id_comentarios","prueba001" );
-        comentarios.put( "texto","" );
+        comentarios.put( "texto","Hola mundo muy rica Comida" );
         comentarios.put( "rating",ratingBar_dialog.getRating() );
+
 
         if(bitmap!=null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -411,10 +466,11 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             datos.put( "tipo", dialog_spinner_tipo.getSelectedItem().toString() );
             datos.put( "imagenbase64", imageString );
             datos.put( "places",base_datos);
-            datos.put( "comentarios_platillo",comentarios );
+           // datos.put( "comentarios_platillo",comentarios );
 
-
-            mDatabase.child( "Platillos" ).push().setValue( datos ).addOnCompleteListener( new OnCompleteListener<Void>() {
+            DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").push();
+            coment.setValue( datos );
+            coment.child( "Comentarios" ).push().setValue( comentarios ).addOnCompleteListener( new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     dialog.dismiss();
@@ -427,6 +483,20 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     progressDialog.dismiss();
                 }
             } );
+//            mDatabase.child( "Platillos" ).push().setValue( datos ).addOnCompleteListener( new OnCompleteListener<Void>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Void> task) {
+//
+//                    dialog.dismiss();
+//                    progressDialog.dismiss();
+//                }
+//            } ).addOnFailureListener( new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Toast.makeText( getContext(),"Error al Guardar", Toast.LENGTH_SHORT ).show();
+//                    progressDialog.dismiss();
+//                }
+//            } );
         }else {
             progressDialog.dismiss();
             Toast.makeText( getContext(),"Error Bitmap vacio",Toast.LENGTH_SHORT ).show();
