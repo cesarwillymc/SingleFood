@@ -53,17 +53,19 @@
         app:layout_anchorGravity="top|right"
         app:layout_anchor="@id/appbar_info"
         android:rating="4.3"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_button_info"
+        android:id="@+id/btnfComment"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:clickable="true"
         android:layout_margin="16dp"
+        android:clickable="true"
+        android:src="@android:drawable/sym_action_chat"
         app:backgroundTint="#00bcd4"
         app:fabSize="normal"
         app:layout_anchor="@id/appbar_info"
-        android:src="@drawable/ic_add_black_24dp"
-        app:layout_anchorGravity="bottom|right|end"/>
+        app:layout_anchorGravity="bottom|right|end"
+        app:maxImageSize="35dp" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -92,55 +94,56 @@
                 android:layout_marginBottom="@dimen/margin_top_5dp"
 
                 />
+
             <TextView
                 android:id="@+id/text_view_info_restaurant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/texto_info_platillos"
-                android:text="Puno, 23 de diciembre"
                 android:layout_marginTop="@dimen/margin_top_5dp"
                 android:layout_marginBottom="@dimen/margin_top_5dp"
-                android:drawableLeft="@drawable/ic_action_name"
+                android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
                 android:drawablePadding="@dimen/drawable_15dp"
                 android:paddingLeft="@dimen/drawable_15dp"
-                />
+                android:text="Puno, 23 de diciembre"
+                android:textSize="@dimen/texto_info_platillos" />
+
             <TextView
                 android:id="@+id/text_view_info_platillo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/texto_info_platillos"
-                android:text="Puno, 23 de diciembre"
                 android:layout_marginTop="@dimen/margin_top_5dp"
                 android:layout_marginBottom="@dimen/margin_top_5dp"
-                android:drawableLeft="@drawable/ic_action_name"
+                android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
                 android:drawablePadding="@dimen/drawable_15dp"
                 android:paddingLeft="@dimen/drawable_15dp"
-                />
+                android:text="Puno, 23 de diciembre"
+                android:textSize="@dimen/texto_info_platillos" />
+
             <TextView
                 android:id="@+id/text_view_info_direccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/texto_info_platillos"
-                android:text="Puno, 23 de diciembre"
-                android:drawableLeft="@drawable/ic_action_name"
-                android:drawablePadding="@dimen/drawable_15dp"
-                android:paddingLeft="@dimen/drawable_15dp"
                 android:layout_marginTop="@dimen/margin_top_5dp"
                 android:layout_marginBottom="@dimen/margin_top_5dp"
+                android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
+                android:drawablePadding="@dimen/drawable_15dp"
+                android:paddingLeft="@dimen/drawable_15dp"
+                android:text="Puno, 23 de diciembre"
+                android:textSize="@dimen/texto_info_platillos"
 
                 />
+
             <TextView
                 android:id="@+id/text_view_info_precio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/texto_info_platillos"
-                android:text="Puno, 23 de diciembre"
                 android:layout_marginTop="@dimen/margin_top_5dp"
                 android:layout_marginBottom="@dimen/margin_top_5dp"
-                android:drawableLeft="@drawable/ic_action_name"
+                android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
                 android:drawablePadding="@dimen/drawable_15dp"
                 android:paddingLeft="@dimen/drawable_15dp"
-                />
+                android:text="Puno, 23 de diciembre"
+                android:textSize="@dimen/texto_info_platillos" />
             <View
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
@@ -148,40 +151,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_info_platillos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:scrollbars="vertical" />
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <RatingBar
-                        android:layout_gravity="center"
                         android:id="@+id/rating_bar_informacion_platillos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:progressTint="@color/colorPrimary"
-                        android:numStars="5" />
+                        android:layout_gravity="center"
+                        android:numStars="5"
+                        android:progressTint="@color/colorPrimary" />
+
                     <EditText
                         android:id="@+id/edit_text_informacion_platillos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Ingresa tu comentario"/>
+                        android:hint="Ingresa tu comentario" />
+
                     <Button
                         android:id="@+id/button_informacion_platillos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorAccent"
-                        android:text="guardar"/>
+                        android:text="OPINAR" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
         </LinearLayout>
 
 
