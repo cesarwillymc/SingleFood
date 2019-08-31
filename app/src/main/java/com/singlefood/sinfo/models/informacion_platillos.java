@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.models.productos.Comentarios;
 import com.singlefood.sinfo.models.productos.Platillos;
+import com.singlefood.sinfo.models.productos.RecyclerComentariosAdapter;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -42,7 +43,8 @@ public class informacion_platillos extends AppCompatActivity {
 
     private ArrayList<String> datos;
     String Key;
-    int posicion;
+    private RecyclerView.Adapter adapterRview;
+
     private ArrayList<Comentarios> comentariosPlatillos;
     ArrayList<Platillos> arrayListPlatillos;
     @BindView( R.id.appbar_info )
@@ -65,10 +67,8 @@ public class informacion_platillos extends AppCompatActivity {
     RecyclerView Rview_info;
     @BindView( R.id.rating_bar_info_platillos )
     RatingBar ratingBar;
-    RecyclerView.Adapter adapterRview;
-    private RecyclerView.LayoutManager layourRview;
-//    @Optional @BindView( R.id.recycler_view_info )
-//    RecyclerView recyclerView_info;
+
+    RecyclerView recyclerView_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +84,10 @@ public class informacion_platillos extends AppCompatActivity {
         configToolbar();
         cargarImage();
         cargarDatos_texto();
-        layourRview = new LinearLayoutManager(this);
-        Rview_info.setLayoutManager(layourRview);
-
+        recyclerView_info=(RecyclerView) findViewById( R.id.recycler_view_info_platillos ) ;
+        LinearLayoutManager layoutManager= new LinearLayoutManager( this );
+        RecyclerView.LayoutManager recycler_view_manager_info=layoutManager;
+        recyclerView_info.setLayoutManager( recycler_view_manager_info );
 
     }
 
@@ -136,7 +137,16 @@ public class informacion_platillos extends AppCompatActivity {
                 }
                 ratingBar.setRating( promedioRating());
                 //Toast.makeText( informacion_platillos.this,"key: "+ comentariosPlatillos.get( 0 ).getTexto(),Toast.LENGTH_SHORT ).show();
-                Toast.makeText( informacion_platillos.this,"Prueba: "+comentariosPlatillos.size(),Toast.LENGTH_SHORT ).show();
+                //Toast.makeText( informacion_platillos.this,"Prueba: "+comentariosPlatillos.size(),Toast.LENGTH_SHORT ).show();
+                adapterRview = new RecyclerComentariosAdapter( informacion_platillos.this, R.layout.rv_comentarios_items, comentariosPlatillos, new RecyclerComentariosAdapter.OnItemClickListener2() {
+                    @Override
+                    public void OnClickListener2(Comentarios comentarios, int adapterPosition) {
+                        Toast.makeText( informacion_platillos.this,"Prueba: "+comentarios.getTexto(),Toast.LENGTH_SHORT ).show();
+
+                    }
+                } );
+
+                recyclerView_info.setAdapter(adapterRview);
             }
 
             @Override

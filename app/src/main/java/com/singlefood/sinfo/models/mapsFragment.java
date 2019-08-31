@@ -271,7 +271,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 }
 
 
-                adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.list_single_card, arrayListPlatillos,arrayKeys, new RecyclerProductoAdapter.OnItemClickListener() {
+                adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.rv_comentarios_items, arrayListPlatillos,arrayKeys, new RecyclerProductoAdapter.OnItemClickListener() {
                     @Override
                     public void OnClickListener(Platillos platillos, ArrayList<Comentarios> arrayComentarios, int position) {
                           //  Toast.makeText( getContext(),"Prueba: "+arrayComentarios.get( 0 ).getTexto(),Toast.LENGTH_SHORT ).show();

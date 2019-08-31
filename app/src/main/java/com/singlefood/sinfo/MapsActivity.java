@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -52,6 +53,27 @@ public class MapsActivity extends AppCompatActivity {
         drawer = findViewById( R.id.drawer_layout );
         navigationView = findViewById( R.id.nav_view );
         setfragmetdefautl();
+        drawer.addDrawerListener( new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        } );
         navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -84,6 +106,7 @@ public class MapsActivity extends AppCompatActivity {
                             .beginTransaction()
                             .replace( R.id.content_frame,frag )
                             .commit();
+
                     menuItem.setChecked( true );
 
                     drawer.closeDrawers();

@@ -96,6 +96,8 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
     }
     public interface OnItemClickListener{
         void OnClickListener(Platillos platillos, ArrayList<Comentarios> arrayComentarios, int position);
+
+
     }
 }
 
