@@ -46,12 +46,10 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -124,10 +122,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
-    final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
-    ArrayList<Comentarios> arrayListComentarios= new ArrayList<>();
 
-    final ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
     final ArrayList<String> llaves= new ArrayList<>();
 
     //Declare HashMap to store mapping of marker to Activity
@@ -231,6 +226,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 for(Marker marker:realTimeMarkers){
                     marker.remove();
                 }
+                final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
+                final ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Platillos platillos= snapshot.getValue(Platillos.class);
                     Double latitud = platillos.getPlaces().getLatitud();
@@ -401,12 +398,15 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         final Map<String,Object> datos=new HashMap<>(  );
         final Map<String,Object> base_datos=new HashMap<>(  );
         final Map<String,Object> comentarios=new HashMap<>(  );
+        FirebaseAuth mauth=FirebaseAuth.getInstance();
+        FirebaseUser user = mauth.getCurrentUser();
+
         base_datos.put( "ciudad", address.get( 0 ).getAddressLine( 0 ) );
         base_datos.put( "direccion", address.get( 0 ).getLocality() );
         base_datos.put( "latitud", address.get( 0 ).getLatitude() );
         base_datos.put( "longitud", address.get( 0 ).getLongitude() );
-        base_datos.put( "id_user", "prueba001" );
-        comentarios.put( "id_comentarios","prueba001" );
+        base_datos.put( "id_user", user.getUid() );
+        comentarios.put( "id_comentarios",user.getUid() );
         comentarios.put( "texto","Hola mundo muy rica Comida" );
         comentarios.put( "rating",ratingBar_dialog.getRating() );
 

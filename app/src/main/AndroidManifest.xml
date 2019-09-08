@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".models.CrearProducto"></activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"  />
         <activity
             android:name=".models.informacion_platillos"
             android:label="@string/title_activity_informacion_platillos"

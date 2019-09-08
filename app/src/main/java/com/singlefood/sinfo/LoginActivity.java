@@ -3,6 +3,7 @@ package com.singlefood.sinfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -55,6 +57,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText loginETpassword;
     @BindView( R.id.progress_bar )
     ProgressBar progressBar;
+    @BindView( R.id.toolbar_general )
+    Toolbar toolbar_general;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -62,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user=mAuth.getCurrentUser();
         setContentView( R.layout.activity_login );
         ButterKnife.bind( this );
+        configToolbar();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         mCallbackManager = CallbackManager.Factory.create();
@@ -93,6 +98,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
+    }
+    private void configToolbar() {
+        setSupportActionBar( toolbar_general );
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -1,6 +1,7 @@
 package com.singlefood.sinfo.models;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -27,11 +28,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.singlefood.sinfo.LoginActivity;
 import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.models.productos.Comentarios;
 import com.singlefood.sinfo.models.productos.RecyclerComentariosAdapter;
@@ -203,6 +207,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     private void configToolbar() {
         setSupportActionBar( toolbar_info );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+
     }
 
 
@@ -225,11 +230,21 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                     progressDialog.setCancelable( false );
                     progressDialog.setMessage( "Cargando tu comentarioo..." );
                     progressDialog.show();
-                    Map<String,Object> map = new HashMap<>(  );
-                    map.put( "id_comentarios","Prueba001" );
-                    map.put( "rating",rating_coment.getRating() );
-                    map.put( "texto",editText_coment.getText().toString().trim() );
-                    PublicComment( map );
+                    FirebaseAuth auth =FirebaseAuth.getInstance();
+                    FirebaseUser user=auth.getCurrentUser();
+
+                    if(user != null){
+                        Map<String,Object> map = new HashMap<>(  );
+                        map.put( "id_comentarios",user.getUid() );
+                        map.put( "rating",rating_coment.getRating() );
+                        map.put( "texto",editText_coment.getText().toString().trim() );
+                        PublicComment( map );
+                    }else{
+                        progressDialog.dismiss();
+                        Intent intent = new Intent( this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+
 
                 break;
         }
