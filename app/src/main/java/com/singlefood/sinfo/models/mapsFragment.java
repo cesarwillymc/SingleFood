@@ -88,7 +88,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class mapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
+public class mapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
     private View view;
     private MapView mapView;
     private Dialog dialog;
@@ -121,7 +121,18 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     private ArrayList<Marker> tmpRealTimeMarkers = new ArrayList<>(); //Array Marcadores temporales de almacenamiento para hacer llamado
     private ArrayList<Marker> realTimeMarkers = new ArrayList<>();     //Marcadores tiempo real
+
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+
+    final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
+    ArrayList<Comentarios> arrayListComentarios= new ArrayList<>();
+
+    final ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
+    final ArrayList<String> llaves= new ArrayList<>();
+
+    //Declare HashMap to store mapping of marker to Activity
+    final HashMap<String, String> markerMapPlatillos = new HashMap<String, String>();
+
     public mapsFragment() {
         // Required empty public constructor
     }
@@ -166,7 +177,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         return view;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated( view, savedInstanceState );
@@ -209,12 +219,11 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         }
 
         mMap.setMyLocationEnabled( true );
-        mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setOnMyLocationClickListener(this);
         mMap.getUiSettings().setCompassEnabled( false );
         mMap.getUiSettings().setIndoorLevelPickerEnabled( false );
         mMap.setOnMarkerClickListener(this);
-        ArrayList<String> llaves= new ArrayList<>();
+
+
         mDatabase.child("Platillos").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -222,30 +231,26 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 for(Marker marker:realTimeMarkers){
                     marker.remove();
                 }
-                final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
-                final ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Platillos platillos= snapshot.getValue(Platillos.class);
                     Double latitud = platillos.getPlaces().getLatitud();
                     Double longitud = platillos.getPlaces().getLongitud();
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(new LatLng(latitud,longitud));
-                    markerOptions.icon( BitmapDescriptorFactory.fromResource(R.mipmap.tacho_general));
+
+                    Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().position(new LatLng(latitud, longitud)));
+                    String idMarker = mUbicacionPlatillo.getId();
+                    markerMapPlatillos.put(idMarker, platillos.getNombrePlatillo());
+
+
                     llaves.add( snapshot.getKey() );
                     arrayListPlatillos.add( platillos );
                     arrayKeys.add( getCommts( snapshot.getKey() ) );
-
-
-                    markerOptions.title("Be Clean, with RotClean");
-                    tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
                 }
 
 
                 adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.rv_comentarios_items, arrayListPlatillos,arrayKeys, new RecyclerProductoAdapter.OnItemClickListener() {
                     @Override
                     public void OnClickListener(Platillos platillos, ArrayList<Comentarios> arrayComentarios, int position) {
-                          //  Toast.makeText( getContext(),"Prueba: "+arrayComentarios.get( 0 ).getTexto(),Toast.LENGTH_SHORT ).show();
-                       // Toast.makeText( getContext(),"Prueba: "+llaves.get( 0 ),Toast.LENGTH_SHORT ).show();
+
                         Intent i = new Intent(getActivity(), informacion_platillos.class);
                         ArrayList<String> lista = new ArrayList<>(  );
                         lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
@@ -339,27 +344,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(3000);
         locationRequest.setSmallestDisplacement(10);
-    }
-
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-        if(m==null){
-            Toast.makeText(getContext(), "Primero", Toast.LENGTH_SHORT).show();
-            LatLng dato = new LatLng( location.getLatitude(),location.getLongitude() );
-            MarkerOptions a = new MarkerOptions().position(dato).title( "Actual" ).draggable( true ) ;
-            m = mMap.addMarker(a);
-            mMap.moveCamera( CameraUpdateFactory.newLatLng( dato ) );
-            CameraUpdate zoom= CameraUpdateFactory.zoomTo( 15 );
-            mMap.animateCamera( zoom );
-        }else {
-            Toast.makeText(getContext(), "Primero", Toast.LENGTH_SHORT).show();
-            LatLng dato2 = new LatLng( location.getLatitude(), location.getLongitude() );
-            m.setPosition( dato2 );
-            mMap.moveCamera( CameraUpdateFactory.newLatLng( dato2) );
-            CameraUpdate zoom= CameraUpdateFactory.zoomTo( 20 );
-            mMap.animateCamera( zoom );
-        }
-
     }
 
     @Override
@@ -468,12 +452,12 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         dialog.setContentView( R.layout.dialog_eow );
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable( Color.TRANSPARENT ) );
         //findviewid
-        dialog_et_nombre=(EditText) dialog.findViewById( R.id.dialog_edit_text_nombre ) ;
-        dialog_et_precio=(EditText) dialog.findViewById( R.id.dialog_edit_text_precio ) ;
-        dialog_spinner_tipo=(Spinner) dialog.findViewById( R.id.dialog_spinner ) ;
-        dialog_iv_foto=(ImageView) dialog.findViewById( R.id.dialog_imageView );
-        Button dialogButtonsi=(Button) dialog.findViewById( R.id.dialog_yes );
-        Button dialogButtonno=(Button) dialog.findViewById( R.id.dialog_no );
+        dialog_et_nombre= dialog.findViewById( R.id.dialog_edit_text_nombre ) ;
+        dialog_et_precio= dialog.findViewById( R.id.dialog_edit_text_precio ) ;
+        dialog_spinner_tipo= dialog.findViewById( R.id.dialog_spinner ) ;
+        dialog_iv_foto= dialog.findViewById( R.id.dialog_imageView );
+        Button dialogButtonsi= dialog.findViewById( R.id.dialog_yes );
+        Button dialogButtonno= dialog.findViewById( R.id.dialog_no );
         TextView dialogTextDireccion=dialog.findViewById( R.id.dialog_text_view_direccion );
         TextView dialogTextCiudad=dialog.findViewById( R.id.dialog_text_view_ciudad );
         ratingBar_dialog=dialog.findViewById( R.id.dialog_rating_bar );
@@ -510,6 +494,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+
 
         return false;
     }

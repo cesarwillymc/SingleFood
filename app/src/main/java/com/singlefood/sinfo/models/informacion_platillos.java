@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -75,6 +76,8 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     EditText editText_coment;
     @BindView( R.id.rating_bar_informacion_platillos )
     RatingBar rating_coment;
+    @BindView( R.id.btnfComment )
+    FloatingActionButton btnfComment;
 
     RecyclerView recyclerView_info;
 
@@ -97,6 +100,13 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         LinearLayoutManager layoutManager= new LinearLayoutManager( this );
         RecyclerView.LayoutManager recycler_view_manager_info=layoutManager;
         recyclerView_info.setLayoutManager( recycler_view_manager_info );
+
+        btnfComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText_coment.requestFocus();
+            }
+        });
 
     }
 
