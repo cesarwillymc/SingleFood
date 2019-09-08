@@ -24,6 +24,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.singlefood.sinfo.models.mapsFragment;
 
 import java.io.ByteArrayOutputStream;
@@ -40,6 +42,9 @@ public class MapsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        FirebaseAuth mAuth= FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
         if (Build.VERSION.SDK_INT > 16) {
             getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN );
@@ -96,9 +101,10 @@ public class MapsActivity extends AppCompatActivity {
                         // frag= new Proximamente();
                         // transaccion = true;
                         break;
-                    case R.id.menu_creditos:
-                        //frag= new creditos();
-                        // transaccion = true;
+                    case R.id.SignOut:
+                        FirebaseAuth.getInstance().signOut();
+                        menuItem.setChecked( true );
+                        drawer.closeDrawers();
                         break;
                 }
                 if(transaccion){

@@ -60,6 +60,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -67,6 +69,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.singlefood.sinfo.LoginActivity;
 import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.models.productos.Comentarios;
 import com.singlefood.sinfo.models.productos.Platillos;
@@ -118,7 +121,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     private ArrayList<Marker> tmpRealTimeMarkers = new ArrayList<>(); //Array Marcadores temporales de almacenamiento para hacer llamado
     private ArrayList<Marker> realTimeMarkers = new ArrayList<>();     //Marcadores tiempo real
-
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     public mapsFragment() {
         // Required empty public constructor
     }
@@ -128,6 +131,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                              Bundle savedInstanceState) {
         view = inflater.inflate( R.layout.fragment_maps, container, false );
          fab = (FloatingActionButton) view.findViewById( R.id.floatingbar_save );
+
          fab.setOnClickListener(this );
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
@@ -162,19 +166,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         return view;
     }
-    private void borrar(int position){
-        this.nombres.remove(position);
-        this.adapterRview.notifyItemRemoved(position);
 
-    }
-    private List<String> getAllnames(){
-        return new ArrayList<String>(){{
-            add("Elias");
-            add("Antonio");
-            add("Cesar");
-            add("Willy");
-        }};
-    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated( view, savedInstanceState );
@@ -186,7 +178,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             mapView.getMapAsync( this );
         }
         Rview = view.findViewById(R.id.my_recycler_view);
-//        this.nombres = getAllnames();
         layourRview = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         Rview.setLayoutManager(layourRview);
 
@@ -208,26 +199,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         buildLocationCallBack();
         fusedLocationProviderClient.requestLocationUpdates( locationRequest, locationCallback, Looper.myLooper() );
     }
-    private void PublicComment( Map<String,Object> datos,String Key){
-        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
-        final DatabaseReference commentRef=coment.push();
-        commentRef.setValue( datos).addOnFailureListener( new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(),"Error: " ,Toast.LENGTH_SHORT ).show();
-            }
-        } ).addOnCompleteListener( new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(getContext(),"Entro: "+task.getResult() ,Toast.LENGTH_SHORT ).show();
-                }
 
-            }
-        } );
-
-
-    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -251,8 +223,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     marker.remove();
                 }
                 final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
-                ArrayList<Comentarios> arrayListComentarios= new ArrayList<>();
-
                 final ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Platillos platillos= snapshot.getValue(Platillos.class);
@@ -401,7 +371,18 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     public void onClick(View v) {
         switch (v.getId()){
             case  R.id.floatingbar_save:
-                cargarProducto( "Hola",15.2 );
+                Toast.makeText( getContext(),"Buton",Toast.LENGTH_SHORT ).show();
+                   // cargarProducto(  );
+                     FirebaseAuth mAuth= FirebaseAuth.getInstance();
+                FirebaseUser user=mAuth.getCurrentUser();
+                if(user != null){
+                    cargarProducto(  );
+                }else{
+                    Intent intent = new Intent( getContext(), LoginActivity.class);
+                    startActivity(intent);
+                }
+
+
                 break;
             case  R.id.dialog_yes:
                 progressDialog=new ProgressDialog( getContext());
@@ -475,27 +456,14 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     progressDialog.dismiss();
                 }
             } );
-//            mDatabase.child( "Platillos" ).push().setValue( datos ).addOnCompleteListener( new OnCompleteListener<Void>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Void> task) {
-//
-//                    dialog.dismiss();
-//                    progressDialog.dismiss();
-//                }
-//            } ).addOnFailureListener( new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Toast.makeText( getContext(),"Error al Guardar", Toast.LENGTH_SHORT ).show();
-//                    progressDialog.dismiss();
-//                }
-//            } );
         }else {
             progressDialog.dismiss();
             Toast.makeText( getContext(),"Error Bitmap vacio",Toast.LENGTH_SHORT ).show();
         }
     }
 
-    public  void cargarProducto(String nombre,Double precio){
+    public  void cargarProducto(){
+        Toast.makeText( getContext(),"Error al cargar poductor",Toast.LENGTH_SHORT ).show();
         dialog =new Dialog( getContext() );
         dialog.setContentView( R.layout.dialog_eow );
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable( Color.TRANSPARENT ) );
@@ -513,12 +481,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         dialog_iv_foto.setOnClickListener( this );
         dialogButtonsi.setOnClickListener( this );
         dialogButtonno.setOnClickListener( this );
-//      esto es de adrees
         String adress=address.get( 0 ).getAddressLine( 0 ) ;
         String city=address.get( 0 ).getLocality(  ) ;
-        double latitud=address.get( 0 ).getLatitude() ;
-        double longitud=address.get( 0 ).getLongitude(  ) ;
-        //dar valor a los tv
         dialogTextCiudad.setText( adress );
         dialogTextDireccion.setText( city );
 
@@ -546,17 +510,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Intent i = new Intent(getActivity(), informacion_platillos.class);
-        ArrayList<String> lista = new ArrayList<>(  );
-        lista.add( "" );
-        lista.add("4.3" );
-        lista.add( "nombre platillo" );
-        lista.add( "tipo" );
-        lista.add( "direccion" );
-        lista.add( "ciudad" );
-        lista.add( "id user" );
-        i.putStringArrayListExtra( "lista",lista );
-        startActivity(i);
 
         return false;
     }

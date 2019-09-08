@@ -39,6 +39,9 @@
                 android:background="@color/transparent"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 android:theme="@style/AppTheme.AppBarOverlay" />
+
+            <!--<include android:id="@+id/toolbar_general"
+                layout="@layout/layout_toolbar"/>-->
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
     <RatingBar

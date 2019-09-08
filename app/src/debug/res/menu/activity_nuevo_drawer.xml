@@ -23,9 +23,9 @@
             android:icon="@drawable/ic_add_black_24dp"
             android:title="Proximamente" />
         <item
-            android:id="@+id/menu_creditos"
+            android:id="@+id/SignOut"
             android:icon="@drawable/ic_add_black_24dp"
-            android:title="Creditos" />
+            android:title="Sign Out" />
     </group>
 
 

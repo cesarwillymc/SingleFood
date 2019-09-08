@@ -6,11 +6,12 @@ android {
     buildToolsVersion "29.0.1"
     defaultConfig {
         applicationId "com.singlefood.sinfo"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     //butternife necesario
     compileOptions {
@@ -29,8 +30,8 @@ ext {
     versionFirebase = '16.0.4'
     butternifeVersion = "10.0.0"
     designVersion = "28.0.0"
-    retrofitVersion="2.4.0"
-    daggerVersion="2.11"
+    retrofitVersion = "2.4.0"
+    daggerVersion = "2.11"
 }
 
 dependencies {
@@ -70,5 +71,10 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:2.x.y"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    //Youtube
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    //multidesk
+    implementation 'com.android.support:multidex:1.0.3'
 
 }

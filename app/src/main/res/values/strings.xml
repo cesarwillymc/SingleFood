@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Sinfo</string>
     <string name="title_activity_maps">Map</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_informacion_platillos">informacion_platillos</string>
+    <string name="facebook_app_id">1125958114267363</string>
+    <string name="fb_login_protocol_scheme">fb1125958114267363</string>
+
+
 </resources>
