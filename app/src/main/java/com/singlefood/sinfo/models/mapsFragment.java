@@ -24,6 +24,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -111,7 +113,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private LocationCallback locationCallback; //ACtualizar posicion
     private Location location;
     //Dialog datos
-    private EditText dialog_et_nombre;
+    private AutoCompleteTextView acPlatillo;
     private EditText dialog_et_precio;
     private  Spinner dialog_spinner_tipo;
     private ImageView dialog_iv_foto;
@@ -131,6 +133,107 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     public mapsFragment() {
         // Required empty public constructor
     }
+
+    String[] foods = {"Adobo de chancho",
+            "Aguadito",
+            "Ajiaco de Papas",
+            "Ají de Gallina",
+            "Alverjado de Pollo",
+            "Anticuchos",
+            "Arroz a la jardinera",
+            "Arroz Chaufa",
+            "Arroz chaufa de mariscos",
+            "Arroz con mariscos",
+            "Arroz con pato",
+            "Arroz con pollo",
+            "Arroz tapado",
+            "Bistec a lo pobre",
+            "Bistec a la chorrilana",
+            "Cabrito a la norteña",
+            "Caldo de cabeza de carnero o cordero",
+            "Caldo de gallina",
+            "Cancancho o cordero al palo",
+            "Cau cau",
+            "Causa",
+            "Causa lambayecana o ferreñafana",
+            "Ceviche",
+            "Ceviche de conchas negras",
+            "Ceviche de camarones",
+            "Ceviche mixto",
+            "Carapulcra",
+            "Cuy chactado",
+            "Chacharada o cacharrada",
+            "Chairo",
+            "Chanfainita",
+            "Charquicán",
+            "Chaque",
+            "Chicharrones",
+            "Chilcano",
+            "Chinguirito",
+            "Chirimpico",
+            "Choros a la chalaca",
+            "Chupe de cangrejos",
+            "Chupe de camarones",
+            "Chupe verde o Yacuchupe",
+            "Escabeche",
+            "Escribano",
+            "Estofado",
+            "Espesado",
+            "Frito trujillano",
+            "Hígado encebollado",
+            "Huatía",
+            "Inchicapi",
+            "Jalea",
+            "Juane",
+            "Locro",
+            "Locro de gallina",
+            "Lomo saltado",
+            "Malaya",
+            "Majarisco",
+            "Menestrón",
+            "Migadito",
+            "Mondonguito a la italiana",
+            "Ocopa",
+            "Olluquito con charqui",
+            "Pachamanca",
+            "Papa a la Huancaína",
+            "Papa rellena",
+            "Parihuela",
+            "Patachi o sopa de trigo",
+            "Patarashca",
+            "Patasca",
+            "Patitas con maní",
+            "Pepian de choclo",
+            "Pesque de quinua",
+            "Pescado a lo macho",
+            "Picante a la tacneña",
+            "Picante de cuy",
+            "Pollo broaster",
+            "Pollo a la brasa",
+            "Pollo al sillao",
+            "Puca picante",
+            "Quinua atamalada",
+            "Rocoto relleno",
+            "Salchipapa",
+            "Sancochado",
+            "Seco de chabelo",
+            "Seco de res con frejoles",
+            "Seco a la norteña",
+            "Shambar",
+            "Solterito",
+            "Sopa criolla",
+            "Sopa de choros",
+            "Sopa seca",
+            "Sopa teóloga",
+            "Sudado de pescado",
+            "Tacacho con cecina",
+            "Tacu tacu",
+            "Tallarín saltado",
+            "Tallarines rojos con pollo",
+            "Tallarines verdes",
+            "Tiradito",
+            "Tortilla de raya",
+            "Trucha frita"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -371,7 +474,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 progressDialog.setCancelable( false );
                 progressDialog.show();
 
-                String platillo=dialog_et_nombre.getText().toString().trim();
+                String platillo=acPlatillo.getText().toString().trim();
                 String precio=dialog_et_precio.getText().toString().trim();
 
                 if (platillo.equals( "" ) && precio.equals( "" )&&ratingBar_dialog.getRating()==0){
@@ -452,8 +555,17 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         dialog.setContentView( R.layout.dialog_eow );
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable( Color.TRANSPARENT ) );
         //findviewid
-        dialog_et_nombre= dialog.findViewById( R.id.dialog_edit_text_nombre ) ;
         dialog_et_precio= dialog.findViewById( R.id.dialog_edit_text_precio ) ;
+
+        //Creating the instance of ArrayAdapter containing list of fruit names
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (dialog.getContext(), android.R.layout.select_dialog_item, foods);
+        //Getting the instance of AutoCompleteTextView
+        acPlatillo = (AutoCompleteTextView) dialog.findViewById(R.id.acPlatillos);
+        acPlatillo.setThreshold(1);//will start working from first character
+        acPlatillo.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+        acPlatillo.setTextColor(Color.RED);
+
         dialog_spinner_tipo= dialog.findViewById( R.id.dialog_spinner ) ;
         dialog_iv_foto= dialog.findViewById( R.id.dialog_imageView );
         Button dialogButtonsi= dialog.findViewById( R.id.dialog_yes );

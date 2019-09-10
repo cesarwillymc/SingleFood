@@ -32,13 +32,11 @@
                 android:layout_height="wrap_content"
                 android:progressTint="@color/colorPrimary"
                 android:numStars="5" />
-            <EditText
-                android:id="@+id/dialog_edit_text_nombre"
-                android:layout_margin="@dimen/margin_top_5dp"
+
+            <AutoCompleteTextView
+                android:id="@+id/acPlatillos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@color/common_google_signin_btn_text_light_disabled"
-                android:hint="Nombre del platillo" />
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/dialog_edit_text_precio"
