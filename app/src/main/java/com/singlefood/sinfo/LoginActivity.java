@@ -154,9 +154,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void updateUI(FirebaseUser user){
         if(user != null){
 
-
-            Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
-            startActivity(intent);
+        finish();
         }
 
     }

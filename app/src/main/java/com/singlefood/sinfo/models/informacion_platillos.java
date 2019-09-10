@@ -160,9 +160,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                     arrayListComentarios.add( coment );
                 }
                 ratingBar.setRating( promedioRating(arrayListComentarios));
-                //Toast.makeText( informacion_platillos.this,"key: "+ comentariosPlatillos.get( 0 ).getTexto(),Toast.LENGTH_SHORT ).show();
-                //Toast.makeText( informacion_platillos.this,"Prueba: "+comentariosPlatillos.size(),Toast.LENGTH_SHORT ).show();
-                adapterRview = new RecyclerComentariosAdapter( informacion_platillos.this, R.layout.rv_comentarios_items, arrayListComentarios, new RecyclerComentariosAdapter.OnItemClickListener2() {
+                adapterRview = new RecyclerComentariosAdapter( informacion_platillos.this, R.layout.rv_comentarios, arrayListComentarios, new RecyclerComentariosAdapter.OnItemClickListener2() {
                     @Override
                     public void OnClickListener2(Comentarios comentarios, int adapterPosition) {
                         Toast.makeText( informacion_platillos.this,"Prueba: "+comentarios.getTexto(),Toast.LENGTH_SHORT ).show();
@@ -189,12 +187,9 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     }
     public Float promedioRating(ArrayList<Comentarios> comentariosPlatillos){
         float temp=0;
-       // Toast.makeText( this,"Tamanñ array: "+ comentariosPlatillos.size(),Toast.LENGTH_SHORT ).show();
         for (int i=0;i<comentariosPlatillos.size();i++){
             temp=temp+comentariosPlatillos.get(  i).getRating();
-            //Toast.makeText( this,"rating: "+ temp,Toast.LENGTH_SHORT ).show();
         }
-       //Toast.makeText( this,"rating complete: "+ temp,Toast.LENGTH_SHORT ).show();
         return temp/comentariosPlatillos.size();
 
     }

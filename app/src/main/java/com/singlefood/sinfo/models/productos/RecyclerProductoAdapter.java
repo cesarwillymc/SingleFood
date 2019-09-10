@@ -60,10 +60,10 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
         RatingBar ratingBar;
         public ProductViewHolder(@NonNull View itemView) {
             super( itemView );
-            mNombre=(TextView) itemView.findViewById( R.id.TVname );
-            mPrecio=(TextView) itemView.findViewById( R.id.TVprecio );
-            mImage =(ImageView) itemView.findViewById( R.id.itemImage );
-            ratingBar=(RatingBar)itemView.findViewById( R.id.rtScore );
+            mNombre=(TextView) itemView.findViewById( R.id.rv_comentarios_text_nombre_platillo );
+            mPrecio=(TextView) itemView.findViewById( R.id.rv_comentarios_text_precio );
+            mImage =(ImageView) itemView.findViewById( R.id.rv_comentarios_imagen_platillo );
+            ratingBar=(RatingBar)itemView.findViewById( R.id.rv_comentarios_rating );
 
         }
 

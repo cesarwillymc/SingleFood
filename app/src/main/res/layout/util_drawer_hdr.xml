@@ -10,7 +10,7 @@
         android:scaleType="centerCrop"
         android:padding="0dp"
         android:layout_margin="0dp"
-        android:background="@drawable/fondo01"
+        android:background="@drawable/com_facebook_profile_picture_blank_square"
         android:id="@+id/image_header"
         tools:ignore="MissingConstraints" />
 

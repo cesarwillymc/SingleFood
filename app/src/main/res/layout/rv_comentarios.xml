@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/drawable_15dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/capsule_border_comentarios"
+    >
+    <LinearLayout
+        android:weightSum="10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <FrameLayout
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_top_5dp">
+            <ImageView
+                android:id="@+id/rv_comentarios_imagen_platillo_comentario"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:background="@drawable/capsule_rv_test"
+                android:src="@drawable/fondo01"/>
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_margin="@dimen/margin_top_5dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RatingBar
+                    android:id="@+id/rv_comentarios_rating_comentarios"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:isIndicator="true"
+
+                    android:numStars="5"
+                    android:progressTint="@color/colorPrimary"
+                    android:rating="4.3" />
+
+                <TextView
+                    android:id="@+id/rv_comentarios_text_fecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Setiembre 02, 2019"
+                    android:textSize="8sp"
+                    android:alpha="0.5"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/rv_comentarios_text_comentario_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Exelente, Recomendable"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/rv_comentarios_text_comentarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:text="Me fascina la combinación del pollo con las
+papas fritas y tomates dorados, excelente. la Nacional"
+                android:alpha="0.7"
+                android:textSize="8sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/rv_comentarios_text_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:textSize="8sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="left|center"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:text="Oscar Rodriguez" />
+
+                <TextView
+                    android:id="@+id/rv_comentarios_text_comentatio_estatico"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:text="-Comentario"
+                    android:textSize="8sp"
+                    android:alpha="0.5"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</FrameLayout>
