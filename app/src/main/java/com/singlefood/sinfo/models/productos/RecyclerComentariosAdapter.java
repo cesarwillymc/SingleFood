@@ -72,9 +72,9 @@ public class RecyclerComentariosAdapter extends RecyclerView.Adapter< RecyclerCo
 
 
         public void bind(final Comentarios comentarios, final OnItemClickListener2 listen) {
-           // mNombreuser.setText( platillos.getNombrePlatillo());
+            // mNombreuser.setText( platillos.getNombrePlatillo());
             mComentario.setText( comentarios.getTexto() );
-           // mImage.setImageBitmap( StringToBitmap(comentarios.) );
+            // mImage.setImageBitmap( StringToBitmap(comentarios.) );
             ratingBar.setRating( comentarios.getRating());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

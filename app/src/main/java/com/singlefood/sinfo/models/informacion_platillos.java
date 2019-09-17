@@ -70,10 +70,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     TextView text_view_precio;
     @BindView( R.id.text_view_info_direccion )
     TextView text_view_direccion;
-    @BindView( R.id.recycler_view_info_platillos )
-    RecyclerView Rview_info;
-    @BindView( R.id.rating_bar_info_platillos )
-    RatingBar ratingBar;
+
     @BindView( R.id.button_informacion_platillos )
     Button button_coment;
     @BindView( R.id.edit_text_informacion_platillos )
@@ -82,6 +79,8 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     RatingBar rating_coment;
     @BindView( R.id.btnfComment )
     FloatingActionButton btnfComment;
+    @BindView( R.id.rv_comentarios_text_rating )
+    TextView ratingtex;
 
     RecyclerView recyclerView_info;
 
@@ -159,7 +158,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                     Comentarios coment=snapshot.getValue(Comentarios.class);
                     arrayListComentarios.add( coment );
                 }
-                ratingBar.setRating( promedioRating(arrayListComentarios));
+                ratingtex.setText( promedioRating(arrayListComentarios).toString());
                 adapterRview = new RecyclerComentariosAdapter( informacion_platillos.this, R.layout.rv_comentarios, arrayListComentarios, new RecyclerComentariosAdapter.OnItemClickListener2() {
                     @Override
                     public void OnClickListener2(Comentarios comentarios, int adapterPosition) {
@@ -178,6 +177,9 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         } );
     }
     private void cargarDatos_texto() {
+//        View view;
+//        LayoutInflater inflater = (LayoutInflater)   getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+//        view = inflater.inflate(R.layout.include_info_restaurant, null);
         text_view_restaurant.setText( datos.get( 3 ) );
         text_view_precio.setText( datos.get( 1 ) );
         text_view_platillo.setText( datos.get( 2 ) );

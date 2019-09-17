@@ -5,6 +5,8 @@
     <string name="title_activity_informacion_platillos">informacion_platillos</string>
     <string name="facebook_app_id">1125958114267363</string>
     <string name="fb_login_protocol_scheme">fb1125958114267363</string>
+    <string name="sign_in_with_gmail">Sign In with gmail</string>
+    <string name="sign_in_with_phone">Sign In with Phone</string>
 
 
 </resources>

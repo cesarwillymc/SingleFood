@@ -100,5 +100,3 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
 
     }
 }
-
-//*********************************ODOO*****************************************

@@ -2,6 +2,7 @@ package com.singlefood.sinfo.models;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -16,10 +17,10 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,12 +38,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -68,22 +72,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.singlefood.sinfo.LoginActivity;
 import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.models.productos.Comentarios;
 import com.singlefood.sinfo.models.productos.Platillos;
 import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import static android.app.Activity.RESULT_OK;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,6 +103,10 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private Bitmap bitmap;
     private Marker m;
     private int TAKEFOTO=1;
+    private static final int REQUEST_CAPTURE_IMAGE = 100;
+    String imageFilePath;
+    FirebaseStorage store;
+    StorageReference storageReference;
     private RecyclerView.Adapter adapterRview;
     private RecyclerView.LayoutManager layourRview;
     private RecyclerProductoAdapter mAdapter;
@@ -118,7 +129,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private  Spinner dialog_spinner_tipo;
     private ImageView dialog_iv_foto;
     private RatingBar ratingBar_dialog;
-
+    private SearchView searchView;
     private ArrayList<Marker> tmpRealTimeMarkers = new ArrayList<>(); //Array Marcadores temporales de almacenamiento para hacer llamado
     private ArrayList<Marker> realTimeMarkers = new ArrayList<>();     //Marcadores tiempo real
 
@@ -272,7 +283,34 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     } )
                     .show();
         }
+        store= FirebaseStorage.getInstance();
+        storageReference= store.getReference();
+        searchView= (SearchView) view.findViewById( R.id.maps_search_view );
+        searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = searchView.getQuery().toString();
+                List<Address> addressList=null;
+                if(location!=null || !location.equals( "" )){
+                    Geocoder geocoder = new Geocoder( getContext() );
+                    try {
+                        addressList=geocoder.getFromLocationName( location,1 );
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Address address= addressList.get( 0 );
+                    LatLng latLng= new LatLng( address.getLatitude(),address.getLongitude() );
+                    mMap.animateCamera( CameraUpdateFactory.newLatLngZoom( latLng,15 ) );
 
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        } );
         return view;
     }
     @Override
@@ -307,7 +345,30 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         buildLocationCallBack();
         fusedLocationProviderClient.requestLocationUpdates( locationRequest, locationCallback, Looper.myLooper() );
     }
-
+    private void UploadImage(){
+        FirebaseAuth mauth=FirebaseAuth.getInstance();
+        FirebaseUser user = mauth.getCurrentUser();
+        StorageReference ref = storageReference.child( user.getUid()+"/"+ UUID.randomUUID().toString() );
+        ref.putFile( fileImage )
+                .addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText( getContext(),"Subido imagen", Toast.LENGTH_SHORT ).show();
+                    }
+                } )
+                .addOnFailureListener( new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText( getContext(),"Fallo subir imagen", Toast.LENGTH_SHORT ).show();
+                    }
+                } )
+                .addOnProgressListener( new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText( getContext(),"contador imagen", Toast.LENGTH_SHORT ).show();
+                    }
+                } );
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -316,7 +377,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             return;
         }
 
-        mMap.setMyLocationEnabled( true );
+        //mMap.setMyLocationEnabled( true );
         mMap.getUiSettings().setCompassEnabled( false );
         mMap.getUiSettings().setIndoorLevelPickerEnabled( false );
         mMap.setOnMarkerClickListener(this);
@@ -329,8 +390,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 for(Marker marker:realTimeMarkers){
                     marker.remove();
                 }
-                final ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
-                final ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
+                 ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
+                 ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Platillos platillos= snapshot.getValue(Platillos.class);
                     Double latitud = platillos.getPlaces().getLatitud();
@@ -490,11 +551,48 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 Toast.makeText( getContext(),"Datos No Guardados", Toast.LENGTH_SHORT ).show();
                 break;
             case R.id.dialog_imageView:
-                Intent intent= new Intent( );
-                intent.setAction(  MediaStore.ACTION_IMAGE_CAPTURE );
-                startActivityForResult( intent,TAKEFOTO );
+//                Intent intent= new Intent( );
+//                intent.setAction(  MediaStore.ACTION_IMAGE_CAPTURE );
+//                startActivityForResult( intent,TAKEFOTO );
+                openCameraIntent();
                 break;
 
+        }
+    }
+    private File createImageFile() throws IOException {
+        String timeStamp =
+                new SimpleDateFormat("yyyyMMdd_HHmmss",
+                        Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp + "_";
+        File storageDir =
+                getContext().getExternalFilesDir( Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        imageFilePath = image.getAbsolutePath();
+        return image;
+    }
+    private void openCameraIntent() {
+        Intent pictureIntent = new Intent(
+                MediaStore.ACTION_IMAGE_CAPTURE);
+        if(pictureIntent.resolveActivity(getContext().getPackageManager()) != null){
+            //Create a file to store the image
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getContext(),                                                                                                    "com.example.android.provider", photoFile);
+                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        photoURI);
+                startActivityForResult(pictureIntent,
+                        REQUEST_CAPTURE_IMAGE);
+            }
         }
     }
     private void guardarDatosFirebaseDialogNotDatabase(String platillo, String precio)  {
@@ -514,17 +612,17 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         comentarios.put( "rating",ratingBar_dialog.getRating() );
 
 
-        if(bitmap!=null) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageBytes = baos.toByteArray();
-            String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            //encode
+//        if(bitmap!=null) {
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//            byte[] imageBytes = baos.toByteArray();
+//            String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+//            //encode
             datos.put( "nombrePlatillo", platillo );
             datos.put( "precio", precio );
             datos.put( "tipo", dialog_spinner_tipo.getSelectedItem().toString() );
-            datos.put( "imagenbase64", imageString );
+            //datos.put( "imagenbase64", imageString );
             datos.put( "places",base_datos);
            // datos.put( "comentarios_platillo",comentarios );
 
@@ -533,6 +631,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             coment.child( "Comentarios" ).push().setValue( comentarios ).addOnCompleteListener( new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
+                    UploadImage();
                     dialog.dismiss();
                     progressDialog.dismiss();
                 }
@@ -543,10 +642,10 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     progressDialog.dismiss();
                 }
             } );
-        }else {
-            progressDialog.dismiss();
-            Toast.makeText( getContext(),"Error Bitmap vacio",Toast.LENGTH_SHORT ).show();
-        }
+//        }else {
+//            progressDialog.dismiss();
+//            Toast.makeText( getContext(),"Error Bitmap vacio",Toast.LENGTH_SHORT ).show();
+//        }
     }
 
     public  void cargarProducto(){
@@ -588,14 +687,20 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onActivityResult(int requestCode, int resultCode,@Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
-        if (requestCode==TAKEFOTO&&resultCode==RESULT_OK&&data!=null){
-
-            bitmap=(Bitmap) data.getExtras().get( "data" );
-
-            dialog_iv_foto.setImageBitmap( bitmap );
-            fileImage = data.getData();
-        }else {
-            Toast.makeText( getContext(),"Error de data no se obtuvo" ,Toast.LENGTH_SHORT).show();
+//        if (requestCode==TAKEFOTO&&resultCode==RESULT_OK&&data!=null){
+////
+////            bitmap=(Bitmap) data.getExtras().get( "data" );
+////
+////            dialog_iv_foto.setImageBitmap( bitmap );
+////            fileImage = data.getData();
+////        }else {
+////            Toast.makeText( getContext(),"Error de data no se obtuvo" ,Toast.LENGTH_SHORT).show();
+////        }
+        if (resultCode == Activity.RESULT_OK ) {
+            Glide. with ( this ) .load ( imageFilePath ).centerCrop() .into ( dialog_iv_foto );
+        }
+        else if (resultCode == Activity.RESULT_CANCELED ) {
+            // El usuario canceló la acción
         }
     }
 

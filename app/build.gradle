@@ -28,10 +28,11 @@ android {
 ext {
     versionAndroid = '1.0.0'
     versionFirebase = '16.0.4'
-    butternifeVersion = "10.0.0"
+    butternifeVersion = "10.2.0"
     designVersion = "28.0.0"
     retrofitVersion = "2.4.0"
     daggerVersion = "2.11"
+    glideVersion="4.9.0"
 }
 
 dependencies {
@@ -43,6 +44,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$versionAndroid"
     implementation "com.google.android.material:material:$versionAndroid"
     implementation "androidx.legacy:legacy-support-v4:$versionAndroid"
+    implementation "com.android.support:support-compat:$designVersion"
     implementation "androidx.constraintlayout:constraintlayout:1.1.3"
     implementation "com.android.support:design:$designVersion"
     //Firebase
@@ -76,5 +78,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     //multidesk
     implementation 'com.android.support:multidex:1.0.3'
+    //glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 
 }
