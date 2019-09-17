@@ -9,28 +9,27 @@
     android:layout_height="match_parent"
     tools:context=".MapsActivity"
     android:fitsSystemWindows="true">
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/content_frame"/>
-
-
-        <include android:id="@+id/wd_toolvar" layout="@layout/toolbar"/>
-
-    </FrameLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/util_drawer_hdr"
-        app:menu="@menu/activity_nuevo_drawer" />
-    <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+        android:id="@+id/content_frame"/>
+
+
+
+  </RelativeLayout>
+
+  <com.google.android.material.navigation.NavigationView
+      android:id="@+id/nav_view"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      android:fitsSystemWindows="true"
+      app:headerLayout="@layout/util_drawer_hdr"
+      app:menu="@menu/activity_nuevo_drawer" />
+  <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
 
 </androidx.drawerlayout.widget.DrawerLayout>

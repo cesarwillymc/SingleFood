@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFE800</color>
-    <color name="colorPrimaryDark">#0C7C0C</color>
-    <color name="colorAccent">#388310</color>
-    <color name="white">#FFFF</color>
-    <color name="transparent">#00000000</color>
+  <color name="colorPrimary">#FFE800</color>
+  <color name="colorPrimaryDark">#0C7C0C</color>
+  <color name="colorAccent">#388310</color>
+  <color name="white">#FFFF</color>
+  <color name="transparent">#00000000</color>
 
-    <color name="gradientStart">#1A758B</color>
-    <color name="gradientStop">#165160</color>
+  <color name="gradientStart">#1A758B</color>
+  <color name="gradientStop">#165160</color>
 
-    <color name="colorGreen">#1A758B</color>
-    <color name="blue_grey">#607d8b</color>
-    <color name="emphasis">#31b6e7</color>
+  <color name="colorGreen">#1A758B</color>
+  <color name="blue_grey">#607d8b</color>
+  <color name="emphasis">#31b6e7</color>
 </resources>

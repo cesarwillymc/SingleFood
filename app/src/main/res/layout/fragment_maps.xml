@@ -7,16 +7,7 @@
     tools:context=".models.mapsFragment"
     >
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.appcompat.widget.SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/maps_search_view"
-        app:queryHint="Tu ubicacion actual"
-        app:iconifiedByDefault="false"
-        android:layout_margin="@dimen/drawable_15dp"
-        android:elevation="@dimen/margin_top_5dp"
-        android:background="@drawable/capsule_border_comentarios"/>
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
@@ -26,7 +17,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="top">
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/searchBar"
+            style="@style/MaterialSearchBarLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/drawable_15dp"
+            app:mt_hint="Custom hint"
+            app:mt_maxSuggestionsCount="10"
+            app:mt_navIconEnabled="true"
+            app:mt_placeholder="Search"
+            app:mt_speechMode="false" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_gravity="bottom">
+
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingbar_save"
             android:layout_width="wrap_content"

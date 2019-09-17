@@ -6,132 +6,132 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".models.CrearProducto">
-    <include android:id="@+id/toolbar_general"
-        layout="@layout/layout_toolbar"/>
+  <include android:id="@+id/toolbar_general"
+      layout="@layout/layout_toolbar"/>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+      <androidx.appcompat.widget.AppCompatImageView
+          android:id="@+id/dialog_imageView"
+          android:layout_margin="@dimen/drawable_15dp"
+          android:layout_width="match_parent"
+          android:layout_height="200dp"
+          android:background="@color/colorPrimaryDark"
+          android:src="@drawable/ic_add_black_24dp" />
+      <RatingBar
+          android:layout_gravity="center"
+          android:id="@+id/dialog_rating_bar"
+          android:layout_margin="@dimen/margin_top_5dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:progressTint="@color/colorPrimary"
+          android:numStars="5" />
+      <EditText
+          android:id="@+id/dialog_edit_text_nombre"
+          android:layout_margin="@dimen/margin_top_5dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:drawableLeft="@color/common_google_signin_btn_text_light_disabled"
+          android:hint="Nombre del platillo" />
+
+      <EditText
+          android:id="@+id/dialog_edit_text_precio"
+          android:layout_margin="@dimen/margin_top_5dp"
+          android:layout_width="match_parent"
+
+          android:layout_height="wrap_content"
+          android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
+          android:hint="Precio"
+          android:inputType="number" />
+      <EditText
+          android:id="@+id/dialog_edit_text_comentario"
+          android:layout_margin="@dimen/margin_top_5dp"
+          android:layout_width="match_parent"
+
+          android:layout_height="80dp"
+          android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
+          android:hint="Comentario"
+          android:inputType="number" />
+
+      <Spinner
+          android:layout_margin="@dimen/margin_top_5dp"
+          android:id="@+id/dialog_spinner"
+          android:layout_width="match_parent"
+          android:layout_height="40dp"
+          android:entries="@array/planets_array"
+          android:tooltipText="@string/app_name"/>
+
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+        <TextView
+            android:layout_margin="@dimen/margin_top_5dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginLeft="5dp"
+            android:text="Direccion: " />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/dialog_imageView"
-                android:layout_margin="@dimen/drawable_15dp"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@color/colorPrimaryDark"
-                android:src="@drawable/ic_add_black_24dp" />
-            <RatingBar
-                android:layout_gravity="center"
-                android:id="@+id/dialog_rating_bar"
-                android:layout_margin="@dimen/margin_top_5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:progressTint="@color/colorPrimary"
-                android:numStars="5" />
-            <EditText
-                android:id="@+id/dialog_edit_text_nombre"
-                android:layout_margin="@dimen/margin_top_5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@color/common_google_signin_btn_text_light_disabled"
-                android:hint="Nombre del platillo" />
+        <TextView
+            android:layout_margin="@dimen/margin_top_5dp"
+            android:id="@+id/dialog_text_view_direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp" />
+      </LinearLayout>
 
-            <EditText
-                android:id="@+id/dialog_edit_text_precio"
-                android:layout_margin="@dimen/margin_top_5dp"
-                android:layout_width="match_parent"
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
 
-                android:layout_height="wrap_content"
-                android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
-                android:hint="Precio"
-                android:inputType="number" />
-            <EditText
-                android:id="@+id/dialog_edit_text_comentario"
-                android:layout_margin="@dimen/margin_top_5dp"
-                android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Ciudad:" />
 
-                android:layout_height="80dp"
-                android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
-                android:hint="Comentario"
-                android:inputType="number" />
+        <TextView
+            android:id="@+id/dialog_text_view_ciudad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp" />
+      </LinearLayout>
 
-            <Spinner
-                android:layout_margin="@dimen/margin_top_5dp"
-                android:id="@+id/dialog_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:entries="@array/planets_array"
-                android:tooltipText="@string/app_name"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_margin="@dimen/margin_top_5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="Direccion: " />
-
-                <TextView
-                    android:layout_margin="@dimen/margin_top_5dp"
-                    android:id="@+id/dialog_text_view_direccion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="Ciudad:" />
-
-                <TextView
-                    android:id="@+id/dialog_text_view_ciudad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_margin="@dimen/drawable_15dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/dialog_no"
-                android:layout_width="190dp"
-                android:layout_height="50dp"
-                android:background="@drawable/capsule_rv_test"
-                android:layout_gravity="bottom|left"
-                android:text="Cancelar" />
-
-            <Button
-                android:id="@+id/dialog_yes"
-                android:layout_width="190dp"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom|right"
-                android:background="@drawable/capsule_rv_test"
-                android:text="GUARDAR" />
-        </LinearLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="@dimen/drawable_15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+      <Button
+          android:id="@+id/dialog_no"
+          android:layout_width="190dp"
+          android:layout_height="50dp"
+          android:background="@drawable/capsule_rv_test"
+          android:layout_gravity="bottom|left"
+          android:text="Cancelar" />
+
+      <Button
+          android:id="@+id/dialog_yes"
+          android:layout_width="190dp"
+          android:layout_height="50dp"
+          android:layout_gravity="bottom|right"
+          android:background="@drawable/capsule_rv_test"
+          android:text="GUARDAR" />
+    </LinearLayout>
+
+  </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

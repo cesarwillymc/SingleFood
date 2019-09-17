@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -33,7 +32,7 @@ import java.io.ByteArrayOutputStream;
 public class MapsActivity extends AppCompatActivity {
     NavigationView navigationView;
     DrawerLayout drawer;
-    Toolbar tv_tolbar;
+    //Toolbar tv_tolbar;
     ImageView image_header;
     private final int LOCATION = 1;
     @TargetApi(Build.VERSION_CODES.M)
@@ -121,7 +120,7 @@ public class MapsActivity extends AppCompatActivity {
                 return false;
             }
         } );
-        setTolbar();
+        //setTolbar();
         image_header =(ImageView) findViewById( R.id.image_header );
         //imagetoNavegationDrawer(  );
     }
@@ -140,12 +139,18 @@ public class MapsActivity extends AppCompatActivity {
     }
 
     private void setTolbar() {
-        tv_tolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.wd_toolvar);
-        setSupportActionBar( tv_tolbar );
+//        tv_tolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.wd_toolvar);
+//        setSupportActionBar( tv_tolbar );
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
+
+
+    public DrawerLayout getDrawer() {
+        return drawer;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
