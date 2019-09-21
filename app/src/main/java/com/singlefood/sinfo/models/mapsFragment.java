@@ -135,11 +135,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private ArrayList<Marker> realTimeMarkers = new ArrayList<>();     //Marcadores tiempo real
 
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
-
-
-
-
-    //Declare HashMap to store mapping of marker to Activity
     final HashMap<String, String> markerMapPlatillos = new HashMap<String, String>();
 
     public mapsFragment() {
