@@ -65,7 +65,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -134,7 +137,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 
-    final ArrayList<String> llaves= new ArrayList<>();
+
 
     //Declare HashMap to store mapping of marker to Activity
     final HashMap<String, String> markerMapPlatillos = new HashMap<String, String>();
@@ -284,7 +287,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
 //        store= FirebaseStorage.getInstance();
 //        storageReference= store.getReference();
-        searchView= (SearchView) view.findViewById( R.id.searchBar );
+
+        searchView= (SearchView) view.findViewById( R.id.maps_search_view );
         searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -323,6 +327,10 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             mapView.getMapAsync( this );
         }
         //GPS ENABLE
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient( getContext() );
+        Places.initialize( getContext(),"AIzaSyAgSv7wL2PTgdXSiKggKstMiiPYT-87zb4" );
+        PlacesClient placesClient= Places.createClient( getContext() );
+        AutocompleteSessionToken token= AutocompleteSessionToken.newInstance();
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setInterval( 10000 );
         locationRequest.setFastestInterval( 5000 );
@@ -381,7 +389,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             RelativeLayout.LayoutParams layoutParams=(RelativeLayout.LayoutParams) locationButton.getLayoutParams();
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP,RelativeLayout.TRUE );
             layoutParams.addRule( RelativeLayout.ALIGN_PARENT_BOTTOM,0  );
-            layoutParams.setMargins( 0,0,80,300  );
+            layoutParams.setMargins( 0,0,80,100  );
         }
 
         mDatabase.child("Platillos").addValueEventListener(new ValueEventListener() {
@@ -391,6 +399,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 for(Marker marker:realTimeMarkers){
                     marker.remove();
                 }
+                ArrayList<String> llaves= new ArrayList<>();
                  ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
                  ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
@@ -445,7 +454,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private ArrayList<Comentarios> getCommts(String Key) {
         DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
         ArrayList<Comentarios> comentariosPlatillos= new ArrayList<>(  );
-        coment.addListenerForSingleValueEvent( new ValueEventListener() {
+        coment.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
