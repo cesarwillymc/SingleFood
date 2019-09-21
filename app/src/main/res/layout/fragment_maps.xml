@@ -13,23 +13,7 @@
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="top">
-        <com.mancj.materialsearchbar.MaterialSearchBar
-            android:id="@+id/searchBar"
-            style="@style/MaterialSearchBarLight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/drawable_15dp"
-            app:mt_hint="Custom hint"
-            app:mt_maxSuggestionsCount="10"
-            app:mt_navIconEnabled="true"
-            app:mt_placeholder="Search"
-            app:mt_speechMode="false" />
-    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,6 +41,19 @@
             android:scrollbars="none" />
     </LinearLayout>
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="top">
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchBar"
+            style="@style/MaterialSearchBarDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/action_search"
+            android:background="@drawable/capsule_border_comentarios"
+            android:layout_margin="@dimen/drawable_15dp" />
+    </LinearLayout>
 
 </FrameLayout>
