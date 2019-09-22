@@ -3,7 +3,6 @@ package com.singlefood.sinfo.models;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -29,10 +27,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -69,6 +67,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -101,7 +100,6 @@ import static android.app.Activity.RESULT_OK;
 public class mapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
     private View view;
     private MapView mapView;
-    private Dialog dialog;
     private Uri fileImage;
     private Bitmap bitmap;
     private Marker m;
@@ -113,7 +111,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private RecyclerView Rview;
     private GoogleMap mMap;
     private ProgressDialog progressDialog;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab_collapse;
+    private FloatingActionButton fab_hidden;
     private List<Address> address;
     private List<String> nombres;
     private Geocoder geocoder;
@@ -125,15 +124,20 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private Location location;
     private List<AutocompletePrediction> predictionList;
     //Dialog datos
+    Button dialogButtonsi;
     private AutoCompleteTextView acPlatillo;
     private EditText dialog_et_precio;
+    private EditText dialog_et_direccion;
     private  Spinner dialog_spinner_tipo;
     private ImageView dialog_iv_foto;
     private RatingBar ratingBar_dialog;
     private SearchView searchView;
+    private EditText dialog_comentario;
     private ArrayList<Marker> tmpRealTimeMarkers = new ArrayList<>(); //Array Marcadores temporales de almacenamiento para hacer llamado
     private ArrayList<Marker> realTimeMarkers = new ArrayList<>();     //Marcadores tiempo real
-
+//fabbbbbbbbbbbbbbbbbbbbbb
+    LinearLayout linearLayout;
+    BottomSheetBehavior bottomSheetBehavior;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     final HashMap<String, String> markerMapPlatillos = new HashMap<String, String>();
 
@@ -246,9 +250,14 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate( R.layout.fragment_maps, container, false );
-         fab = (FloatingActionButton) view.findViewById( R.id.floatingbar_save );
+        linearLayout=(LinearLayout) view.findViewById( R.id.crear_comida_dialog ) ;
+        bottomSheetBehavior= BottomSheetBehavior.from( linearLayout );
+         fab_collapse = (FloatingActionButton) view.findViewById( R.id.fab_collapse_dialog );
+        fab_hidden = (FloatingActionButton) view.findViewById( R.id.fab_hidden_dialog );
 
-         fab.setOnClickListener(this );
+         fab_collapse.setOnClickListener(this );
+         fab_hidden.setOnClickListener( this );
+
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
             new AlertDialog.Builder( getContext() )
@@ -279,6 +288,29 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     } )
                     .show();
         }
+        bottomSheetBehavior.setBottomSheetCallback( new BottomSheetBehavior.BottomSheetCallback() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                switch (i)
+                {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        fab_hidden.setVisibility( View.GONE );
+                        fab_collapse.setVisibility( View.VISIBLE );
+                        break;
+                        case BottomSheetBehavior.STATE_COLLAPSED:
+                            fab_hidden.setVisibility( View.GONE );
+                            fab_collapse.setVisibility( View.VISIBLE );
+                            break;
+
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        } );
 
 //        store= FirebaseStorage.getInstance();
 //        storageReference= store.getReference();
@@ -309,6 +341,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 return false;
             }
         } );
+
         return view;
     }
     @Override
@@ -384,7 +417,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             RelativeLayout.LayoutParams layoutParams=(RelativeLayout.LayoutParams) locationButton.getLayoutParams();
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP,RelativeLayout.TRUE );
             layoutParams.addRule( RelativeLayout.ALIGN_PARENT_BOTTOM,0  );
-            layoutParams.setMargins( 0,0,80,100  );
+            layoutParams.setMargins( 0,750,400,100  );
         }
 
         mDatabase.child("Platillos").addValueEventListener(new ValueEventListener() {
@@ -475,22 +508,31 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         return false;
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case  R.id.floatingbar_save:
+            case  R.id.fab_collapse_dialog:
                 Toast.makeText( getContext(),"Buton",Toast.LENGTH_SHORT ).show();
                    // cargarProducto(  );
                      FirebaseAuth mAuth= FirebaseAuth.getInstance();
                 FirebaseUser user=mAuth.getCurrentUser();
                 if(user != null){
                     cargarProducto(  );
+                    bottomSheetBehavior.setState( BottomSheetBehavior.STATE_HALF_EXPANDED );
+                    fab_hidden.setVisibility( View.VISIBLE );
+                    fab_collapse.setVisibility( View.GONE );
                 }else{
                     Intent intent = new Intent( getContext(), LoginActivity.class);
                     startActivity(intent);
                 }
 
 
+                break;
+            case R.id.fab_hidden_dialog:
+                bottomSheetBehavior.setState( BottomSheetBehavior.STATE_HIDDEN );
+                fab_hidden.setVisibility( View.GONE );
+                fab_collapse.setVisibility( View.VISIBLE );
                 break;
             case  R.id.dialog_yes:
                 progressDialog=new ProgressDialog( getContext());
@@ -509,10 +551,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 }
 
                 break;
-            case  R.id.dialog_no:
-                dialog.dismiss();
-                Toast.makeText( getContext(),"Datos No Guardados", Toast.LENGTH_SHORT ).show();
-                break;
             case R.id.dialog_imageView:
                 Intent intent= new Intent( );
                 intent.setAction(  MediaStore.ACTION_IMAGE_CAPTURE );
@@ -530,13 +568,11 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         FirebaseAuth mauth=FirebaseAuth.getInstance();
         FirebaseUser user = mauth.getCurrentUser();
 
-        base_datos.put( "ciudad", address.get( 0 ).getAddressLine( 0 ) );
-        base_datos.put( "direccion", address.get( 0 ).getLocality() );
         base_datos.put( "latitud", address.get( 0 ).getLatitude() );
         base_datos.put( "longitud", address.get( 0 ).getLongitude() );
         base_datos.put( "id_user", user.getUid() );
         comentarios.put( "id_comentarios",user.getUid() );
-        comentarios.put( "texto","Hola mundo muy rica Comida" );
+        comentarios.put( "texto",dialog_comentario.getText().toString() );
         comentarios.put( "rating",ratingBar_dialog.getRating() );
 
 
@@ -549,19 +585,24 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             //encode
             datos.put( "nombrePlatillo", platillo );
             datos.put( "precio", precio );
+            datos.put( "direccion", dialog_et_direccion.getText().toString()  );
             datos.put( "tipo", dialog_spinner_tipo.getSelectedItem().toString() );
             datos.put( "imagenbase64", imageString );
             datos.put( "places",base_datos);
+            datos.put("id_user",user.getUid());
            // datos.put( "comentarios_platillo",comentarios );
 
             DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").push();
             coment.setValue( datos );
             coment.child( "Comentarios" ).push().setValue( comentarios ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                @SuppressLint("RestrictedApi")
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     //UploadImage();
-                    dialog.dismiss();
                     progressDialog.dismiss();
+                    bottomSheetBehavior.setState( BottomSheetBehavior.STATE_HIDDEN );
+                    fab_hidden.setVisibility( View.GONE );
+                    fab_collapse.setVisibility( View.VISIBLE );
                 }
             } ).addOnFailureListener( new OnFailureListener() {
                 @Override
@@ -577,39 +618,32 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     public  void cargarProducto(){
-        Toast.makeText( getContext(),"Error al cargar poductor",Toast.LENGTH_SHORT ).show();
-        dialog =new Dialog( getContext() );
-        dialog.setContentView( R.layout.dialog_eow );
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable( Color.TRANSPARENT ) );
-        //findviewid
-        dialog_et_precio= dialog.findViewById( R.id.dialog_edit_text_precio ) ;
 
+        //findviewid
+        dialog_et_precio= view.findViewById( R.id.dialog_edit_text_precio ) ;
+        dialog_et_direccion= view.findViewById( R.id.dialog_text_view_direccion ) ;
+        dialog_comentario= view.findViewById( R.id.dialog_comentario ) ;
         //Creating the instance of ArrayAdapter containing list of fruit names
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>
-                (dialog.getContext(), android.R.layout.select_dialog_item, foods);
+                (getContext(), android.R.layout.select_dialog_item, foods);
         //Getting the instance of AutoCompleteTextView
-        acPlatillo = (AutoCompleteTextView) dialog.findViewById(R.id.acPlatillos);
+        acPlatillo = (AutoCompleteTextView) view.findViewById(R.id.acPlatillos);
         acPlatillo.setThreshold(1);//will start working from first character
         acPlatillo.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
         acPlatillo.setTextColor(Color.RED);
 
-        dialog_spinner_tipo= dialog.findViewById( R.id.dialog_spinner ) ;
-        dialog_iv_foto= dialog.findViewById( R.id.dialog_imageView );
-        Button dialogButtonsi= dialog.findViewById( R.id.dialog_yes );
-        Button dialogButtonno= dialog.findViewById( R.id.dialog_no );
-        TextView dialogTextDireccion=dialog.findViewById( R.id.dialog_text_view_direccion );
-        TextView dialogTextCiudad=dialog.findViewById( R.id.dialog_text_view_ciudad );
-        ratingBar_dialog=dialog.findViewById( R.id.dialog_rating_bar );
+        dialog_spinner_tipo= view.findViewById( R.id.dialog_spinner ) ;
+        dialog_iv_foto= view.findViewById( R.id.dialog_imageView );
+        dialogButtonsi= view.findViewById( R.id.dialog_yes );
+        ratingBar_dialog=view.findViewById( R.id.dialog_rating_bar );
         //on click
         dialog_iv_foto.setOnClickListener( this );
         dialogButtonsi.setOnClickListener( this );
-        dialogButtonno.setOnClickListener( this );
         String adress=address.get( 0 ).getAddressLine( 0 ) ;
-        String city=address.get( 0 ).getLocality(  ) ;
-        dialogTextCiudad.setText( adress );
-        dialogTextDireccion.setText( city );
+        String locality=address.get( 0 ).getSubLocality(  ) ;
+        dialog_et_direccion.setText( adress+" barrio "+ locality );
 
-        dialog.show();
+
     }
 
     @Override
@@ -677,6 +711,13 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                                         location = locationResult.getLastLocation();
 
                                         mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude() ),18) );
+                                        try {
+
+                                            geocoder= new Geocoder( getContext(), Locale.getDefault() );
+                                            address= geocoder.getFromLocation( location.getLatitude(),location.getLongitude(),1 );
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                         fusedLocationProviderClient.removeLocationUpdates( locationCallback );
                                     }
                                 };
@@ -702,7 +743,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onDestroy() {
-        mapView.onDestroy();
+
         super.onDestroy();
 
     }

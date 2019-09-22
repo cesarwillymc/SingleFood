@@ -1,137 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".models.CrearProducto">
-  <include android:id="@+id/toolbar_general"
-      layout="@layout/layout_toolbar"/>
-  <LinearLayout
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:layout_margin="@dimen/dimen10"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical">
+      android:layout_height="wrap_content"
+      android:background="@drawable/capsule_rv_test"
+      android:id="@+id/crear_comida_dialog"
+      android:orientation="vertical"
+      app:behavior_hideable="true"
+      app:behavior_peekHeight="0dp"
+      app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+      >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:weightSum="8">
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_weight="5"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:layout_marginHorizontal="@dimen/drawable_15dp"
+          android:layout_marginVertical="@dimen/dimen10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Platillo"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textSize="20sp"/>
+        <RatingBar
+
+            android:id="@+id/dialog_rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:isIndicator="false"
+            android:layout_gravity="center"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:progressTint="@color/coloramarillo"
+            android:numStars="5" />
+      </LinearLayout>
 
       <androidx.appcompat.widget.AppCompatImageView
           android:id="@+id/dialog_imageView"
-          android:layout_margin="@dimen/drawable_15dp"
-          android:layout_width="match_parent"
-          android:layout_height="200dp"
-          android:background="@color/colorPrimaryDark"
-          android:src="@drawable/ic_add_black_24dp" />
-      <RatingBar
-          android:layout_gravity="center"
-          android:id="@+id/dialog_rating_bar"
-          android:layout_margin="@dimen/margin_top_5dp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:progressTint="@color/colorPrimary"
-          android:numStars="5" />
-      <EditText
-          android:id="@+id/dialog_edit_text_nombre"
-          android:layout_margin="@dimen/margin_top_5dp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:drawableLeft="@color/common_google_signin_btn_text_light_disabled"
-          android:hint="Nombre del platillo" />
-
-      <EditText
-          android:id="@+id/dialog_edit_text_precio"
-          android:layout_margin="@dimen/margin_top_5dp"
-          android:layout_width="match_parent"
-
-          android:layout_height="wrap_content"
-          android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
-          android:hint="Precio"
-          android:inputType="number" />
-      <EditText
-          android:id="@+id/dialog_edit_text_comentario"
-          android:layout_margin="@dimen/margin_top_5dp"
-          android:layout_width="match_parent"
-
-          android:layout_height="80dp"
-          android:drawableLeft="@color/common_google_signin_btn_text_dark_disabled"
-          android:hint="Comentario"
-          android:inputType="number" />
-
-      <Spinner
-          android:layout_margin="@dimen/margin_top_5dp"
-          android:id="@+id/dialog_spinner"
-          android:layout_width="match_parent"
-          android:layout_height="40dp"
-          android:entries="@array/planets_array"
-          android:tooltipText="@string/app_name"/>
-
-      <LinearLayout
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
-
-        <TextView
-            android:layout_margin="@dimen/margin_top_5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Direccion: " />
-
-        <TextView
-            android:layout_margin="@dimen/margin_top_5dp"
-            android:id="@+id/dialog_text_view_direccion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp" />
-      </LinearLayout>
-
-      <LinearLayout
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Ciudad:" />
-
-        <TextView
-            android:id="@+id/dialog_text_view_ciudad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp" />
-      </LinearLayout>
-
+          android:layout_margin="1dp"
+          android:layout_width="0dp"
+          android:layout_weight="3"
+          android:layout_height="match_parent"
+          android:background="@drawable/capsule_rv_test"
+          android:backgroundTint="@color/coloramarillo"
+          />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="@dimen/drawable_15dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginVertical="@dimen/dimen10"
+        android:layout_marginHorizontal="@dimen/drawable_15dp">
+      <AutoCompleteTextView
+          android:paddingHorizontal="@dimen/dimen10"
+          android:paddingVertical="@dimen/margin_top_5dp"
+          android:textColor="#534D4D"
+          android:layout_margin="2dp"
+          android:textSize="@dimen/texto13sp"
+          android:background="@drawable/capsule_border_comentarios"
+          android:id="@+id/acPlatillos"
+          android:hint="Nombre del plato"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          />
+      <EditText
+          android:textSize="@dimen/texto13sp"
+          android:id="@+id/dialog_text_view_direccion"
+          android:hint="Lugar o Direccion"
+          android:background="@drawable/capsule_border_comentarios"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingHorizontal="@dimen/dimen10"
+          android:paddingVertical="@dimen/margin_top_5dp"
+          android:layout_margin="2dp"/>
 
-      <Button
-          android:id="@+id/dialog_no"
-          android:layout_width="190dp"
-          android:layout_height="50dp"
-          android:background="@drawable/capsule_rv_test"
-          android:layout_gravity="bottom|left"
-          android:text="Cancelar" />
+      <EditText
+          android:background="@drawable/capsule_border_comentarios"
+          android:id="@+id/dialog_edit_text_precio"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="Precio"
+          android:inputType="number"
+          android:textSize="@dimen/texto13sp"
+          android:paddingHorizontal="@dimen/dimen10"
+          android:paddingVertical="@dimen/margin_top_5dp"
+          android:layout_margin="2dp"/>
+
+      <Spinner
+          android:background="@drawable/capsule_border_comentarios"
+          android:id="@+id/dialog_spinner"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:entries="@array/planets_array"
+          android:textSize="@dimen/texto13sp"
+          android:tooltipText="@string/app_name"
+          android:textColor="#534D4D"
+          android:paddingHorizontal="@dimen/dimen10"
+          android:paddingVertical="@dimen/margin_top_5dp"
+          android:layout_margin="2dp"/>
+      <EditText
+          android:hint="Comentarios"
+          android:textColor="#534D4D"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@drawable/capsule_border_comentarios"
+          android:paddingHorizontal="@dimen/dimen10"
+          android:paddingVertical="@dimen/dimen10"
+          android:textSize="@dimen/texto13sp"
+          android:layout_margin="2dp"
+          android:id="@+id/dialog_comentario"/>
 
       <Button
           android:id="@+id/dialog_yes"
-          android:layout_width="190dp"
-          android:layout_height="50dp"
-          android:layout_gravity="bottom|right"
-          android:background="@drawable/capsule_rv_test"
-          android:text="GUARDAR" />
+          android:layout_width="match_parent"
+          android:layout_height="35dp"
+          android:textSize="@dimen/texto13sp"
+          android:background="@drawable/capsule_border_comentarios"
+          android:layout_gravity="center"
+          android:layout_marginHorizontal="50dp"
+
+          android:backgroundTint="@color/coloramarillo"
+
+          android:text="PUBLICAR" />
     </LinearLayout>
 
   </LinearLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

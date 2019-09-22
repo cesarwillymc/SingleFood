@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.singlefood.sinfo.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProductoAdapter.ProductViewHolder> {
@@ -55,7 +56,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder  {
-        TextView mPrecio,mNombre;
+        TextView mPrecio,mNombre,mStarts;
         ImageView mImage;
         RatingBar ratingBar;
         public ProductViewHolder(@NonNull View itemView) {
@@ -63,6 +64,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
             mNombre=(TextView) itemView.findViewById( R.id.rv_comentarios_text_nombre_platillo );
             mPrecio=(TextView) itemView.findViewById( R.id.rv_comentarios_text_precio );
             mImage =(ImageView) itemView.findViewById( R.id.rv_comentarios_imagen_platillo );
+            mStarts =(TextView) itemView.findViewById( R.id.rv_comentarios_text_rating );
             ratingBar=(RatingBar)itemView.findViewById( R.id.rv_comentarios_rating );
 
         }
@@ -73,6 +75,9 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
             mPrecio.setText( platillos.getPrecio() );
             mImage.setImageBitmap( StringToBitmap( platillos.getImagenbase64() ) );
             ratingBar.setRating( promedioRating(arrayComentarios));
+            DecimalFormat formato = new DecimalFormat();
+            formato.setMaximumFractionDigits(2);
+            mStarts.setText(  formato.format(promedioRating( arrayComentarios )) );
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

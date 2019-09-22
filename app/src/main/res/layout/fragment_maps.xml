@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".models.mapsFragment"
+
     >
 
     <androidx.appcompat.widget.SearchView
@@ -15,6 +16,8 @@
         app:iconifiedByDefault="false"
         android:layout_margin="@dimen/drawable_15dp"
         android:elevation="@dimen/margin_top_5dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:background="@drawable/capsule_border_comentarios"/>
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
@@ -22,33 +25,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="bottom">
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingbar_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_margin="5dp"
-            android:clickable="true"
-            android:paddingBottom="80dp"
-            android:src="@drawable/ic_add_black_24dp"
-            app:backgroundTint="@color/colorAccent" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:scrollbars="none" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:layout_gravity="bottom">
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_collapse_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="5dp"
+                android:clickable="true"
+                android:paddingBottom="80dp"
+                android:src="@drawable/ic_add_black_24dp"
+                app:backgroundTint="@color/colorAccent" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:scrollbars="none" />
+
+
+        </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_hidden_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchorGravity="top|right|end"
+        android:layout_margin="5dp"
+        android:clickable="true"
+        android:paddingBottom="80dp"
+        android:src="@drawable/ic_add_black_24dp"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_anchor="@id/crear_comida_dialog"
+        android:visibility="gone" />
+        <include app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+            layout="@layout/activity_crear_producto"/>
 
 
 
-</FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

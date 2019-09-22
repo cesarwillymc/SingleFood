@@ -27,7 +27,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <activity android:name=".models.CrearProducto"></activity>
+
         <activity android:name=".LoginActivity"  />
         <activity
             android:name=".models.informacion_platillos"

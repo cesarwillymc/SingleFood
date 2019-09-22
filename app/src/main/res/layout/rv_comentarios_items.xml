@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="@dimen/dimen10"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/capsule_border_comentarios"
     >
@@ -67,8 +67,8 @@
           android:id="@+id/rv_comentarios_text_nombre_platillo"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Lomo Saltado"
-          android:textSize="25sp"
+          android:text="Lomo Saltadoaaaaaaaaaa"
+          android:textSize="18sp"
           android:textStyle="bold" />
 
       <TextView
