@@ -65,7 +65,8 @@
         app:backgroundTint="@color/colorAccent"
         app:layout_anchor="@id/crear_comida_dialog"
         android:visibility="gone" />
-        <include app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+        <include android:id="@+id/crear_comida_dialog"
+            app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
             layout="@layout/activity_crear_producto"/>
 
 

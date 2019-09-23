@@ -1,5 +1,6 @@
 package com.singlefood.sinfo.models;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,8 +14,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,6 +56,11 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     String Key;
     private RecyclerView.Adapter adapterRview;
     private ProgressDialog progressDialog;
+    FirebaseAuth auth;
+    FirebaseUser user;
+
+    LinearLayout linearLayout;
+    BottomSheetBehavior bottomSheetBehavior;
     @BindView( R.id.appbar_info )
     AppBarLayout appBarLayout;
     @BindView( R.id.collapsing_toolbar_info )
@@ -62,25 +69,25 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     Toolbar toolbar_info;
     @BindView( R.id.image_view_info_heading )
     ImageView imageView_info;
-    @BindView( R.id.text_view_info_restaurant )
-    TextView text_view_restaurant;
-    @BindView( R.id.text_view_info_platillo )
-    TextView text_view_platillo;
-    @BindView( R.id.text_view_info_precio )
-    TextView text_view_precio;
-    @BindView( R.id.text_view_info_direccion )
-    TextView text_view_direccion;
 
-    @BindView( R.id.button_informacion_platillos )
-    Button button_coment;
-    @BindView( R.id.edit_text_informacion_platillos )
-    EditText editText_coment;
-    @BindView( R.id.rating_bar_informacion_platillos )
+    @BindView( R.id.button_comentar_collapse )
+    Button button_coment_collapse;
+    //Button Sheep
+    FloatingActionButton button_coment_hide;
     RatingBar rating_coment;
+    EditText comentario_comment;
+    Button publicar_commet;
+//    @BindView( R.id.button_comentar_hide )
+//    Button button_coment_hide;
+//    @BindView( R.id.crear_comentario_rating )
+//    RatingBar rating_coment;
+//    @BindView( R.id.crear_comentario_comentario )
+//    EditText comentario_comment;
+//    @BindView( R.id.crear_comentario_publicar )
+//    Button publicar_commet;
     @BindView( R.id.btnfComment )
     FloatingActionButton btnfComment;
-    @BindView( R.id.rv_comentarios_text_rating )
-    TextView ratingtex;
+
 
     RecyclerView recyclerView_info;
 
@@ -93,12 +100,18 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
             getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN );
         }
-        button_coment.setOnClickListener( this );
+        button_coment_hide=(FloatingActionButton) findViewById( R.id.button_comentar_hide );
+        button_coment_collapse.setOnClickListener( this );
+        button_coment_hide.setOnClickListener( this );
+//        button_coment_hide.setOnClickListener( this );
+//        publicar_commet.setOnClickListener( this );
         obtener_datos();
         getCommts();
         configToolbar();
         cargarImage();
         cargarDatos_texto();
+        linearLayout=(LinearLayout) findViewById( R.id.crear_comentario_layout_dialog ) ;
+        bottomSheetBehavior= BottomSheetBehavior.from( linearLayout );
         recyclerView_info=(RecyclerView) findViewById( R.id.recycler_view_info_platillos ) ;
         LinearLayoutManager layoutManager= new LinearLayoutManager( this );
         RecyclerView.LayoutManager recycler_view_manager_info=layoutManager;
@@ -107,9 +120,32 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         btnfComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editText_coment.requestFocus();
+                button_coment_collapse.requestFocus();
             }
         });
+        bottomSheetBehavior.setBottomSheetCallback( new BottomSheetBehavior.BottomSheetCallback() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStateChanged(@androidx.annotation.NonNull View view, int i) {
+                switch (i)
+                {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                       // button_coment_hide.setVisibility( View.GONE );
+                        button_coment_collapse.setVisibility( View.VISIBLE );
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        //button_coment_hide.setVisibility( View.GONE );
+                        button_coment_collapse.setVisibility( View.VISIBLE );
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onSlide(@androidx.annotation.NonNull View view, float v) {
+
+            }
+        } );
 
     }
 
@@ -127,6 +163,9 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                    // Toast.makeText(informacion_platillos.this,"Entro: "+task.getResult() ,Toast.LENGTH_SHORT ).show();
+                    bottomSheetBehavior.setState( BottomSheetBehavior.STATE_HIDDEN );
+                    button_coment_collapse.setVisibility( View.VISIBLE );
+                    button_coment_hide.setVisibility( View.GONE );
                     progressDialog.dismiss();
                 }
 
@@ -158,7 +197,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                     Comentarios coment=snapshot.getValue(Comentarios.class);
                     arrayListComentarios.add( coment );
                 }
-                ratingtex.setText( promedioRating(arrayListComentarios).toString());
+                //ratingtex.setText( promedioRating(arrayListComentarios).toString());
                 adapterRview = new RecyclerComentariosAdapter( informacion_platillos.this, R.layout.rv_comentarios, arrayListComentarios, new RecyclerComentariosAdapter.OnItemClickListener2() {
                     @Override
                     public void OnClickListener2(Comentarios comentarios, int adapterPosition) {
@@ -180,10 +219,10 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 //        View view;
 //        LayoutInflater inflater = (LayoutInflater)   getSystemService( Context.LAYOUT_INFLATER_SERVICE);
 //        view = inflater.inflate(R.layout.include_info_restaurant, null);
-        text_view_restaurant.setText( datos.get( 3 ) );
-        text_view_precio.setText( datos.get( 1 ) );
-        text_view_platillo.setText( datos.get( 2 ) );
-        text_view_direccion.setText( datos.get( 4 ) );
+//        text_view_restaurant.setText( datos.get( 3 ) );
+//        text_view_precio.setText( datos.get( 1 ) );
+//        text_view_platillo.setText( datos.get( 2 ) );
+//        text_view_direccion.setText( datos.get( 4 ) );
 
 
     }
@@ -219,22 +258,21 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.button_informacion_platillos:
+            case R.id.crear_comentario_publicar:
                     progressDialog=new ProgressDialog( this );
                     progressDialog.setCancelable( false );
                     progressDialog.setMessage( "Cargando tu comentarioo..." );
                     progressDialog.show();
-                    FirebaseAuth auth =FirebaseAuth.getInstance();
-                    FirebaseUser user=auth.getCurrentUser();
 
                     if(user != null){
                         Map<String,Object> map = new HashMap<>(  );
                         map.put( "id_comentarios",user.getUid() );
                         map.put( "rating",rating_coment.getRating() );
-                        map.put( "texto",editText_coment.getText().toString().trim() );
+                        map.put( "texto",comentario_comment.getText().toString().trim() );
                         PublicComment( map );
                     }else{
                         progressDialog.dismiss();
@@ -244,6 +282,38 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 
 
                 break;
+            case R.id.button_comentar_collapse:
+                auth =FirebaseAuth.getInstance();
+                user=auth.getCurrentUser();
+
+                if(user != null){
+                    cargar_bindeos();
+                    bottomSheetBehavior.setState( BottomSheetBehavior.STATE_EXPANDED );
+
+                    button_coment_hide.setVisibility( View.VISIBLE );
+                    button_coment_collapse.setVisibility( View.GONE );
+                }else{
+                    Intent intent = new Intent( this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
+                break;
+            case R.id.button_comentar_hide:
+                bottomSheetBehavior.setState( BottomSheetBehavior.STATE_HIDDEN );
+
+                button_coment_collapse.setVisibility( View.VISIBLE );
+                button_coment_hide.setVisibility( View.GONE );
+                break;
         }
+    }
+
+    private void cargar_bindeos() {
+
+         rating_coment=(RatingBar) linearLayout.findViewById( R.id.crear_comentario_rating );
+         comentario_comment=(EditText) linearLayout.findViewById( R.id.crear_comentario_comentario );
+         publicar_commet=(Button) linearLayout.findViewById( R.id.crear_comentario_publicar );
+
+
+         publicar_commet.setOnClickListener( this );
     }
 }

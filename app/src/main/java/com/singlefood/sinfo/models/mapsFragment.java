@@ -639,9 +639,14 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         //on click
         dialog_iv_foto.setOnClickListener( this );
         dialogButtonsi.setOnClickListener( this );
-        String adress=address.get( 0 ).getAddressLine( 0 ) ;
-        String locality=address.get( 0 ).getSubLocality(  ) ;
-        dialog_et_direccion.setText( adress+" barrio "+ locality );
+        if(address==null){
+            getDeviceLocation();
+        }else{
+            String adress=address.get( 0 ).getAddressLine( 0 ) ;
+            String locality=address.get( 0 ).getSubLocality(  ) ;
+            dialog_et_direccion.setText( adress+" barrio "+ locality );
+        }
+
 
 
     }

@@ -8,7 +8,6 @@
     app:layout_anchor="@id/appbar_info"
     app:layout_anchorGravity="bottom|left"
     android:elevation="@dimen/drawable_15dp"
-    android:id="@+id/info_restaurant_frame"
     >
 
 
@@ -94,7 +93,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="10"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#E9C1C1">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="8"
@@ -136,6 +136,7 @@
             android:textStyle="bold"
             android:background="@drawable/capsule_boton_border"/>
     </LinearLayout>
+        <include layout="@layout/rv_comentarios" android:id="@+id/comentario_principal"/>
 
 
     </LinearLayout>

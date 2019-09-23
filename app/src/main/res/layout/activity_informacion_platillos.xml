@@ -45,299 +45,94 @@
                 layout="@layout/layout_toolbar"/>-->
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-
-    <FrameLayout
+    <fragment
+        android:name="com.singlefood.sinfo.models.info_comentario_principal"
+        app:layout_anchor="@id/appbar_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/capsule_border_comentarios"
-        app:layout_anchor="@id/appbar_info"
         app:layout_anchorGravity="bottom|left"
         android:elevation="@dimen/drawable_15dp"
-        android:id="@+id/info_restaurant_frame"
-        >
-
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_marginLeft="@dimen/drawable_15dp"
-                android:layout_marginRight="@dimen/drawable_15dp"
-                android:layout_marginTop="@dimen/drawable_15dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:gravity="center|left">
-
-                    <TextView
-                        android:id="@+id/text_view_info_platillo"
-                        android:layout_width="0dp"
-                        android:layout_weight="6"
-                        android:layout_height="wrap_content"
-                        android:text="Restaurante la Nacional"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/estado"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_height="20dp"
-                        android:layout_margin="@dimen/margin_top_5dp"
-                        android:background="@drawable/capsule_rv_test"
-                        android:backgroundTint="#764CC4"
-                        android:gravity="center"
-                        android:text="ABIERTO"
-                        android:textColor="@color/white"
-                        android:textSize="9sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_weight="2.5"
-                        android:id="@+id/rv_comentarios_text_recomendados"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/capsule_rv_test"
-                        android:layout_margin="@dimen/margin_top_5dp"
-                        android:gravity="center"
-                        android:text="COMENTADO"
-                        android:paddingRight="@dimen/margin_top_5dp"
-                        android:paddingLeft="@dimen/margin_top_5dp"
-                        android:textColor="@color/white"
-                        android:backgroundTint="#FF9800"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/text_view_info_direccion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:text="Av. Andres aramburu º859-Surquillo"
-                    android:alpha="0.7"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="2dp"
-                android:background="@color/blue_grey" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="10"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="8"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_margin="@dimen/margin_top_5dp">
-                    <TextView
-                        android:id="@+id/text_view_info_precio"
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:layout_height="20dp"
-                        android:gravity="center|left"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-                        android:text="S/14,50" />
-                    <TextView
-                        android:id="@+id/text_view_info_restaurant"
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:layout_height="20dp"
-                        android:gravity="center|left"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-                        android:text="Menu criollo" />
-
-
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/rv_comentarios_text_rating"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="4,5"
-                    android:textColor="@color/white"
-                    android:drawableLeft="@drawable/ic_star_black_24dp"
-                    android:textStyle="bold"
-                    android:background="@drawable/capsule_boton_border"/>
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-    </FrameLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnfComment"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:src="@android:drawable/sym_action_chat"
-        app:backgroundTint="#00bcd4"
-        app:fabSize="normal"
+        android:id="@+id/info_restaurant_frame"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_anchor="@id/appbar_info"
         app:layout_anchorGravity="top|right|end"
-        app:maxImageSize="35dp" />
+        android:orientation="horizontal">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnfLike"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:src="@android:drawable/star_big_on"
+            app:backgroundTint="#FFC107"
+            app:fabSize="normal"
+            app:maxImageSize="35dp" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnfComment"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:src="@android:drawable/sym_action_chat"
+            app:backgroundTint="#00bcd4"
+            app:fabSize="normal"
+            app:maxImageSize="35dp" />
+
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:clipToPadding="true">
+        android:layout_height="wrap_content"
+        android:clipToPadding="true"
+        android:fillViewport="true"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        >
+
         <LinearLayout
-            android:layout_below="@id/info_restaurant_frame"
-            android:layout_marginTop="60dp"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
             android:orientation="vertical">
-            <View
 
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
 
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+
             <LinearLayout
-                android:layout_marginLeft="@dimen/drawable_15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_marginLeft="@dimen/drawable_15dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Comentarios:  "
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/informacion_platillos_activity_comentarios_total"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="10 Personas"
-                    android:alpha="0.6"
                     android:layout_marginTop="@dimen/margin_top_5dp"
                     android:layout_marginBottom="@dimen/margin_top_5dp"
+                    android:alpha="0.6"
+                    android:text="10 Personas"
+                    android:textSize="20sp"
 
                     />
             </LinearLayout>
-            <FrameLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/drawable_15dp"
-                android:background="@drawable/capsule_rest_infor"
-                android:id="@+id/info_restaurant_frame_publicado"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_margin="@dimen/drawable_15dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:weightSum="10"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/rv_comentarios_info_restaurant_text_comentario_titulo"
-                            android:layout_width="0dp"
-                            android:layout_weight="6"
-                            android:layout_height="wrap_content"
-                            android:text="Exelente, Recomendable"
-                            android:textSize="17sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/rv_comentarios_info_restaurant_text_fecha"
-                            android:layout_width="0dp"
-                            android:layout_weight="4"
-                            android:layout_height="match_parent"
-                            android:gravity="right"
-                            android:text="Setiembre 02, 2019"
-                            android:textSize="10sp"
-                            android:alpha="0.7"
-                            android:textStyle="italic" />
-                    </LinearLayout>
-
-
-
-                    <TextView
-                        android:id="@+id/rv_comentarios_info_restaurant_comentarios"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:text="Me fascina la combinación del pollo con las
-papas fritas y tomates dorados, excelente. la Nacional"
-                        android:alpha="0.7"
-                        android:textSize="14sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/rv_comentarios_info_restaurant_text_user"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_gravity="left|center"
-                            android:drawableLeft="@drawable/ic_person_black_24dp"
-                            android:gravity="center"
-                            android:text="Oscar Rodriguez"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/rv_comentarios_text_comentatio_estatico"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="left|center"
-                            android:text="-Publicado"
-                            android:textSize="13sp"
-                            android:alpha="0.7"/>
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-
-
-
-            </FrameLayout>
 
 
             <View
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
+
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:background="@android:color/darker_gray" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -345,50 +140,56 @@ papas fritas y tomates dorados, excelente. la Nacional"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:scrollbars="vertical" />
-
-            <androidx.cardview.widget.CardView
+                android:scrollbars="vertical"/>
+            <Button
+                android:layout_marginVertical="@dimen/dimen10"
+                android:id="@+id/button_comentar_collapse"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="35dp"
+                android:textSize="@dimen/texto13sp"
+                android:background="@drawable/capsule_border_comentarios"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="50dp"
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                android:backgroundTint="@color/coloramarillo"
 
-                    <RatingBar
-                        android:id="@+id/rating_bar_informacion_platillos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:numStars="5"
-                        android:progressTint="@color/colorPrimary" />
+                android:text="COMENTAR" />
 
-                    <EditText
-                        android:id="@+id/edit_text_informacion_platillos"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Ingresa tu comentario" />
-
-                    <Button
-                        android:id="@+id/button_informacion_platillos"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorAccent"
-                        android:text="OPINAR" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
 
 
-
-
-
     </androidx.core.widget.NestedScrollView>
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_comentar_hide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchorGravity="top|right|end"
+        android:layout_margin="5dp"
+        android:clickable="true"
+        android:paddingBottom="80dp"
+        android:src="@drawable/ic_add_black_24dp"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_anchor="@id/crear_comentario_layout_dialog"
+        android:visibility="gone" />
+    <include android:id="@+id/crear_comentario_layout_dialog"
+        layout="@layout/crear_comentario_sheep"/>
+    <!--   <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/button_comentar_hide"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:layout_anchorGravity="top|right|end"
+          android:layout_margin="5dp"
+          android:clickable="true"
+          android:paddingBottom="80dp"
+          android:src="@drawable/ic_add_black_24dp"
+          app:backgroundTint="@color/colorAccent"
+          app:layout_anchor="@id/crear_comida_dialog"
+          android:vlity="gone" />
+   <include android:id="@+id/crear_comentario_layout_dialog"
+          app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+          layout="@layout/crear_comentario_sheep"/>-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
