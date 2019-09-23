@@ -3,11 +3,17 @@ package com.singlefood.sinfo.models.productos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Platillos {
+public class platillos {
 
-  @SerializedName("Comentarios")
+  @SerializedName("comentarios")
   @Expose
-  private Comentarios comentarios;
+  private comentarios comentarios;
+  @SerializedName("direccion")
+  @Expose
+  private String direccion;
+  @SerializedName("id_user")
+  @Expose
+  private String id_user;
   @SerializedName("imagenbase64")
   @Expose
   private String imagenbase64;
@@ -16,7 +22,7 @@ public class Platillos {
   private String nombrePlatillo;
   @SerializedName("places")
   @Expose
-  private Places places;
+  private com.singlefood.sinfo.models.productos.places places;
   @SerializedName("precio")
   @Expose
   private String precio;
@@ -24,11 +30,21 @@ public class Platillos {
   @Expose
   private String tipo;
 
-  public Comentarios getComentarios() {
+
+  public String getDireccion() {
+    return direccion;
+  }
+
+
+  public String getId_user() {
+    return id_user;
+  }
+
+  public comentarios getComentarios() {
     return comentarios;
   }
 
-  public void setComentarios(Comentarios comentarios) {
+  public void setComentarios(comentarios comentarios) {
     this.comentarios = comentarios;
   }
 
@@ -48,11 +64,11 @@ public class Platillos {
     this.nombrePlatillo = nombrePlatillo;
   }
 
-  public Places getPlaces() {
+  public com.singlefood.sinfo.models.productos.places getPlaces() {
     return places;
   }
 
-  public void setPlaces(Places places) {
+  public void setPlaces(com.singlefood.sinfo.models.productos.places places) {
     this.places = places;
   }
 

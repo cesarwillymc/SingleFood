@@ -80,9 +80,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.singlefood.sinfo.LoginActivity;
 import com.singlefood.sinfo.R;
-import com.singlefood.sinfo.models.productos.Comentarios;
-import com.singlefood.sinfo.models.productos.Platillos;
 import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
+import com.singlefood.sinfo.models.productos.comentarios;
+import com.singlefood.sinfo.models.productos.platillos;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -420,7 +420,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             layoutParams.setMargins( 0,750,400,100  );
         }
 
-        mDatabase.child("Platillos").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("platillos").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -428,10 +428,10 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     marker.remove();
                 }
                 ArrayList<String> llaves= new ArrayList<>();
-                 ArrayList<Platillos> arrayListPlatillos= new ArrayList<>();
-                 ArrayList<ArrayList<Comentarios>> arrayKeys= new ArrayList<>();
+                 ArrayList<platillos> arrayListPlatillos= new ArrayList<>();
+                 ArrayList<ArrayList<comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    Platillos platillos= snapshot.getValue(Platillos.class);
+                    platillos platillos= snapshot.getValue( com.singlefood.sinfo.models.productos.platillos.class);
                     Double latitud = platillos.getPlaces().getLatitud();
                     Double longitud = platillos.getPlaces().getLongitud();
 
@@ -448,17 +448,16 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
                 adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.rv_comentarios_items, arrayListPlatillos,arrayKeys, new RecyclerProductoAdapter.OnItemClickListener() {
                     @Override
-                    public void OnClickListener(Platillos platillos, ArrayList<Comentarios> arrayComentarios, int position) {
+                    public void OnClickListener(platillos platillos, ArrayList<comentarios> arrayComentarios, int position) {
 
                         Intent i = new Intent(getActivity(), informacion_platillos.class);
                         ArrayList<String> lista = new ArrayList<>(  );
                         lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
-                        lista.add( arrayListPlatillos.get( position ).getPrecio() );
                         lista.add( arrayListPlatillos.get( position ).getNombrePlatillo() );
+                        lista.add( arrayListPlatillos.get( position ).getId_user() );
                         lista.add( arrayListPlatillos.get( position ).getTipo() );
-                        lista.add( arrayListPlatillos.get( position ).getPlaces().getDireccion() );
-                        lista.add( arrayListPlatillos.get( position ).getPlaces().getCiudad() );
-                        lista.add( arrayListPlatillos.get( position ).getPlaces().getIdUser() );
+                        lista.add( arrayListPlatillos.get( position ).getPrecio() );
+                        lista.add( arrayListPlatillos.get( position ).getDireccion() );
                         i.putStringArrayListExtra( "lista",lista );
                         i.putExtra( "key",llaves.get( position ) );
 
@@ -479,15 +478,15 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             }
         });
     }
-    private ArrayList<Comentarios> getCommts(String Key) {
-        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
-        ArrayList<Comentarios> comentariosPlatillos= new ArrayList<>(  );
+    private ArrayList<comentarios> getCommts(String Key) {
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );
+        ArrayList<comentarios> comentariosPlatillos= new ArrayList<>(  );
         coment.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    Comentarios coment=snapshot.getValue(Comentarios.class);
+                    comentarios coment=snapshot.getValue(comentarios.class);
                     comentariosPlatillos.add( coment );
                 }
 
@@ -574,6 +573,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         comentarios.put( "id_comentarios",user.getUid() );
         comentarios.put( "texto",dialog_comentario.getText().toString() );
         comentarios.put( "rating",ratingBar_dialog.getRating() );
+        comentarios.put( "prioridad",1);
 
 
         if(bitmap!=null) {
@@ -592,9 +592,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             datos.put("id_user",user.getUid());
            // datos.put( "comentarios_platillo",comentarios );
 
-            DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").push();
+            DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").push();
             coment.setValue( datos );
-            coment.child( "Comentarios" ).push().setValue( comentarios ).addOnCompleteListener( new OnCompleteListener<Void>() {
+            coment.child( "comentarios" ).push().setValue( comentarios ).addOnCompleteListener( new OnCompleteListener<Void>() {
                 @SuppressLint("RestrictedApi")
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -603,6 +603,12 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     bottomSheetBehavior.setState( BottomSheetBehavior.STATE_HIDDEN );
                     fab_hidden.setVisibility( View.GONE );
                     fab_collapse.setVisibility( View.VISIBLE );
+                    ratingBar_dialog.setRating( 0 );
+                    dialog_iv_foto.setImageBitmap( null );
+                    acPlatillo.setText( "" );
+                    dialog_et_precio.setText( "" );
+                    dialog_comentario.setText( "" );
+
                 }
             } ).addOnFailureListener( new OnFailureListener() {
                 @Override

@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_top_5dp">
             <ImageView
-                android:id="@+id/rv_comentarios_imagen_platillo_comentario"
+                android:id="@+id/rv_comentarios_imagen_user_image"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center|top"
@@ -47,7 +47,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/rv_comentarios_text_user"
+                        android:id="@+id/rv_comentarios_name_user"
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:textSize="12sp"
@@ -55,7 +55,7 @@
                         android:text="Oscar Rodriguez" />
 
                     <TextView
-                        android:id="@+id/rv_comentarios_text_fecha"
+                        android:id="@+id/rv_comentarios_text_user_fech"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
 
@@ -65,7 +65,7 @@
                         android:textStyle="italic" />
                 </LinearLayout>
                 <RatingBar
-                    android:id="@+id/rv_comentarios_rating_comentarios"
+                    android:id="@+id/rv_comentarios_user_rating"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/rv_comentarios_text_comentarios"
+                android:id="@+id/rv_comentarios_text_user_comentarios"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"

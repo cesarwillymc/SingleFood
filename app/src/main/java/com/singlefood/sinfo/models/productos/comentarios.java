@@ -3,8 +3,10 @@ package com.singlefood.sinfo.models.productos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Comentarios {
-
+public class comentarios {
+  @SerializedName("prioridad")
+  @Expose
+  private int prioridad;
   @SerializedName("id_comentarios")
   @Expose
   private String idComentarios;
@@ -14,6 +16,22 @@ public class Comentarios {
   @SerializedName("texto")
   @Expose
   private String texto;
+
+
+
+
+
+  public int getPrioridad() {
+    return prioridad;
+  }
+
+  public void setPrioridad(int prioridad) {
+    this.prioridad = prioridad;
+  }
+
+  public void setRating(float rating) {
+    this.rating = rating;
+  }
 
   public String getIdComentarios() {
     return idComentarios;
@@ -27,9 +45,6 @@ public class Comentarios {
     return rating;
   }
 
-  public void setRating(float rating) {
-    this.rating = rating;
-  }
 
   public String getTexto() {
     return texto;

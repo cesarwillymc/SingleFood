@@ -42,11 +42,11 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             <!--<include android:id="@+id/toolbar_general"
-                layout="@layout/layout_toolbar"/>-->
+                layout="@layout/layout_toolbar"/
+        android:name="com.singlefood.sinfo.models.info_comentario_principal">-->
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-    <fragment
-        android:name="com.singlefood.sinfo.models.info_comentario_principal"
+    <FrameLayout
         app:layout_anchor="@id/appbar_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

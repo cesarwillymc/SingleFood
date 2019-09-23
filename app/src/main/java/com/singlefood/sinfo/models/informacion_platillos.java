@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,8 +40,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.singlefood.sinfo.LoginActivity;
 import com.singlefood.sinfo.R;
-import com.singlefood.sinfo.models.productos.Comentarios;
 import com.singlefood.sinfo.models.productos.RecyclerComentariosAdapter;
+import com.singlefood.sinfo.models.productos.comentarios;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,8 +104,6 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         button_coment_hide=(FloatingActionButton) findViewById( R.id.button_comentar_hide );
         button_coment_collapse.setOnClickListener( this );
         button_coment_hide.setOnClickListener( this );
-//        button_coment_hide.setOnClickListener( this );
-//        publicar_commet.setOnClickListener( this );
         obtener_datos();
         getCommts();
         configToolbar();
@@ -130,11 +129,11 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                 switch (i)
                 {
                     case BottomSheetBehavior.STATE_HIDDEN:
-                       // button_coment_hide.setVisibility( View.GONE );
+                        button_coment_hide.setVisibility( View.GONE );
                         button_coment_collapse.setVisibility( View.VISIBLE );
                         break;
                     case BottomSheetBehavior.STATE_COLLAPSED:
-                        //button_coment_hide.setVisibility( View.GONE );
+                        button_coment_hide.setVisibility( View.GONE );
                         button_coment_collapse.setVisibility( View.VISIBLE );
                         break;
 
@@ -151,7 +150,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 
 
     private void PublicComment( Map<String,Object> datos){
-        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );
         final DatabaseReference commentRef=coment.push();
         commentRef.setValue( datos).addOnFailureListener( new OnFailureListener() {
             @Override
@@ -159,6 +158,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                 Toast.makeText(informacion_platillos.this,"Error: "+e ,Toast.LENGTH_SHORT ).show();
             }
         } ).addOnCompleteListener( new OnCompleteListener<Void>() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
@@ -167,6 +167,8 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                     button_coment_collapse.setVisibility( View.VISIBLE );
                     button_coment_hide.setVisibility( View.GONE );
                     progressDialog.dismiss();
+                    rating_coment.setRating( 0 );
+                    comentario_comment.setText( "" );
                 }
 
             }
@@ -178,8 +180,23 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         try{
             datos =getIntent().getStringArrayListExtra(  "lista");
             Key = getIntent().getStringExtra("key");
-            toolbar_info.setTitle( datos.get( 2 ) );
+            toolbar_info.setTitle( datos.get( 1 ) );
+            Bundle args = new Bundle();
 
+            // Colocamos el String
+            args.putString("key", Key);
+            args.putString( "idUser", datos.get( 2 ) );
+            args.putString( "tipo", datos.get( 3 ) );
+            args.putString( "precio", datos.get( 4 ) );
+            args.putString( "direccion", datos.get( 5 ) );
+
+            // Supongamos que tu Fragment se llama TestFragment. Colocamos este nuevo Bundle como argumento en el fragmento.
+            Fragment newFragment = new info_comentario_principal();
+            newFragment.setArguments(args);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace( R.id.info_restaurant_frame,newFragment )
+                    .commit();
             //  ArrayList<Comentarios> arrayComentarios= (ArrayList<Comentarios>) getIntent().getSerializableExtra( "comentarios" );
         }catch (Exception e){
         }
@@ -187,20 +204,20 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     }
 
     private void getCommts() {
-        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("Platillos").child( Key ).child( "Comentarios" );
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );
 
         coment.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<Comentarios> arrayListComentarios= new ArrayList<>();
+                ArrayList<comentarios> arrayListComentarios= new ArrayList<>();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    Comentarios coment=snapshot.getValue(Comentarios.class);
+                    comentarios coment=snapshot.getValue(comentarios.class);
                     arrayListComentarios.add( coment );
                 }
                 //ratingtex.setText( promedioRating(arrayListComentarios).toString());
                 adapterRview = new RecyclerComentariosAdapter( informacion_platillos.this, R.layout.rv_comentarios, arrayListComentarios, new RecyclerComentariosAdapter.OnItemClickListener2() {
                     @Override
-                    public void OnClickListener2(Comentarios comentarios, int adapterPosition) {
+                    public void OnClickListener2(comentarios comentarios, int adapterPosition) {
                         Toast.makeText( informacion_platillos.this,"Prueba: "+comentarios.getTexto(),Toast.LENGTH_SHORT ).show();
 
                     }
@@ -226,7 +243,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 
 
     }
-    public Float promedioRating(ArrayList<Comentarios> comentariosPlatillos){
+    public Float promedioRating(ArrayList<comentarios> comentariosPlatillos){
         float temp=0;
         for (int i=0;i<comentariosPlatillos.size();i++){
             temp=temp+comentariosPlatillos.get(  i).getRating();
@@ -273,6 +290,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                         map.put( "id_comentarios",user.getUid() );
                         map.put( "rating",rating_coment.getRating() );
                         map.put( "texto",comentario_comment.getText().toString().trim() );
+                        map.put( "prioridad",0 );
                         PublicComment( map );
                     }else{
                         progressDialog.dismiss();

@@ -21,10 +21,10 @@ import java.util.ArrayList;
 public class RecyclerComentariosAdapter extends RecyclerView.Adapter< RecyclerComentariosAdapter.ViewHolder> {
     private Context mcontex;
     private  int layoutResources;
-    private ArrayList<Comentarios> comentariosArrayList;
+    private ArrayList<comentarios> comentariosArrayList;
     private OnItemClickListener2 Listen;
 
-    public RecyclerComentariosAdapter(Context mcontex, int layoutResources, ArrayList<Comentarios> comentariosArrayList, OnItemClickListener2 Listen) {
+    public RecyclerComentariosAdapter(Context mcontex, int layoutResources, ArrayList<comentarios> comentariosArrayList, OnItemClickListener2 Listen) {
         this.mcontex = mcontex;
         this.layoutResources = layoutResources;
         this.comentariosArrayList = comentariosArrayList;
@@ -62,16 +62,16 @@ public class RecyclerComentariosAdapter extends RecyclerView.Adapter< RecyclerCo
             super( itemView );
 //            mTituloComentario=(TextView) itemView.findViewById( R.id.rv_comentarios_text_precio );
 //            mTituloComentario.setVisibility( View.GONE );
-            mComentario=(TextView) itemView.findViewById( R.id.rv_comentarios_text_comentarios );
-            mNombreuser=(TextView) itemView.findViewById( R.id.rv_comentarios_text_user );
-            mImage =(ImageView) itemView.findViewById( R.id.rv_comentarios_imagen_platillo_comentario );
-            ratingBar=(RatingBar)itemView.findViewById( R.id.rv_comentarios_rating_comentarios );
+            mComentario=(TextView) itemView.findViewById( R.id.rv_comentarios_text_user_comentarios );
+            mNombreuser=(TextView) itemView.findViewById( R.id.rv_comentarios_name_user );
+            mImage =(ImageView) itemView.findViewById( R.id.rv_comentarios_imagen_user_image );
+            ratingBar=(RatingBar)itemView.findViewById( R.id.rv_comentarios_user_rating );
 
 
         }
 
 
-        public void bind(final Comentarios comentarios, final OnItemClickListener2 listen) {
+        public void bind(final comentarios comentarios, final OnItemClickListener2 listen) {
             // mNombreuser.setText( platillos.getNombrePlatillo());
             mComentario.setText( comentarios.getTexto() );
             // mImage.setImageBitmap( StringToBitmap(comentarios.) );
@@ -90,6 +90,6 @@ public class RecyclerComentariosAdapter extends RecyclerView.Adapter< RecyclerCo
         }
     }
     public interface OnItemClickListener2{
-        void OnClickListener2(Comentarios comentarios, int adapterPosition);
+        void OnClickListener2(comentarios comentarios, int adapterPosition);
     }
 }

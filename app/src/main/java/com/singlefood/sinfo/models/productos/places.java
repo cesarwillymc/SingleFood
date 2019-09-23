@@ -3,7 +3,7 @@ package com.singlefood.sinfo.models.productos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Places {
+public class places {
 
   @SerializedName("ciudad")
   @Expose

@@ -22,11 +22,11 @@ import java.util.ArrayList;
 public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProductoAdapter.ProductViewHolder> {
     private Context mcontex;
     private  int layoutResources;
-    private ArrayList<Platillos> arrayPlatillos;
-    private ArrayList<ArrayList<Comentarios>> arrayKeys;
+    private ArrayList<platillos> arrayPlatillos;
+    private ArrayList<ArrayList<comentarios>> arrayKeys;
     private OnItemClickListener Listen;
 
-    public RecyclerProductoAdapter(Context mcontex, int layoutResources, ArrayList<Platillos> arrayPlatillos,ArrayList<ArrayList<Comentarios>> arrayKeys, OnItemClickListener Listen) {
+    public RecyclerProductoAdapter(Context mcontex, int layoutResources, ArrayList<platillos> arrayPlatillos, ArrayList<ArrayList<comentarios>> arrayKeys, OnItemClickListener Listen) {
         this.mcontex = mcontex;
         this.layoutResources = layoutResources;
         this.arrayPlatillos = arrayPlatillos;
@@ -70,7 +70,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
         }
 
 
-        public void bind(final Platillos platillos, final OnItemClickListener listen, ArrayList<Comentarios> arrayComentarios) {
+        public void bind(final platillos platillos, final OnItemClickListener listen, ArrayList<comentarios> arrayComentarios) {
             mNombre.setText( platillos.getNombrePlatillo());
             mPrecio.setText( platillos.getPrecio() );
             mImage.setImageBitmap( StringToBitmap( platillos.getImagenbase64() ) );
@@ -90,7 +90,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             return decodedByte;
         }
-        public Float promedioRating(ArrayList<Comentarios> arrayComentarios){
+        public Float promedioRating(ArrayList<comentarios> arrayComentarios){
             float temp=0;
             for (int i=0;i<arrayComentarios.size();i++){
                 temp+=arrayComentarios.get(  i).getRating();
@@ -100,7 +100,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
         }
     }
     public interface OnItemClickListener{
-        void OnClickListener(Platillos platillos, ArrayList<Comentarios> arrayComentarios, int position);
+        void OnClickListener(platillos platillos, ArrayList<comentarios> arrayComentarios, int position);
 
 
     }
