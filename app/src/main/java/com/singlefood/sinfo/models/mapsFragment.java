@@ -43,6 +43,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -56,6 +59,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -140,6 +145,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     BottomSheetBehavior bottomSheetBehavior;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     final HashMap<String, String> markerMapPlatillos = new HashMap<String, String>();
+    //Geofire
+    GeoFire geoFire;
+    Circle circleMap;
 
     public mapsFragment() {
         // Required empty public constructor
@@ -392,6 +400,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         mStorageReference= FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
+        geoFire=new GeoFire( mDatabase );
         //initFused();
     }
 
@@ -412,6 +421,22 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.getUiSettings().setCompassEnabled( false );
         mMap.getUiSettings().setIndoorLevelPickerEnabled( false );
         mMap.setOnMarkerClickListener(this);
+        //Geofire
+        LatLng predeminado= new LatLng( -15.847021599999998,-70.0273745 );
+        circleMap =mMap.addCircle( new CircleOptions()
+        .center( predeminado )
+        .radius( 500 )
+        .strokeColor( Color.BLUE )
+        .strokeWidth( 5.0f ));
+
+        mMap.setOnCircleClickListener( new GoogleMap.OnCircleClickListener() {
+            @Override
+            public void onCircleClick(Circle circle) {
+
+            }
+        } );
+        GeoQuery geoQuery=geoFire.queryAtLocation( new GeoLocation( predeminado.latitude,predeminado.longitude  ),0.5f );
+
         if(mapView!=null){
             View locationButton=((View) mapView.findViewById( Integer.parseInt( "1" ) ).getParent()).findViewById( Integer.parseInt( "2" ) );
             RelativeLayout.LayoutParams layoutParams=(RelativeLayout.LayoutParams) locationButton.getLayoutParams();
@@ -701,6 +726,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                             location= task.getResult();
                             if(location!=null){
                                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude() ),18) );
+
+                                circleMap.setCenter(  new LatLng( location.getLatitude(),location.getLongitude() ) );
                                 try {
 
                                     geocoder= new Geocoder( getContext(), Locale.getDefault() );
@@ -722,6 +749,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                                         location = locationResult.getLastLocation();
 
                                         mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude() ),18) );
+                                        circleMap.setCenter(  new LatLng( location.getLatitude(),location.getLongitude() ) );
                                         try {
 
                                             geocoder= new Geocoder( getContext(), Locale.getDefault() );
