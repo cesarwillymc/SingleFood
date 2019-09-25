@@ -9,36 +9,6 @@
     <include android:id="@+id/toolbar_general"
         layout="@layout/layout_toolbar"/>
 
-    <Button
-        android:id="@+id/login_button_email"
-        android:layout_width="276dp"
-        android:layout_height="51dp"
-        android:layout_marginLeft="5dp"
-        android:background="@drawable/capsule_rv_test"
-        android:text="@string/sign_in_with_gmail"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.607"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.683" />
-
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_facebook_button"
-        android:layout_width="276dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.638"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.79" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -58,105 +28,60 @@
         app:layout_constraintTop_toTopOf="@+id/toolbar_general"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/login_edit_text_phone_code"
-        android:layout_width="276dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="Phone Number"
-        android:inputType="textEmailAddress"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.621"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar_general"
-        app:layout_constraintVertical_bias="0.12" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@android:dimen/notification_large_icon_width">
 
-    <EditText
-        android:id="@+id/login_edit_text_email"
-        android:layout_width="276dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.621"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar_general"
-        app:layout_constraintVertical_bias="0.43" />
+        <ImageView
+            android:id="@+id/ivPhotoUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/sym_def_app_icon" />
 
-    <EditText
-        android:id="@+id/login_edit_text_password"
-        android:layout_width="276dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.621"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar_general"
-        app:layout_constraintVertical_bias="0.556" />
+        <EditText
+            android:id="@+id/etNameUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Tu nombre"
+            android:inputType="textEmailAddress"
+            android:visibility="visible" />
 
-    <Button
-        android:id="@+id/login_button_phone"
-        android:layout_width="276dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/capsule_rv_test"
-        android:text="@string/sign_in_with_phone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.638"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.319" />
+        <EditText
+            android:id="@+id/etEmailUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:visibility="visible" />
 
-    <Button
-        android:id="@+id/login_button_phone_code"
-        android:layout_width="276dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/capsule_rv_test"
-        android:text="Send code"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.621"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar_general"
-        app:layout_constraintVertical_bias="0.213" />
+        <EditText
+            android:id="@+id/etPhoneUser"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Celular"
+            android:inputType="textEmailAddress"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btnRegisterUser"
+            style="@android:style/Widget.Material.Light.Button"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/fui_idp_button_background_phone"
+            android:text="Registrarme"
+            tools:targetApi="lollipop" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
