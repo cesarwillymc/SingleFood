@@ -59,7 +59,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -328,12 +327,12 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                String location = searchView.getQuery().toString();
+                String newlocation = searchView.getQuery().toString();
                 List<Address> addressList=null;
-                if(location!=null || !location.equals( "" )){
+                if(newlocation!=null || !newlocation.equals( "" )){
                     Geocoder geocoder = new Geocoder( getContext() );
                     try {
-                        addressList=geocoder.getFromLocationName( location,1 );
+                        addressList=geocoder.getFromLocationName( newlocation,1 );
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -455,6 +454,16 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     platillos platillos= snapshot.getValue( com.singlefood.sinfo.models.productos.platillos.class);
                     Double latitud = platillos.getPlaces().getLatitud();
                     Double longitud = platillos.getPlaces().getLongitud();
+                    Location new_loca=null;
+                    new_loca.setLatitude(latitud);
+                    new_loca.setLongitude(longitud);
+                    getDeviceLocation();
+                    Float distancia= location.distanceTo(new_loca);
+                    if(distancia<1000){
+                        llaves.add( snapshot.getKey() );
+                        arrayListPlatillos.add( platillos );
+                        arrayKeys.add( getCommts( snapshot.getKey() ) );
+                    }
 //                    geoFire.setLocation( "You", new GeoLocation( latitud, longitud ), new GeoFire.CompletionListener() {
 //                        @Override
 //                        public void onComplete(String key, DatabaseError error) {
@@ -470,9 +479,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
 
 
-                    llaves.add( snapshot.getKey() );
-                    arrayListPlatillos.add( platillos );
-                    arrayKeys.add( getCommts( snapshot.getKey() ) );
+
                 }
 
 

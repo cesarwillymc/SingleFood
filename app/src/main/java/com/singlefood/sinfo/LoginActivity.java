@@ -20,8 +20,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -44,7 +42,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -57,22 +54,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     CallbackManager mCallbackManager;
     LoginButton loginButtonFacebook;
     private  String mVerificationId;
-    @BindView( R.id.login_button_email )
-    Button loginButtonEmail;
-    @BindView( R.id.login_button_phone )
-    Button loginButtonPhone;
-    @BindView( R.id.login_edit_text_email )
-    EditText login_mail_email;
-    @BindView( R.id.login_edit_text_password )
-    EditText login_mail_password;
-    @BindViews( {R.id.login_edit_text_email,R.id.login_edit_text_password} )
-    List<View> accesorios_mail;
-    @BindView( R.id.login_button_phone_code )
-    Button login_phone_button_code;
-    @BindView( R.id.login_edit_text_phone_code )
-    EditText login_phone_et_code;
-    @BindViews( {R.id.login_button_phone_code,R.id.login_edit_text_phone_code} )
-    List<View> accesorios_phone;
+//    @BindView( R.id.login_button_email )
+//    Button loginButtonEmail;
+//    @BindView( R.id.login_button_phone )
+//    Button loginButtonPhone;
+//    @BindView( R.id.login_edit_text_email )
+//    EditText login_mail_email;
+//    @BindView( R.id.login_edit_text_password )
+//    EditText login_mail_password;
+//    @BindViews( {R.id.login_edit_text_email,R.id.login_edit_text_password} )
+//    List<View> accesorios_mail;
+//    @BindView( R.id.login_button_phone_code )
+//    Button login_phone_button_code;
+//    @BindView( R.id.login_edit_text_phone_code )
+//    EditText login_phone_et_code;
+//    @BindViews( {R.id.login_button_phone_code,R.id.login_edit_text_phone_code} )
+//    List<View> accesorios_phone;
 
     @BindView( R.id.progress_bar )
     ProgressBar progressBar;
@@ -88,15 +85,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        visibilidadFuncion(accesorios_mail,View.GONE);
 //        visibilidadFuncion(accesorios_phone,View.GONE);
         configToolbar();
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+//        FacebookSdk.sdkInitialize(getApplicationContext());
+//        AppEventsLogger.activateApp(this);
         mCallbackManager = CallbackManager.Factory.create();
-        loginButtonFacebook = findViewById(R.id.login_facebook_button);
-        loginButtonFacebook.setReadPermissions("email", "public_profile");
-        loginButtonFacebook.setOnClickListener( this );
-        loginButtonEmail.setOnClickListener( this );
-        loginButtonPhone.setOnClickListener( this );
-        login_phone_button_code.setOnClickListener( this );
+//        loginButtonFacebook = findViewById(R.id.login_facebook_button);
+//        loginButtonFacebook.setReadPermissions("email", "public_profile");
+//        loginButtonFacebook.setOnClickListener( this );
+//        loginButtonEmail.setOnClickListener( this );
+//        loginButtonPhone.setOnClickListener( this );
+//        login_phone_button_code.setOnClickListener( this );
 
 //        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 //            @Override
@@ -131,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void configToolbar() {
         setSupportActionBar( toolbar_general );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-        loginButtonPhone.setEnabled( false );
+        //loginButtonPhone.setEnabled( false );
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -255,10 +252,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent( s, forceResendingToken );
                 mVerificationId=s;
-                login_phone_et_code.setHint( "Ingrese codigo" );
-                loginButtonPhone.setEnabled( true );
-                login_phone_button_code.setEnabled( false );
-                login_phone_et_code.setText( "" );
+//                login_phone_et_code.setHint( "Ingrese codigo" );
+//                loginButtonPhone.setEnabled( true );
+//                login_phone_button_code.setEnabled( false );
+//                login_phone_et_code.setText( "" );
             }
 
             @Override
@@ -347,55 +344,55 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.login_facebook_button:
-                IniciarSesion();
-                break;
-            case R.id.login_button_email:
-                //String text=loginButtonEmail.getText().toString().trim();
-                if(("".equals(  login_mail_email.getText().toString().trim())||login_mail_email.getText().toString().trim()==null)||("".equals(  login_mail_password.getText().toString().trim())||login_mail_password.getText().toString().trim()==null)){
-//                    loginButtonEmail.setText( "Login" );
-//                    login_mail_email.setVisibility( View.VISIBLE );
-//                    login_mail_email.setVisibility( View.VISIBLE );
-//                    login_phone_et_code.setVisibility( View.GONE );
-//                    login_phone_button_code.setVisibility( View.GONE );
-//                    visibilidadFuncion(accesorios_phone,View.GONE);
-//                    visibilidadFuncion(accesorios_mail,View.VISIBLE);
-                    Toast.makeText( this,"Error vacio", Toast.LENGTH_SHORT ).show();
-
-                }else {
+//            case R.id.login_facebook_button:
+//                IniciarSesion();
+//                break;
+//            case R.id.login_button_email:
+//                //String text=loginButtonEmail.getText().toString().trim();
+//                if(("".equals(  login_mail_email.getText().toString().trim())||login_mail_email.getText().toString().trim()==null)||("".equals(  login_mail_password.getText().toString().trim())||login_mail_password.getText().toString().trim()==null)){
+////                    loginButtonEmail.setText( "Login" );
+////                    login_mail_email.setVisibility( View.VISIBLE );
+////                    login_mail_email.setVisibility( View.VISIBLE );
+////                    login_phone_et_code.setVisibility( View.GONE );
+////                    login_phone_button_code.setVisibility( View.GONE );
+////                    visibilidadFuncion(accesorios_phone,View.GONE);
+////                    visibilidadFuncion(accesorios_mail,View.VISIBLE);
+//                    Toast.makeText( this,"Error vacio", Toast.LENGTH_SHORT ).show();
+//
+//                }else {
+////
+////                    progressBar.setVisibility( View.VISIBLE );
+//                    iniciarSesion_email(login_mail_email.getText().toString(),login_mail_password.getText().toString().trim());
+////                    loginButtonEmail.setText( R.string.sign_in_with_gmail);
+////                    login_mail_email.setVisibility( View.GONE );
+////                    login_mail_email.setVisibility( View.GONE );
+////                    login_phone_et_code.setVisibility( View.VISIBLE );
+////                    login_phone_button_code.setVisibility( View.VISIBLE );
+//                }
+//
+//                break;
+//            case R.id.login_button_phone:
+//               // String texto=loginButtonPhone.getText().toString().trim();
+//                if(("".equals(  login_phone_et_code.getText().toString().trim())||login_phone_et_code.getText().toString().trim()==null)){
+//                    Toast.makeText( this,"Error vacio", Toast.LENGTH_SHORT ).show();
+//                }else {
 //
 //                    progressBar.setVisibility( View.VISIBLE );
-                    iniciarSesion_email(login_mail_email.getText().toString(),login_mail_password.getText().toString().trim());
-//                    loginButtonEmail.setText( R.string.sign_in_with_gmail);
-//                    login_mail_email.setVisibility( View.GONE );
-//                    login_mail_email.setVisibility( View.GONE );
-//                    login_phone_et_code.setVisibility( View.VISIBLE );
-//                    login_phone_button_code.setVisibility( View.VISIBLE );
-                }
-
-                break;
-            case R.id.login_button_phone:
-               // String texto=loginButtonPhone.getText().toString().trim();
-                if(("".equals(  login_phone_et_code.getText().toString().trim())||login_phone_et_code.getText().toString().trim()==null)){
-                    Toast.makeText( this,"Error vacio", Toast.LENGTH_SHORT ).show();
-                }else {
-
-                    progressBar.setVisibility( View.VISIBLE );
-                    SignInSMSPhone(login_phone_et_code.getText().toString().trim() );
-                }
-                break;
-            case R.id.login_button_phone_code:
-
-                if(("".equals(  login_phone_et_code.getText().toString().trim())||login_phone_et_code.getText().toString().trim()==null)){
-                    Toast.makeText( this,"Error vacio", Toast.LENGTH_SHORT ).show();
-                }else {
-
-                    progressBar.setVisibility( View.VISIBLE );
-                    requestCodeSms(login_phone_et_code.getText().toString().trim()  );
-
-                }
-
-                break;
+//                    SignInSMSPhone(login_phone_et_code.getText().toString().trim() );
+//                }
+//                break;
+//            case R.id.login_button_phone_code:
+//
+//                if(("".equals(  login_phone_et_code.getText().toString().trim())||login_phone_et_code.getText().toString().trim()==null)){
+//                    Toast.makeText( this,"Error vacio", Toast.LENGTH_SHORT ).show();
+//                }else {
+//
+//                    progressBar.setVisibility( View.VISIBLE );
+//                    requestCodeSms(login_phone_et_code.getText().toString().trim()  );
+//
+//                }
+//
+//                break;
         }
     }
 }
