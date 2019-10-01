@@ -43,8 +43,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoQuery;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -58,7 +56,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -143,11 +140,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     BottomSheetBehavior bottomSheetBehavior;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     final HashMap<String, String> markerMapPlatillos = new HashMap<String, String>();
-    //Geofire
-    GeoFire geoFire;
-    Circle circleMap;
-    LatLng personcenter;
-    GeoQuery geoQuery;
 
     public mapsFragment() {
         // Required empty public constructor
@@ -400,8 +392,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         mStorageReference= FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
-        geoFire=new GeoFire( mDatabase );
-        //initFused();
+
+
     }
 
 
@@ -421,17 +413,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.getUiSettings().setCompassEnabled( false );
         mMap.getUiSettings().setIndoorLevelPickerEnabled( false );
         mMap.setOnMarkerClickListener(this);
-        //Geofire
-//        LatLng predeminado= new LatLng( -15.847021599999998,-70.0273745 );
-//        circleMap =mMap.addCircle( new CircleOptions()
-//        .center( predeminado )
-//        .radius( 500 )
-//        .strokeColor( Color.BLUE )
-//        .strokeWidth( 5.0f ));
-
-
-//         geoQuery=geoFire.queryAtLocation( new GeoLocation( predeminado.latitude,predeminado.longitude  ),0.5f );
-
         if(mapView!=null){
             View locationButton=((View) mapView.findViewById( Integer.parseInt( "1" ) ).getParent()).findViewById( Integer.parseInt( "2" ) );
             RelativeLayout.LayoutParams layoutParams=(RelativeLayout.LayoutParams) locationButton.getLayoutParams();
@@ -454,32 +435,13 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     platillos platillos= snapshot.getValue( com.singlefood.sinfo.models.productos.platillos.class);
                     Double latitud = platillos.getPlaces().getLatitud();
                     Double longitud = platillos.getPlaces().getLongitud();
-                    Location new_loca=null;
-                    new_loca.setLatitude(latitud);
-                    new_loca.setLongitude(longitud);
-                    getDeviceLocation();
-                    Float distancia= location.distanceTo(new_loca);
-                    if(distancia<1000){
-                        llaves.add( snapshot.getKey() );
-                        arrayListPlatillos.add( platillos );
-                        arrayKeys.add( getCommts( snapshot.getKey() ) );
-                    }
-//                    geoFire.setLocation( "You", new GeoLocation( latitud, longitud ), new GeoFire.CompletionListener() {
-//                        @Override
-//                        public void onComplete(String key, DatabaseError error) {
-//
-//                        }
-//                    } );
-                Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().position(new LatLng(latitud, longitud)));
-                String idMarker = mUbicacionPlatillo.getId();
-                markerMapPlatillos.put(idMarker, platillos.getNombrePlatillo());
+                    Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().position(new LatLng(latitud, longitud)));
+                    String idMarker = mUbicacionPlatillo.getId();
+                    markerMapPlatillos.put(idMarker, platillos.getNombrePlatillo());
 
-
-
-
-
-
-
+                    llaves.add( snapshot.getKey() );
+                    arrayListPlatillos.add( platillos );
+                    arrayKeys.add( getCommts( snapshot.getKey() ) );
                 }
 
 
@@ -514,39 +476,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
             }
         });
-//        geoQuery.addGeoQueryDataEventListener( new GeoQueryDataEventListener() {
-//            @Override
-//            public void onDataEntered(DataSnapshot dataSnapshot, GeoLocation location) {
-//                Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)));
-////                String idMarker = mUbicacionPlatillo.getId();
-////                markerMapPlatillos.put(idMarker, platillos.getNombrePlatillo());
-//            }
-//
-//            @Override
-//            public void onDataExited(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onDataMoved(DataSnapshot dataSnapshot, GeoLocation location) {
-//
-//            }
-//
-//            @Override
-//            public void onDataChanged(DataSnapshot dataSnapshot, GeoLocation location) {
-//
-//            }
-//
-//            @Override
-//            public void onGeoQueryReady() {
-//
-//            }
-//
-//            @Override
-//            public void onGeoQueryError(DatabaseError error) {
-//
-//            }
-//        } );
     }
     private ArrayList<comentarios> getCommts(String Key) {
         DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );

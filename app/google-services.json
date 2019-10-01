@@ -8,9 +8,75 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:174467251290:android:2c4505efaf38425d2eac63",
+        "android_client_info": {
+          "package_name": "cl.carreno.mauricio.cargaragefinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174467251290-t6t8nbpeo3rhrpmknvmu18abcltsd9l2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cl.carreno.mauricio.cargaragefinder",
+            "certificate_hash": "9cb39d7867c8d67cfd2bda6b4e152d9b081e4848"
+          }
+        },
+        {
+          "client_id": "174467251290-dls9j60s19c391oul7k1rhq1liki8c1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCugdCfDjlrHTDtBTP1BBAP1i7qC8Q6vW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174467251290-dls9j60s19c391oul7k1rhq1liki8c1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:174467251290:android:772cf7a2beea67cb",
         "android_client_info": {
           "package_name": "com.example.willy.testsiabc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174467251290-dls9j60s19c391oul7k1rhq1liki8c1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCugdCfDjlrHTDtBTP1BBAP1i7qC8Q6vW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174467251290-dls9j60s19c391oul7k1rhq1liki8c1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174467251290:android:57c7e328a26f5bc22eac63",
+        "android_client_info": {
+          "package_name": "com.singlefood.kunan_study"
         }
       },
       "oauth_client": [
@@ -43,6 +109,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "174467251290-ga8a2k31lm6gk691p5vb16iu4juuu6vg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.singlefood.sinfo",
+            "certificate_hash": "a073503aef99a5ced99dfa00078a5c1297ffb39e"
+          }
+        },
         {
           "client_id": "174467251290-p0d74jdm14bvm76joj7a7c9l0m9561u9.apps.googleusercontent.com",
           "client_type": 1,
