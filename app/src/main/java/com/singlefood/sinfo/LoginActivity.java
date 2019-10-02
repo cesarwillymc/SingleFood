@@ -55,8 +55,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     LoginButton loginButtonFacebook;
     private  String mVerificationId;
 
-//    @BindView( R.id.login_button_email )
-//    Button loginButtonEmail;
+    @BindView( R.id.btnRegisterUser )
+    Button btnRegisterUser;
 //    @BindView( R.id.login_button_phone )
 //    Button loginButtonPhone;
 //    @BindView( R.id.login_edit_text_email )
@@ -84,49 +84,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user=mAuth.getCurrentUser();
         setContentView( R.layout.activity_login );
         ButterKnife.bind( this ,LoginActivity.this);
-//        visibilidadFuncion(accesorios_mail,View.GONE);
-//        visibilidadFuncion(accesorios_phone,View.GONE);
         configToolbar();
-//        FacebookSdk.sdkInitialize(getApplicationContext());
-//        AppEventsLogger.activateApp(this);
         mCallbackManager = CallbackManager.Factory.create();
-//        loginButtonFacebook = findViewById(R.id.login_facebook_button);
-//        loginButtonFacebook.setReadPermissions("email", "public_profile");
-//        loginButtonFacebook.setOnClickListener( this );
-//        loginButtonEmail.setOnClickListener( this );
-//        loginButtonPhone.setOnClickListener( this );
-//        login_phone_button_code.setOnClickListener( this );
 
-
-//        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                Log.d("tag", "facebook:onSuccess:" + loginResult);
-//                handleFacebookAccessToken(loginResult.getAccessToken());
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                Log.d("tag", "facebook:onCancel");
-//                // ...
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//                Log.d("tag", "facebook:onError", error);
-//                // ...
-//            }
-//        });// ...
-
-
+        btnRegisterUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText( LoginActivity.this,"clickkkk",Toast.LENGTH_SHORT ).show();
+                updateUI(user);
+            }
+        });
 
     }
 
-    private void visibilidadFuncion(List<View> funcion, int visible) {
-        for (View vistas:funcion){
-            vistas.setVisibility( visible );
-        }
-    }
+
 
     private void configToolbar() {
         setSupportActionBar( toolbar_general );

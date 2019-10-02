@@ -132,7 +132,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private AutoCompleteTextView acPlatillo;
     private EditText dialog_et_precio;
     private EditText dialog_et_direccion;
-    private  Spinner dialog_spinner_tipo;
+
     private ImageView dialog_iv_foto;
     private RatingBar ratingBar_dialog;
     private SearchView searchView;
@@ -336,9 +336,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     LatLng latLng= new LatLng( address.getLatitude(),address.getLongitude() );
                     CameraPosition camPos = new CameraPosition.Builder()
                             .target(latLng)   //Centramos el mapa en Madrid
-                            .zoom(19)         //Establecemos el zoom en 19
-                            .bearing(45)      //Establecemos la orientación con el noreste arriba
-                            .tilt(70)         //Bajamos el punto de vista de la cámara 70 grados
+                            .zoom(50)         //Establecemos el zoom en 19
+                            .bearing(90)      //Establecemos la orientación con el noreste arriba
+                            .tilt(90)         //Bajamos el punto de vista de la cámara 70 grados
                             .build();
                     mMap.animateCamera( CameraUpdateFactory.newCameraPosition( camPos ) );
 
@@ -374,6 +374,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         locationRequest.setFastestInterval( 5000 );
         locationRequest.setPriority( locationRequest.PRIORITY_HIGH_ACCURACY );
         LocationSettingsRequest.Builder builder= new LocationSettingsRequest.Builder().addLocationRequest( locationRequest );
+
         SettingsClient settingsClient =LocationServices.getSettingsClient( getActivity() );
         Task<LocationSettingsResponse> task= settingsClient.checkLocationSettings( builder.build() );
         task.addOnSuccessListener( new OnSuccessListener<LocationSettingsResponse>() {
@@ -433,6 +434,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.getUiSettings().setCompassEnabled( false );
         mMap.getUiSettings().setIndoorLevelPickerEnabled( false );
         mMap.setOnMarkerClickListener(this);
+
         if(mapView!=null){
             View locationButton=((View) mapView.findViewById( Integer.parseInt( "1" ) ).getParent()).findViewById( Integer.parseInt( "2" ) );
             RelativeLayout.LayoutParams layoutParams=(RelativeLayout.LayoutParams) locationButton.getLayoutParams();
@@ -496,6 +498,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
             }
         });
+
     }
     private ArrayList<comentarios> getCommts(String Key) {
         DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );
@@ -535,7 +538,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                    // cargarProducto(  );
                      FirebaseAuth mAuth= FirebaseAuth.getInstance();
                 FirebaseUser user=mAuth.getCurrentUser();
-                if(user != null){
+                if(user == null){
                     cargarProducto(  );
                     bottomSheetBehavior.setState( BottomSheetBehavior.STATE_HALF_EXPANDED );
                     fab_hidden.setVisibility( View.VISIBLE );
@@ -588,8 +591,10 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         base_datos.put( "latitud", address.get( 0 ).getLatitude() );
         base_datos.put( "longitud", address.get( 0 ).getLongitude() );
-        base_datos.put( "id_user", user.getUid() );
-        comentarios.put( "id_comentarios",user.getUid() );
+        //base_datos.put( "id_user", user.getUid() );
+        base_datos.put( "id_user", 12 );
+        //comentarios.put( "id_comentarios",user.getUid() );
+        comentarios.put( "id_comentarios",1);
         comentarios.put( "texto",dialog_comentario.getText().toString() );
         comentarios.put( "rating",ratingBar_dialog.getRating() );
         comentarios.put( "prioridad",1);
@@ -605,10 +610,11 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             datos.put( "nombrePlatillo", platillo );
             datos.put( "precio", precio );
             datos.put( "direccion", dialog_et_direccion.getText().toString()  );
-            datos.put( "tipo", dialog_spinner_tipo.getSelectedItem().toString() );
+            datos.put( "tipo", "none");
             datos.put( "imagenbase64", imageString );
             datos.put( "places",base_datos);
-            datos.put("id_user",user.getUid());
+            //datos.put("id_user",user.getUid());
+            datos.put("id_user",12);
            // datos.put( "comentarios_platillo",comentarios );
 
             DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").push();
@@ -657,7 +663,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         acPlatillo.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
         acPlatillo.setTextColor(Color.RED);
 
-        dialog_spinner_tipo= view.findViewById( R.id.dialog_spinner ) ;
+
         dialog_iv_foto= view.findViewById( R.id.dialog_imageView );
         dialogButtonsi= view.findViewById( R.id.dialog_yes );
         ratingBar_dialog=view.findViewById( R.id.dialog_rating_bar );
@@ -719,12 +725,13 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                         if (task.isSuccessful()){
                             location= task.getResult();
                             if(location!=null){
-                                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude() ),18) );
 
-//                                circleMap.setCenter(  new LatLng( location.getLatitude(),location.getLongitude() ) );
-//                                personcenter=new LatLng( location.getLatitude(),location.getLongitude() );
-//                                geoQuery=geoFire.queryAtLocation( new GeoLocation( personcenter.latitude,personcenter.longitude  ),0.5f );
-
+                                CameraPosition camPos = new CameraPosition.Builder()
+                                        .target(new LatLng( location.getLatitude(),location.getLongitude() ))   //Centramos el mapa en Madrid
+                                        .zoom(16)         //Establecemos el zoom en 19
+                                        .tilt(55)         //Bajamos el punto de vista de la cámara 70 grados
+                                        .build();
+                                mMap.animateCamera( CameraUpdateFactory.newCameraPosition( camPos ) );
                                 try {
 
                                     geocoder= new Geocoder( getContext(), Locale.getDefault() );
@@ -746,9 +753,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                                         location = locationResult.getLastLocation();
 
                                         mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude() ),18) );
-//                                        circleMap.setCenter(  new LatLng( location.getLatitude(),location.getLongitude() ) );
-//                                        personcenter=new LatLng( location.getLatitude(),location.getLongitude() );
-//                                        geoQuery=geoFire.queryAtLocation( new GeoLocation( personcenter.latitude,personcenter.longitude  ),0.5f );
                                         try {
 
                                             geocoder= new Geocoder( getContext(), Locale.getDefault() );
