@@ -20,8 +20,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -44,7 +42,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -57,6 +54,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     CallbackManager mCallbackManager;
     LoginButton loginButtonFacebook;
     private  String mVerificationId;
+
+//    @BindView( R.id.login_button_email )
+//    Button loginButtonEmail;
+//    @BindView( R.id.login_button_phone )
+//    Button loginButtonPhone;
+//    @BindView( R.id.login_edit_text_email )
+//    EditText login_mail_email;
+//    @BindView( R.id.login_edit_text_password )
+//    EditText login_mail_password;
+//    @BindViews( {R.id.login_edit_text_email,R.id.login_edit_text_password} )
+//    List<View> accesorios_mail;
+//    @BindView( R.id.login_button_phone_code )
+//    Button login_phone_button_code;
+//    @BindView( R.id.login_edit_text_phone_code )
+//    EditText login_phone_et_code;
+//    @BindViews( {R.id.login_button_phone_code,R.id.login_edit_text_phone_code} )
+//    List<View> accesorios_phone;
 
 
     @BindView( R.id.progress_bar )
@@ -73,9 +87,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        visibilidadFuncion(accesorios_mail,View.GONE);
 //        visibilidadFuncion(accesorios_phone,View.GONE);
         configToolbar();
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+//        FacebookSdk.sdkInitialize(getApplicationContext());
+//        AppEventsLogger.activateApp(this);
         mCallbackManager = CallbackManager.Factory.create();
+//        loginButtonFacebook = findViewById(R.id.login_facebook_button);
+//        loginButtonFacebook.setReadPermissions("email", "public_profile");
+//        loginButtonFacebook.setOnClickListener( this );
+//        loginButtonEmail.setOnClickListener( this );
+//        loginButtonPhone.setOnClickListener( this );
+//        login_phone_button_code.setOnClickListener( this );
 
 
 //        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -111,7 +131,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void configToolbar() {
         setSupportActionBar( toolbar_general );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-       // loginButtonPhone.setEnabled( false );
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -235,7 +254,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent( s, forceResendingToken );
                 mVerificationId=s;
-
             }
 
             @Override
@@ -324,7 +342,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-
         }
     }
 }
