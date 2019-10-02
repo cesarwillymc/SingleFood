@@ -38,6 +38,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -58,6 +59,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -339,7 +341,13 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     }
                     Address address= addressList.get( 0 );
                     LatLng latLng= new LatLng( address.getLatitude(),address.getLongitude() );
-                    mMap.animateCamera( CameraUpdateFactory.newLatLngZoom( latLng,15 ) );
+                    CameraPosition camPos = new CameraPosition.Builder()
+                            .target(latLng)   //Centramos el mapa en Madrid
+                            .zoom(19)         //Establecemos el zoom en 19
+                            .bearing(45)      //Establecemos la orientación con el noreste arriba
+                            .tilt(70)         //Bajamos el punto de vista de la cámara 70 grados
+                            .build();
+                    mMap.animateCamera( CameraUpdateFactory.newCameraPosition( camPos ) );
 
                 }
                 return false;
@@ -417,7 +425,17 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.setMyLocationEnabled( true );
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled( true );
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+        }
+
+
         mMap.getUiSettings().setMyLocationButtonEnabled( true );
         mMap.getUiSettings().setCompassEnabled( false );
         mMap.getUiSettings().setIndoorLevelPickerEnabled( false );
@@ -452,7 +470,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                  ArrayList<platillos> arrayListPlatillos= new ArrayList<>();
                  ArrayList<ArrayList<comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    platillos platillos= snapshot.getValue( com.singlefood.sinfo.models.productos.platillos.class);
+                    platillos platillos= snapshot.getValue( platillos.class);
                     Double latitud = platillos.getPlaces().getLatitud();
                     Double longitud = platillos.getPlaces().getLongitud();
 //                    geoFire.setLocation( "You", new GeoLocation( latitud, longitud ), new GeoFire.CompletionListener() {
