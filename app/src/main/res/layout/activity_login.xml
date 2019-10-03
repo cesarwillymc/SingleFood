@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_gravity="center"
     tools:context=".LoginActivity">
     <include android:id="@+id/toolbar_general"
         layout="@layout/layout_toolbar"/>
 
 
     <ProgressBar
-        android:id="@+id/progress_bar"
+        android:id="@+id/progress_bar_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -22,6 +22,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:visibility="gone"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,16 +33,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="@android:dimen/notification_large_icon_width">
 
         <ImageView
-            android:id="@+id/ivPhotoUser"
+            android:id="@+id/ivPhotoUser_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@android:drawable/sym_def_app_icon" />
 
         <EditText
-            android:id="@+id/etNameUser"
+            android:id="@+id/etNameUser_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -51,7 +53,7 @@
             android:visibility="visible" />
 
         <EditText
-            android:id="@+id/etEmailUser"
+            android:id="@+id/etEmailUser_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -61,18 +63,18 @@
             android:visibility="visible" />
 
         <EditText
-            android:id="@+id/etPhoneUser"
+            android:id="@+id/etPhoneUser_login"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:hint="Celular"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
             android:visibility="visible" />
 
         <Button
-            android:id="@+id/btnRegisterUser"
+            android:id="@+id/btnRegisterUser_login"
             style="@android:style/Widget.Material.Light.Button"
             android:layout_width="match_parent"
             android:layout_height="51dp"
@@ -84,4 +86,4 @@
             tools:targetApi="lollipop" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

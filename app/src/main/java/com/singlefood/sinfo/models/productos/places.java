@@ -5,12 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class places {
 
-  @SerializedName("ciudad")
-  @Expose
-  private String ciudad;
-  @SerializedName("direccion")
-  @Expose
-  private String direccion;
+
   @SerializedName("id_user")
   @Expose
   private String idUser;
@@ -21,21 +16,6 @@ public class places {
   @Expose
   private Double longitud;
 
-  public String getCiudad() {
-    return ciudad;
-  }
-
-  public void setCiudad(String ciudad) {
-    this.ciudad = ciudad;
-  }
-
-  public String getDireccion() {
-    return direccion;
-  }
-
-  public void setDireccion(String direccion) {
-    this.direccion = direccion;
-  }
 
   public String getIdUser() {
     return idUser;

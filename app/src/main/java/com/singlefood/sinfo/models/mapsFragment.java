@@ -4,6 +4,7 @@ package com.singlefood.sinfo.models;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -140,7 +141,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     BottomSheetBehavior bottomSheetBehavior;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     final HashMap<String, String> markerMapPlatillos = new HashMap<String, String>();
-
+    private Context context;
     public mapsFragment() {
         // Required empty public constructor
     }
@@ -257,7 +258,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 
          fab_collapse.setOnClickListener(this );
          fab_hidden.setOnClickListener( this );
-
+        context = getContext();
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
             new AlertDialog.Builder( getContext() )
@@ -432,15 +433,15 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                  ArrayList<platillos> arrayListPlatillos= new ArrayList<>();
                  ArrayList<ArrayList<comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    platillos platillos= snapshot.getValue( com.singlefood.sinfo.models.productos.platillos.class);
-                    Double latitud = platillos.getPlaces().getLatitud();
-                    Double longitud = platillos.getPlaces().getLongitud();
+                    platillos platillosc= snapshot.getValue( platillos.class);
+                    Double latitud = platillosc.getPlaces().getLatitud();
+                    Double longitud = platillosc.getPlaces().getLongitud();
                     Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().position(new LatLng(latitud, longitud)));
                     String idMarker = mUbicacionPlatillo.getId();
-                    markerMapPlatillos.put(idMarker, platillos.getNombrePlatillo());
+                    markerMapPlatillos.put(idMarker, platillosc.getNombrePlatillo());
 
                     llaves.add( snapshot.getKey() );
-                    arrayListPlatillos.add( platillos );
+                    arrayListPlatillos.add( platillosc );
                     arrayKeys.add( getCommts( snapshot.getKey() ) );
                 }
 
@@ -701,13 +702,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                             if(location!=null){
                                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude() ),18) );
 
-//                                circleMap.setCenter(  new LatLng( location.getLatitude(),location.getLongitude() ) );
-//                                personcenter=new LatLng( location.getLatitude(),location.getLongitude() );
-//                                geoQuery=geoFire.queryAtLocation( new GeoLocation( personcenter.latitude,personcenter.longitude  ),0.5f );
+                              try {
 
-                                try {
-
-                                    geocoder= new Geocoder( getContext(), Locale.getDefault() );
+                                    geocoder= new Geocoder( context, Locale.getDefault() );
                                     address= geocoder.getFromLocation( location.getLatitude(),location.getLongitude(),1 );
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -731,7 +728,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
 //                                        geoQuery=geoFire.queryAtLocation( new GeoLocation( personcenter.latitude,personcenter.longitude  ),0.5f );
                                         try {
 
-                                            geocoder= new Geocoder( getContext(), Locale.getDefault() );
+                                            geocoder= new Geocoder( context, Locale.getDefault() );
                                             address= geocoder.getFromLocation( location.getLatitude(),location.getLongitude(),1 );
                                         } catch (IOException e) {
                                             e.printStackTrace();
@@ -760,9 +757,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
-    public void onDestroy() {
-
-        super.onDestroy();
-
+    public void onAttachFragment(Fragment childFragment) {
+        context=getContext();
+        super.onAttachFragment(childFragment);
     }
+
 }

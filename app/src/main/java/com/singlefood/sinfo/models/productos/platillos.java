@@ -22,7 +22,7 @@ public class platillos {
   private String nombrePlatillo;
   @SerializedName("places")
   @Expose
-  private com.singlefood.sinfo.models.productos.places places;
+  private places places;
   @SerializedName("precio")
   @Expose
   private String precio;
@@ -64,11 +64,11 @@ public class platillos {
     this.nombrePlatillo = nombrePlatillo;
   }
 
-  public com.singlefood.sinfo.models.productos.places getPlaces() {
+  public places getPlaces() {
     return places;
   }
 
-  public void setPlaces(com.singlefood.sinfo.models.productos.places places) {
+  public void setPlaces(places places) {
     this.places = places;
   }
 

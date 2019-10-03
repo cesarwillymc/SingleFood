@@ -72,7 +72,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
 
         public void bind(final platillos platillos, final OnItemClickListener listen, ArrayList<comentarios> arrayComentarios) {
             mNombre.setText( platillos.getNombrePlatillo());
-            mPrecio.setText( platillos.getPrecio() );
+            mPrecio.setText( platillos.getPrecio()+"" );
             mImage.setImageBitmap( StringToBitmap( platillos.getImagenbase64() ) );
             ratingBar.setRating( promedioRating(arrayComentarios));
             DecimalFormat formato = new DecimalFormat();
