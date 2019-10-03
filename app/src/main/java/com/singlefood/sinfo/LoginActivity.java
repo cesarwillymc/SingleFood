@@ -33,13 +33,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    Spinner spnTipoUser;
+
     Button btnRegistrar;
     FirebaseAuth mAuth;
     FirebaseUser user;
     DatabaseReference mDatabase;
 
     @BindView( R.id.progress_bar_login)
+
+
+
+    @BindView( R.id.progress_bar )
     ProgressBar progressBar;
     @BindView( R.id.toolbar_general )
     Toolbar toolbar_general;
@@ -64,7 +68,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ButterKnife.bind( this );
         configToolbar();
         logeo.setOnClickListener(this);
-
 
     }
 
@@ -143,12 +146,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         // ...
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
 
-            }
-        });
+                }).addOnFailureListener(new OnFailureListener() {
+
+                });
+
     }
 
     private void crearcuenta(String nombre_string, String email_string, String telefono_string) {
@@ -189,4 +191,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
+
+
+
 }
