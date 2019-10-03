@@ -94,7 +94,18 @@
           android:paddingHorizontal="@dimen/dimen10"
           android:paddingVertical="@dimen/margin_top_5dp"
           android:layout_margin="2dp"/>
-
+ç<Spinner
+        android:background="@drawable/capsule_border_comentarios"
+        android:id="@+id/dialog_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/planets_array"
+        android:textSize="@dimen/texto13sp"
+        android:tooltipText="@string/app_name"
+        android:textColor="#534D4D"
+        android:paddingHorizontal="@dimen/dimen10"
+        android:paddingVertical="@dimen/margin_top_5dp"
+        android:layout_margin="2dp"/>
       <EditText
           android:hint="Comentarios"
           android:textColor="#534D4D"
