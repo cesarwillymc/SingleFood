@@ -16,6 +16,29 @@ public class comentarios {
   @SerializedName("texto")
   @Expose
   private String texto;
+  @SerializedName("fecha")
+  @Expose
+  private String fecha;
+
+  public String getFecha() {
+    return fecha;
+  }
+
+  public void setFecha(String fecha) {
+    this.fecha = fecha;
+  }
+
+  public String getHora() {
+    return hora;
+  }
+
+  public void setHora(String hora) {
+    this.hora = hora;
+  }
+
+  @SerializedName("hora")
+  @Expose
+  private String hora;
 
 
 

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -43,7 +44,10 @@ import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.models.productos.RecyclerComentariosAdapter;
 import com.singlefood.sinfo.models.productos.comentarios;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,8 +55,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.annotations.NonNull;
 
-public class informacion_platillos extends AppCompatActivity implements View.OnClickListener{
-
+public class informacion_platillos extends AppCompatActivity implements View.OnClickListener {
+    private  GestureDetector gestureDetector;
     private ArrayList<String> datos;
     String Key;
     private RecyclerView.Adapter adapterRview;
@@ -70,7 +74,10 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     Toolbar toolbar_info;
     @BindView( R.id.image_view_info_heading )
     ImageView imageView_info;
-
+    @BindView( R.id.btnfComment )
+    FloatingActionButton btnfComment;
+    @BindView(R.id.btnfLike)
+    FloatingActionButton btnLike;
     @BindView( R.id.button_comentar_collapse )
     Button button_coment_collapse;
     //Button Sheep
@@ -78,18 +85,6 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     RatingBar rating_coment;
     EditText comentario_comment;
     Button publicar_commet;
-//    @BindView( R.id.button_comentar_hide )
-//    Button button_coment_hide;
-//    @BindView( R.id.crear_comentario_rating )
-//    RatingBar rating_coment;
-//    @BindView( R.id.crear_comentario_comentario )
-//    EditText comentario_comment;
-//    @BindView( R.id.crear_comentario_publicar )
-//    Button publicar_commet;
-    @BindView( R.id.btnfComment )
-    FloatingActionButton btnfComment;
-
-
     RecyclerView recyclerView_info;
 
     @Override
@@ -101,6 +96,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
             getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN );
         }
+
         button_coment_hide=(FloatingActionButton) findViewById( R.id.button_comentar_hide );
         button_coment_collapse.setOnClickListener( this );
         button_coment_hide.setOnClickListener( this );
@@ -108,20 +104,13 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         getCommts();
         configToolbar();
         cargarImage();
-        cargarDatos_texto();
         linearLayout=(LinearLayout) findViewById( R.id.crear_comentario_layout_dialog ) ;
         bottomSheetBehavior= BottomSheetBehavior.from( linearLayout );
         recyclerView_info=(RecyclerView) findViewById( R.id.recycler_view_info_platillos ) ;
         LinearLayoutManager layoutManager= new LinearLayoutManager( this );
         RecyclerView.LayoutManager recycler_view_manager_info=layoutManager;
         recyclerView_info.setLayoutManager( recycler_view_manager_info );
-
-        btnfComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_coment_collapse.requestFocus();
-            }
-        });
+        btnfComment.setOnClickListener(this);
         bottomSheetBehavior.setBottomSheetCallback( new BottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -145,10 +134,38 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 
             }
         } );
+        //gestos
+        gestos();
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private void gestos() {
 
+
+    }
+
+    private ArrayList<comentarios> getUser(String Key) {
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("usuarios_single").child( Key ).child( "comentarios" );
+        ArrayList<comentarios> comentariosPlatillos= new ArrayList<>(  );
+        coment.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(@androidx.annotation.NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    comentarios coment=snapshot.getValue(comentarios.class);
+                    comentariosPlatillos.add( coment );
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@androidx.annotation.NonNull DatabaseError databaseError) {
+
+            }
+        } );
+        return comentariosPlatillos;
+    }
     private void PublicComment( Map<String,Object> datos){
         DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );
         final DatabaseReference commentRef=coment.push();
@@ -232,25 +249,6 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
             }
         } );
     }
-    private void cargarDatos_texto() {
-//        View view;
-//        LayoutInflater inflater = (LayoutInflater)   getSystemService( Context.LAYOUT_INFLATER_SERVICE);
-//        view = inflater.inflate(R.layout.include_info_restaurant, null);
-//        text_view_restaurant.setText( datos.get( 3 ) );
-//        text_view_precio.setText( datos.get( 1 ) );
-//        text_view_platillo.setText( datos.get( 2 ) );
-//        text_view_direccion.setText( datos.get( 4 ) );
-
-
-    }
-    public Float promedioRating(ArrayList<comentarios> comentariosPlatillos){
-        float temp=0;
-        for (int i=0;i<comentariosPlatillos.size();i++){
-            temp=temp+comentariosPlatillos.get(  i).getRating();
-        }
-        return temp/comentariosPlatillos.size();
-
-    }
     private void cargarImage() {
         byte[] decodedString = Base64.decode(datos.get( 0 ), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -268,7 +266,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -284,13 +282,17 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                     progressDialog.setCancelable( false );
                     progressDialog.setMessage( "Cargando tu comentarioo..." );
                     progressDialog.show();
-
+                    Date date = new Date();
+                    DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     if(user != null){
                         Map<String,Object> map = new HashMap<>(  );
                         map.put( "id_comentarios",user.getUid() );
                         map.put( "rating",rating_coment.getRating() );
                         map.put( "texto",comentario_comment.getText().toString().trim() );
                         map.put( "prioridad",0 );
+                        map.put("hora",hourFormat.format(date));
+                        map.put("fecha",dateFormat.format(date));
                         PublicComment( map );
                     }else{
                         progressDialog.dismiss();
@@ -322,6 +324,9 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                 button_coment_collapse.setVisibility( View.VISIBLE );
                 button_coment_hide.setVisibility( View.GONE );
                 break;
+            case R.id.btnfComment:
+                button_coment_collapse.requestFocus();
+                break;
         }
     }
 
@@ -334,4 +339,6 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 
          publicar_commet.setOnClickListener( this );
     }
+
+
 }

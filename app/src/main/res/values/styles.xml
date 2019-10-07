@@ -34,5 +34,12 @@
 
   <style name="color_ratingbar" parent="Theme.AppCompat">
     <item name="colorPrimary">@color/colorPrimary</item></style>
-
+  <style name="expanded">
+    <item name="android:textSize">22sp</item>
+    <item name="android:textColor">#F44336</item>
+  </style>
+  <style name="collapse">
+    <item name="android:textSize">10sp</item>
+    <item name="android:textColor">@color/colorPrimary</item>
+  </style>
 </resources>
