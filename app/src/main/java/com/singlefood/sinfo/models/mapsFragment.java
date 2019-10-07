@@ -88,7 +88,10 @@ import com.singlefood.sinfo.models.productos.platillos;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -329,9 +332,14 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Address address= addressList.get( 0 );
-                    LatLng latLng= new LatLng( address.getLatitude(),address.getLongitude() );
-                    mMap.animateCamera( CameraUpdateFactory.newLatLngZoom( latLng,15 ) );
+                    if (addressList!=null){
+                        Address addressOther= addressList.get( 0 );
+                        LatLng latLngother= new LatLng( addressOther.getLatitude(),addressOther.getLongitude() );
+                        mMap.animateCamera( CameraUpdateFactory.newLatLngZoom( latLngother,15 ) );
+                    }else {
+                        Toast.makeText(getContext(),"Error no se encontraro lugar",Toast.LENGTH_LONG).show();
+                    }
+
 
                 }
                 return false;
@@ -356,6 +364,19 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             mapView.getMapAsync( this );
         }
         //GPS ENABLE
+        gpsEnable();
+
+        Rview = view.findViewById(R.id.my_recycler_view);
+        layourRview = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        Rview.setLayoutManager(layourRview);
+
+        mStorageReference= FirebaseStorage.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
+
+
+    }
+
+    private void gpsEnable() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient( getContext() );
         Places.initialize( getContext(),"AIzaSyAgSv7wL2PTgdXSiKggKstMiiPYT-87zb4" );
         PlacesClient placesClient= Places.createClient( getContext() );
@@ -386,17 +407,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 }
             }
         } );
-
-        Rview = view.findViewById(R.id.my_recycler_view);
-        layourRview = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        Rview.setLayoutManager(layourRview);
-
-        mStorageReference= FirebaseStorage.getInstance().getReference();
-        mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
-
-
     }
-
 
 
     @Override
@@ -441,8 +452,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     markerMapPlatillos.put(idMarker, platillosc.getNombrePlatillo());
 
                     llaves.add( snapshot.getKey() );
-                    arrayListPlatillos.add( platillosc );
                     arrayKeys.add( getCommts( snapshot.getKey() ) );
+                    arrayListPlatillos.add( platillosc );
+
                 }
 
 
@@ -563,6 +575,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         final Map<String,Object> datos=new HashMap<>(  );
         final Map<String,Object> base_datos=new HashMap<>(  );
         final Map<String,Object> comentarios=new HashMap<>(  );
+        Date date = new Date();
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         FirebaseAuth mauth=FirebaseAuth.getInstance();
         FirebaseUser user = mauth.getCurrentUser();
 
@@ -573,6 +588,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         comentarios.put( "texto",dialog_comentario.getText().toString() );
         comentarios.put( "rating",ratingBar_dialog.getRating() );
         comentarios.put( "prioridad",1);
+        comentarios.put("hora",hourFormat.format(date));
+        comentarios.put("fecha",dateFormat.format(date));
 
 
         if(bitmap!=null) {

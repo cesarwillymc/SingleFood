@@ -7,6 +7,10 @@
     <string name="fb_login_protocol_scheme">fb1125958114267363</string>
     <string name="sign_in_with_gmail">Sign In with gmail</string>
     <string name="sign_in_with_phone">Sign In with Phone</string>
+    <string name="comentarios">Comentarios:</string>
+    <string name="_10_personas">10 Personas</string>
+    <string name="comentar">COMENTAR</string>
+    <string name="todo">TODO</string>
 
 
 </resources>

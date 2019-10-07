@@ -82,7 +82,26 @@
 
             </androidx.appcompat.widget.Toolbar>
 
+            <!--<include android:id="@+id/toolbar_general"
+                layout="@layout/layout_toolbar"/
+                <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/drawable_15dp"
+                android:id="@+id/info_restaurant_frame"
+                android:layout_gravity="bottom"
+                app:layout_collapseMode="parallax"
+                tools:targetApi="lollipop" />
+                <FrameLayout
+        app:layout_anchor="@id/appbar_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchorGravity="bottom|left"
+        android:elevation="@dimen/drawable_15dp"
+        android:id="@+id/info_restaurant_frame"
+        tools:targetApi="lollipop" />
 
+        android:name="com.singlefood.sinfo.models.info_comentario_principal">-->
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -122,9 +141,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:fontFamily="@font/rubrik_semibold"
-                    android:text="Comentarios:  "
+                    android:text="@string/comentarios"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -135,9 +152,10 @@
                     android:layout_marginTop="@dimen/margin_top_5dp"
                     android:layout_marginBottom="@dimen/margin_top_5dp"
                     android:alpha="0.6"
-                    android:fontFamily="@font/rubrik_semibold_3"
-                    android:text="10 Personas"
-                    android:textSize="20sp" />
+                    android:text="@string/_10_personas"
+                    android:textSize="20sp"
+
+                    />
             </LinearLayout>
 
 
@@ -155,21 +173,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:scrollbars="vertical"/>
-
             <Button
+                android:layout_marginVertical="@dimen/dimen10"
                 android:id="@+id/button_comentar_collapse"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:textSize="@dimen/texto13sp"
+                android:background="@drawable/capsule_border_comentarios"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="50dp"
-
-                android:layout_marginVertical="@dimen/dimen10"
-                android:background="@drawable/fui_idp_button_background_anonymous"
                 android:backgroundTint="@color/coloramarillo"
-
-                android:text="COMENTAR"
-
-                android:textSize="@dimen/texto13sp" />
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="@string/comentar"
+                tools:targetApi="o" />
 
 
         </LinearLayout>
@@ -177,22 +194,36 @@
 
 
     </androidx.core.widget.NestedScrollView>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_comentar_hide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_anchorGravity="top|right|end"
         android:layout_margin="5dp"
         android:clickable="true"
         android:paddingBottom="80dp"
         android:src="@drawable/ic_add_black_24dp"
-        android:visibility="gone"
-        app:backgroundTint="@color/coloramarillo"
+        app:backgroundTint="@color/colorAccent"
         app:layout_anchor="@id/crear_comentario_layout_dialog"
-        app:layout_anchorGravity="top|right|end" />
+        android:visibility="gone"
+        android:focusable="true" />
     <include android:id="@+id/crear_comentario_layout_dialog"
         layout="@layout/crear_comentario_sheep"/>
-
+    <!--   <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/button_comentar_hide"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:layout_anchorGravity="top|right|end"
+          android:layout_margin="5dp"
+          android:clickable="true"
+          android:paddingBottom="80dp"
+          android:src="@drawable/ic_add_black_24dp"
+          app:backgroundTint="@color/colorAccent"
+          app:layout_anchor="@id/crear_comida_dialog"
+          android:vlity="gone" />
+   <include android:id="@+id/crear_comentario_layout_dialog"
+          app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+          layout="@layout/crear_comentario_sheep"/>-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

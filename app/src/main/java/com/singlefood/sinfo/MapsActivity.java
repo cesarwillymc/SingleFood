@@ -4,11 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,8 +23,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.singlefood.sinfo.models.mapsFragment;
-
-import java.io.ByteArrayOutputStream;
 
 public class MapsActivity extends AppCompatActivity {
     NavigationView navigationView;
@@ -125,31 +120,6 @@ public class MapsActivity extends AppCompatActivity {
         //imagetoNavegationDrawer(  );
     }
 
-    private void imagetoNavegationDrawer( ) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.fondo01 );
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-
-        //decode base64 string to image
-        imageBytes = Base64.decode(imageString, Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        image_header.setImageBitmap(decodedImage);
-    }
-
-    private void setTolbar() {
-//        tv_tolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.wd_toolvar);
-//        setSupportActionBar( tv_tolbar );
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_name);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
-
-
-    public DrawerLayout getDrawer() {
-        return drawer;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
