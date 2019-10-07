@@ -1,217 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="10dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/capsule_border_comentarios"
     android:elevation="@dimen/drawable_15dp"
+    android:paddingBottom="10dp"
     tools:context=".models.info_comentario_principal">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/drawable_15dp"
+            android:layout_marginTop="@dimen/drawable_15dp"
+            android:layout_marginRight="@dimen/drawable_15dp"
             android:orientation="vertical">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginLeft="@dimen/drawable_15dp"
-                android:layout_marginRight="@dimen/drawable_15dp"
-                android:layout_marginTop="@dimen/drawable_15dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:gravity="center|left">
-
-                    <TextView
-                        android:id="@+id/text_view_info_platillo"
-                        android:layout_width="0dp"
-                        android:layout_weight="6"
-                        android:layout_height="wrap_content"
-                        android:text="Restaurante la Nacional"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/estado"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_height="20dp"
-                        android:layout_margin="@dimen/margin_top_5dp"
-                        android:background="@drawable/capsule_rv_test"
-                        android:backgroundTint="#764CC4"
-                        android:gravity="center"
-                        android:text="ABIERTO"
-                        android:textColor="@color/white"
-                        android:textSize="9sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_weight="2.5"
-                        android:id="@+id/rv_comentarios_text_recomendados"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/capsule_rv_test"
-                        android:layout_margin="@dimen/margin_top_5dp"
-                        android:gravity="center"
-                        android:text="COMENTADO"
-                        android:paddingRight="@dimen/margin_top_5dp"
-                        android:paddingLeft="@dimen/margin_top_5dp"
-                        android:textColor="@color/white"
-                        android:backgroundTint="#FF9800"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
                 <TextView
-                    android:id="@+id/text_view_info_direccion"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/text_view_info_platillo"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:text="Av. Andres aramburu º859-Surquillo"
-                    android:alpha="0.7"
-                    android:textSize="14sp" />
+                    android:layout_weight="6"
+                    android:fontFamily="@font/rubrik_semibold"
+                    android:text="Restaurante la Nacional"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/estado"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="@dimen/margin_top_5dp"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/capsule_rv_test"
+                    android:backgroundTint="#764CC4"
+                    android:fontFamily="@font/rubrik_light"
+                    android:gravity="center"
+                    android:text="ABIERTO"
+                    android:textColor="@color/white"
+                    android:textSize="9sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
-            <View
+
+
+            <TextView
+                android:id="@+id/text_view_info_direccion"
                 android:layout_width="wrap_content"
-                android:layout_height="2dp"
-                android:background="@color/blue_grey" />
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:alpha="0.7"
+                android:fontFamily="@font/rubrik_semibold_3"
+                android:text="Av. Andres aramburu º859-Surquillo"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:background="@color/blue_grey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/quantum_amber50"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_top_5dp"
+                android:layout_weight="8"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_view_info_precio"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="4"
+                    android:drawableLeft="@drawable/ico_soles"
+                    android:fontFamily="@font/rubrik_semibold"
+                    android:gravity="center|left"
+                    android:text="14.50"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_view_info_tipo_comida"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="4"
+                    android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
+                    android:fontFamily="@font/rubrik_semibold"
+                    android:gravity="center|left"
+                    android:text="Menu criollo"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/rating_info_text_rating"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/capsule_boton_border"
+                android:drawableLeft="@drawable/ic_star_black_24dp"
+                android:gravity="left|center"
+                android:text="4,5"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/drawable_15dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:weightSum="10"
                 android:orientation="horizontal"
-                android:background="#E9C1C1">
+                android:weightSum="10"
+
+                >
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/margin_top_5dp"
+                    android:layout_weight="2">
+
+                    <ImageView
+                        android:id="@+id/rv_comentarios_imagen_user_image_principal"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center|top"
+                        android:background="@drawable/capsule_rest_infor"
+                        android:src="@drawable/fondo01" />
+
+                </FrameLayout>
+
+
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="8"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_margin="@dimen/margin_top_5dp">
+                    android:layout_margin="@dimen/margin_top_5dp"
+                    android:layout_weight="8"
+                    android:orientation="vertical">
+
                     <TextView
-                        android:id="@+id/text_view_info_precio"
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
+                        android:id="@+id/rv_comentarios_name_user_principal"
+                        android:layout_width="match_parent"
                         android:layout_height="20dp"
-                        android:gravity="center|left"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-                        android:text="S/14,50" />
+                        android:fontFamily="@font/rubrik_semibold"
+                        android:text="Oscar Rodriguez"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
                     <TextView
-                        android:id="@+id/text_view_info_tipo_comida"
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:layout_height="20dp"
-                        android:gravity="center|left"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-                        android:text="Menu criollo" />
+                        android:id="@+id/rv_comentarios_text_user_fech_principal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:alpha="0.5"
+                        android:fontFamily="@font/rubrik_light"
+                        android:text="Setiembre 02, 2019"
+                        android:textSize="9sp"
+                        android:textStyle="italic" />
+
+
+                    <TextView
+                        android:id="@+id/rv_comentarios_text_user_comentarios_principal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"
+                        android:fontFamily="@font/rubrik_regular"
+                        android:text="Me fascina la combinación del pollo con las
+papas fritas y tomates dorados, excelente. la Nacional"
+                        android:textSize="10sp" />
 
 
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/rating_info_text_rating"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center"
-                    android:text="4,5"
-                    android:textColor="@color/white"
-                    android:drawableLeft="@drawable/ic_star_black_24dp"
-                    android:textStyle="bold"
-                    android:background="@drawable/capsule_boton_border"/>
+
+
             </LinearLayout>
 
-            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/drawable_15dp"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                >
-                <LinearLayout
-                    android:weightSum="10"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-
-                    >
-                    <FrameLayout
-                        android:layout_weight="2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/margin_top_5dp">
-                        <ImageView
-                            android:id="@+id/rv_comentarios_imagen_user_image_principal"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_gravity="center|top"
-                            android:background="@drawable/capsule_rest_infor"
-                            android:src="@drawable/fondo01"/>
-
-                    </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
 
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_margin="@dimen/margin_top_5dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="8"
-                        android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/rv_comentarios_name_user_principal"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="20dp"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    android:text="Oscar Rodriguez" />
-
-                                <TextView
-                                    android:id="@+id/rv_comentarios_text_user_fech_principal"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-
-                                    android:text="Setiembre 02, 2019"
-                                    android:textSize="9sp"
-                                    android:alpha="0.5"
-                                    android:textStyle="italic" />
-
-
-
-                        <TextView
-                            android:id="@+id/rv_comentarios_text_user_comentarios_principal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Me fascina la combinación del pollo con las
-papas fritas y tomates dorados, excelente. la Nacional"
-                            android:alpha="0.7"
-                            android:textSize="9sp" />
-
-
-
-
-                    </LinearLayout>
-
-
-
-                </LinearLayout>
-
-            </FrameLayout>
-        </LinearLayout>
-
-
-    </FrameLayout>
+</FrameLayout>

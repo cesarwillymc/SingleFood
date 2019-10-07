@@ -1,138 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/capsule_border_comentarios"
+    android:orientation="vertical"
+    android:padding="10dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="@drawable/capsule_rv_test"
-      android:orientation="vertical"
-      app:behavior_hideable="true"
-      app:behavior_peekHeight="0dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-      >
+      android:layout_marginHorizontal="@dimen/drawable_15dp"
+      android:layout_marginVertical="@dimen/dimen10"
+      android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="8">
+        android:paddingBottom="10dp">
+
       <LinearLayout
           android:layout_width="0dp"
-          android:layout_weight="5"
           android:layout_height="wrap_content"
-          android:orientation="vertical"
-          android:layout_marginHorizontal="@dimen/drawable_15dp"
-          android:layout_marginVertical="@dimen/dimen10">
+          android:layout_weight="4"
+          android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/rubrik_semibold"
             android:text="Nuevo Platillo"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <RatingBar
 
             android:id="@+id/dialog_rating_bar"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:isIndicator="false"
-            android:layout_gravity="center"
-            style="@style/Widget.AppCompat.RatingBar.Indicator"
-            android:progressTint="@color/coloramarillo"
-            android:numStars="5" />
+            android:numStars="5"
+            android:progressTint="@color/coloramarillo" />
       </LinearLayout>
 
       <androidx.appcompat.widget.AppCompatImageView
           android:id="@+id/dialog_imageView"
-          android:layout_margin="1dp"
-          android:layout_width="0dp"
-          android:layout_weight="3"
-          android:layout_height="match_parent"
-          android:background="@drawable/capsule_rv_test"
+          android:layout_width="wrap_content"
+          android:layout_height="80dp"
+          android:layout_weight="1.5"
+          android:background="@drawable/fui_idp_button_background_anonymous"
           android:backgroundTint="@color/coloramarillo"
-          />
+          app:srcCompat="@android:drawable/ic_menu_camera" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <AutoCompleteTextView
+        android:id="@+id/acPlatillos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginVertical="@dimen/dimen10"
-        android:layout_marginHorizontal="@dimen/drawable_15dp">
-      <AutoCompleteTextView
-          android:paddingHorizontal="@dimen/dimen10"
-          android:paddingVertical="@dimen/margin_top_5dp"
-          android:textColor="#534D4D"
-          android:layout_margin="2dp"
-          android:textSize="@dimen/texto13sp"
-          android:background="@drawable/capsule_border_comentarios"
-          android:id="@+id/acPlatillos"
-          android:hint="Nombre del plato"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          />
-      <EditText
-          android:textSize="@dimen/texto13sp"
-          android:id="@+id/dialog_text_view_direccion"
-          android:hint="Lugar o Direccion"
-          android:background="@drawable/capsule_border_comentarios"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingHorizontal="@dimen/dimen10"
-          android:paddingVertical="@dimen/margin_top_5dp"
-          android:layout_margin="2dp"/>
-
-      <EditText
-          android:background="@drawable/capsule_border_comentarios"
-          android:id="@+id/dialog_edit_text_precio"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:hint="Precio"
-          android:inputType="number"
-          android:textSize="@dimen/texto13sp"
-          android:paddingHorizontal="@dimen/dimen10"
-          android:paddingVertical="@dimen/margin_top_5dp"
-          android:layout_margin="2dp"/>
-ç<Spinner
+        android:layout_margin="2dp"
         android:background="@drawable/capsule_border_comentarios"
-        android:id="@+id/dialog_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/planets_array"
-        android:textSize="@dimen/texto13sp"
-        android:tooltipText="@string/app_name"
-        android:textColor="#534D4D"
+        android:fontFamily="@font/rubrik_light"
+        android:hint="Nombre del plato"
+        android:padding="10dp"
         android:paddingHorizontal="@dimen/dimen10"
         android:paddingVertical="@dimen/margin_top_5dp"
-        android:layout_margin="2dp"/>
-      <EditText
-          android:hint="Comentarios"
-          android:textColor="#534D4D"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@drawable/capsule_border_comentarios"
-          android:paddingHorizontal="@dimen/dimen10"
-          android:paddingBottom="@dimen/drawable_15dp"
-          android:paddingTop="@dimen/margin_top_5dp"
-          android:textSize="@dimen/texto13sp"
-          android:layout_margin="2dp"
-          android:layout_gravity="top"
-          android:backgroundTint="#E6E6E6"
-          android:id="@+id/dialog_comentario"/>
+        android:textColor="#534D4D"
+        android:textSize="@dimen/texto13sp" />
 
-      <Button
-          android:id="@+id/dialog_yes"
-          android:layout_width="match_parent"
-          android:layout_height="35dp"
-          android:textSize="@dimen/texto13sp"
-          android:background="@drawable/capsule_border_comentarios"
-          android:layout_gravity="center"
-          android:layout_marginHorizontal="50dp"
+    <EditText
+        android:id="@+id/dialog_text_view_direccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:background="@drawable/capsule_border_comentarios"
+        android:fontFamily="@font/rubrik_light"
+        android:hint="Lugar o Direccion"
+        android:padding="10dp"
+        android:paddingHorizontal="@dimen/dimen10"
+        android:paddingVertical="@dimen/margin_top_5dp"
+        android:textSize="@dimen/texto13sp" />
 
-          android:backgroundTint="@color/coloramarillo"
+    <EditText
+        android:id="@+id/dialog_edit_text_precio"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:background="@drawable/capsule_border_comentarios"
+        android:fontFamily="@font/rubrik_light"
+        android:hint="Precio"
+        android:inputType="number"
+        android:padding="10dp"
+        android:paddingHorizontal="@dimen/dimen10"
+        android:paddingVertical="@dimen/margin_top_5dp"
+        android:textSize="@dimen/texto13sp" />
+    ç
 
-          android:text="PUBLICAR" />
-    </LinearLayout>
+    <EditText
+        android:id="@+id/dialog_comentario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_margin="2dp"
+        android:background="@drawable/capsule_border_comentarios"
+        android:fontFamily="@font/rubrik_light"
+        android:hint="Comentarios"
+        android:padding="10dp"
+        android:paddingHorizontal="@dimen/dimen10"
+        android:paddingTop="@dimen/margin_top_5dp"
+        android:paddingBottom="@dimen/drawable_15dp"
+        android:textColor="#534D4D"
+        android:textSize="@dimen/texto13sp" />
 
+    <Button
+        android:id="@+id/dialog_yes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/capsule_border_comentarios"
+        android:backgroundTint="@color/coloramarillo"
+        android:fontFamily="@font/rubrik_semibold"
+        android:text="PUBLICAR"
+        android:textColor="@color/com_facebook_button_background_color_focused"
+        android:textSize="@dimen/texto13sp" />
   </LinearLayout>
+
+</LinearLayout>

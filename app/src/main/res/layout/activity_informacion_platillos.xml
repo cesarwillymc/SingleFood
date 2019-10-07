@@ -59,24 +59,26 @@
         app:layout_anchor="@id/appbar_info"
         app:layout_anchorGravity="top|right|end"
         android:orientation="horizontal">
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnfLike"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_margin="10dp"
             android:clickable="true"
-            android:src="@android:drawable/star_big_on"
-            app:backgroundTint="#FFC107"
+            android:src="@drawable/ico_like"
+            app:backgroundTint="@color/com_facebook_button_background_color_focused"
             app:fabSize="normal"
             app:maxImageSize="35dp" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnfComment"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_margin="10dp"
             android:clickable="true"
-            android:src="@android:drawable/sym_action_chat"
-            app:backgroundTint="#00bcd4"
+            android:src="@drawable/ico_comment"
+            app:backgroundTint="@color/com_facebook_button_background_color_focused"
             app:fabSize="normal"
             app:maxImageSize="35dp" />
 
@@ -109,6 +111,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubrik_semibold"
                     android:text="Comentarios:  "
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -120,10 +123,10 @@
                     android:layout_marginTop="@dimen/margin_top_5dp"
                     android:layout_marginBottom="@dimen/margin_top_5dp"
                     android:alpha="0.6"
+                    android:fontFamily="@font/rubrik_semibold_3"
                     android:text="10 Personas"
-                    android:textSize="20sp"
 
-                    />
+                    android:textSize="20sp" />
             </LinearLayout>
 
 
@@ -141,19 +144,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:scrollbars="vertical"/>
+
             <Button
-                android:layout_marginVertical="@dimen/dimen10"
                 android:id="@+id/button_comentar_collapse"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:textSize="@dimen/texto13sp"
-                android:background="@drawable/capsule_border_comentarios"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="50dp"
-
+                android:layout_marginVertical="@dimen/dimen10"
+                android:background="@drawable/fui_idp_button_background_anonymous"
                 android:backgroundTint="@color/coloramarillo"
 
-                android:text="COMENTAR" />
+                android:text="COMENTAR"
+
+                android:textSize="@dimen/texto13sp" />
 
 
         </LinearLayout>
@@ -161,18 +165,19 @@
 
 
     </androidx.core.widget.NestedScrollView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_comentar_hide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_anchorGravity="top|right|end"
         android:layout_margin="5dp"
         android:clickable="true"
         android:paddingBottom="80dp"
         android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="@color/colorAccent"
+        android:visibility="gone"
+        app:backgroundTint="@color/coloramarillo"
         app:layout_anchor="@id/crear_comentario_layout_dialog"
-        android:visibility="gone" />
+        app:layout_anchorGravity="top|right|end" />
     <include android:id="@+id/crear_comentario_layout_dialog"
         layout="@layout/crear_comentario_sheep"/>
     <!--   <com.google.android.material.floatingactionbutton.FloatingActionButton

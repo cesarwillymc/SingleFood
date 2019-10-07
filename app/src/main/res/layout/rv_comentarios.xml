@@ -5,74 +5,80 @@
     android:layout_marginHorizontal="@dimen/drawable_15dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+
     <LinearLayout
-        android:weightSum="10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:paddingTop="@dimen/margin_top_5dp"
 
-        >
+        android:paddingBottom="@dimen/margin_top_5dp"
+        android:weightSum="10">
+
         <FrameLayout
-            android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_top_5dp">
+            android:layout_margin="@dimen/margin_top_5dp"
+            android:layout_weight="2">
+
             <ImageView
                 android:id="@+id/rv_comentarios_imagen_user_image"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center|top"
                 android:background="@drawable/capsule_rest_infor"
-                android:src="@drawable/fondo01"/>
+                android:src="@drawable/fondo01" />
 
         </FrameLayout>
 
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_margin="@dimen/margin_top_5dp"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_top_5dp"
             android:layout_weight="8"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="8"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="8">
+
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="8"
                     android:layout_height="wrap_content"
+                    android:layout_weight="8"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/rv_comentarios_name_user"
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
+                        android:text="Oscar Rodriguez"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:text="Oscar Rodriguez" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/rv_comentarios_text_user_fech"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
 
+                        android:alpha="0.5"
                         android:text="Setiembre 02, 2019"
                         android:textSize="9sp"
-                        android:alpha="0.5"
                         android:textStyle="italic" />
                 </LinearLayout>
+
                 <RatingBar
                     android:id="@+id/rv_comentarios_user_rating"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
+                    android:layout_marginHorizontal="@dimen/dimen10"
                     android:isIndicator="true"
                     android:numStars="5"
-                    android:layout_marginHorizontal="@dimen/dimen10"
                     android:progressTint="@color/colorPrimary"
                     android:rating="4.3" />
 
@@ -84,16 +90,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
+                android:alpha="0.7"
                 android:text="Me fascina la combinación del pollo con las
 papas fritas y tomates dorados, excelente. la Nacional"
-                android:alpha="0.7"
-                android:textSize="9sp" />
-
-
+                android:textSize="12sp" />
 
 
         </LinearLayout>
-
 
 
     </LinearLayout>

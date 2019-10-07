@@ -3,66 +3,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:background="@drawable/capsule_rv_test"
     android:orientation="vertical"
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    >
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nuevo Comentario"
-                android:layout_margin="@dimen/dimen10"
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-            <RatingBar
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen10"
+        android:fontFamily="@font/rubrik_semibold"
+        android:text="Tu calificación:"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-                android:id="@+id/crear_comentario_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:isIndicator="false"
-                android:layout_gravity="center"
-                style="@style/Widget.AppCompat.RatingBar.Indicator"
-                android:progressTint="@color/coloramarillo"
-                android:numStars="5" />
+    <RatingBar
+
+        android:id="@+id/crear_comentario_rating"
+        style="@style/Widget.AppCompat.RatingBar.Indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:isIndicator="false"
+        android:numStars="5"
+        android:progressTint="@color/coloramarillo" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/drawable_15dp"
+        android:layout_marginVertical="@dimen/dimen10"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/crear_comentario_comentario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginVertical="@dimen/dimen10"
-            android:layout_marginHorizontal="@dimen/drawable_15dp">
+            android:layout_gravity="top"
+            android:layout_marginBottom="@dimen/margin_top_5dp"
+            android:background="@drawable/capsule_border_comentarios"
+            android:fontFamily="@font/rubrik_light"
+            android:hint="¿Que opinas?"
+            android:paddingHorizontal="@dimen/dimen10"
+            android:paddingTop="@dimen/margin_top_5dp"
+            android:paddingBottom="30dp"
+            android:textAllCaps="true"
+            android:textColor="#6B6060"
+            android:textSize="@dimen/texto13sp" />
 
-            <EditText
-                android:hint="Comentarios"
-                android:textColor="#534D4D"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/capsule_border_comentarios"
-                android:paddingHorizontal="@dimen/dimen10"
-                android:paddingBottom="30dp"
-                android:paddingTop="@dimen/margin_top_5dp"
-                android:textSize="@dimen/texto13sp"
-                android:layout_margin="5dp"
-                android:layout_gravity="top"
-                android:backgroundTint="#E6E6E6"
-                android:id="@+id/crear_comentario_comentario"/>
+        <Button
+            android:id="@+id/crear_comentario_publicar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/capsule_border_comentarios"
+            android:backgroundTint="@color/coloramarillo"
 
-            <Button
-                android:id="@+id/crear_comentario_publicar"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:textSize="@dimen/texto13sp"
-                android:background="@drawable/capsule_border_comentarios"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="50dp"
+            android:fontFamily="@font/rubrik_semibold"
 
-                android:backgroundTint="@color/coloramarillo"
-
-                android:text="PUBLICAR" />
+            android:text="PUBLICAR"
+            android:textColor="@color/com_facebook_button_background_color_focused"
+            android:textSize="@dimen/texto13sp" />
     </LinearLayout>
 
 </LinearLayout>

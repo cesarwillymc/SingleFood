@@ -57,6 +57,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -129,7 +130,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private AutoCompleteTextView acPlatillo;
     private EditText dialog_et_precio;
     private EditText dialog_et_direccion;
-    private  Spinner dialog_spinner_tipo;
     private ImageView dialog_iv_foto;
     private RatingBar ratingBar_dialog;
     private SearchView searchView;
@@ -436,7 +436,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     platillos platillosc= snapshot.getValue( platillos.class);
                     Double latitud = platillosc.getPlaces().getLatitud();
                     Double longitud = platillosc.getPlaces().getLongitud();
-                    Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().position(new LatLng(latitud, longitud)));
+                    Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().position(new LatLng(latitud, longitud)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ico_marker_meat)));
                     String idMarker = mUbicacionPlatillo.getId();
                     markerMapPlatillos.put(idMarker, platillosc.getNombrePlatillo());
 
@@ -512,9 +512,8 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     public void onClick(View v) {
         switch (v.getId()){
             case  R.id.fab_collapse_dialog:
-                Toast.makeText( getContext(),"Buton",Toast.LENGTH_SHORT ).show();
-                   // cargarProducto(  );
-                     FirebaseAuth mAuth= FirebaseAuth.getInstance();
+
+                FirebaseAuth mAuth= FirebaseAuth.getInstance();
                 FirebaseUser user=mAuth.getCurrentUser();
                 if(user != null){
                     cargarProducto(  );
@@ -586,7 +585,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             datos.put( "nombrePlatillo", platillo );
             datos.put( "precio", precio );
             datos.put( "direccion", dialog_et_direccion.getText().toString()  );
-            datos.put( "tipo", dialog_spinner_tipo.getSelectedItem().toString() );
+            datos.put( "tipo", "general" );
             datos.put( "imagenbase64", imageString );
             datos.put( "places",base_datos);
             datos.put("id_user",user.getUid());
@@ -638,7 +637,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         acPlatillo.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
         acPlatillo.setTextColor(Color.RED);
 
-        dialog_spinner_tipo= view.findViewById( R.id.dialog_spinner ) ;
+
         dialog_iv_foto= view.findViewById( R.id.dialog_imageView );
         dialogButtonsi= view.findViewById( R.id.dialog_yes );
         ratingBar_dialog=view.findViewById( R.id.dialog_rating_bar );

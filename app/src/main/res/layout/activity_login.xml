@@ -29,6 +29,7 @@
             android:id="@+id/ivPhotoUser_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             app:srcCompat="@android:drawable/sym_def_app_icon" />
 
         <EditText
@@ -37,8 +38,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/capsule_border_comentarios"
             android:hint="Tu nombre"
             android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textSize="14sp"
             android:visibility="visible" />
 
         <EditText
@@ -47,8 +52,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/capsule_border_comentarios"
             android:hint="Email"
             android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textSize="14sp"
             android:visibility="visible" />
 
         <EditText
@@ -58,8 +67,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:background="@drawable/capsule_border_comentarios"
             android:hint="Celular"
             android:inputType="number"
+            android:padding="10dp"
             android:visibility="visible" />
 
         <Button
@@ -70,8 +81,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/fui_idp_button_background_phone"
+            android:background="@drawable/capsule_border_comentarios"
+            android:backgroundTint="@color/coloramarillo"
+            android:fontFamily="@font/rubrik_semibold"
             android:text="Registrarme"
+            android:textColor="@color/com_facebook_button_background_color_focused"
             tools:targetApi="lollipop" />
     </LinearLayout>
 

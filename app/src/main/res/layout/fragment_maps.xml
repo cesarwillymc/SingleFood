@@ -41,7 +41,7 @@
                 android:clickable="true"
                 android:paddingBottom="80dp"
                 android:src="@drawable/ic_add_black_24dp"
-                app:backgroundTint="@color/colorAccent" />
+                app:backgroundTint="@color/quantum_yellow800" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -53,21 +53,24 @@
 
 
         </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_hidden_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_anchorGravity="top|right|end"
         android:layout_margin="5dp"
         android:clickable="true"
         android:paddingBottom="80dp"
         android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="@color/colorAccent"
+        android:visibility="gone"
+        app:backgroundTint="@color/coloramarillo"
         app:layout_anchor="@id/crear_comida_dialog"
-        android:visibility="gone" />
-        <include android:id="@+id/crear_comida_dialog"
-            app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
-            layout="@layout/activity_crear_producto"/>
+        app:layout_anchorGravity="top|right|end" />
+
+    <include
+        android:id="@+id/crear_comida_dialog"
+        layout="@layout/activity_crear_producto"
+        app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior" />
 
 
 
