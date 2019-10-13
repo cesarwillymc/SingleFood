@@ -128,7 +128,8 @@
                 android:layout_height="wrap_content"
                 android:elevation="@dimen/drawable_15dp"
                 android:id="@+id/info_restaurant_frame"
-                tools:targetApi="lollipop" />
+                tools:targetApi="lollipop"
+                android:focusable="true"/>
 
 
             <LinearLayout

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="@drawable/capsule_rv_test"
+    android:background="@drawable/capsuletops"
     android:orientation="vertical"
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
@@ -36,7 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/drawable_15dp"
         android:layout_marginVertical="@dimen/dimen10"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:targetApi="o">
 
         <EditText
             android:id="@+id/crear_comentario_comentario"
@@ -47,10 +48,9 @@
             android:background="@drawable/capsule_border_comentarios"
             android:fontFamily="@font/rubrik_light"
             android:hint="¿Que opinas?"
-            android:paddingHorizontal="@dimen/dimen10"
+            android:paddingLeft="@dimen/margin_top_5dp"
             android:paddingTop="@dimen/margin_top_5dp"
             android:paddingBottom="30dp"
-            android:textAllCaps="true"
             android:textColor="#6B6060"
             android:textSize="@dimen/texto13sp" />
 
