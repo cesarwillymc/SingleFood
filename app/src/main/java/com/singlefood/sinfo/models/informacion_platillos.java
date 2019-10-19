@@ -90,7 +90,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_informacion_platillos );
+        setContentView( R.layout.act_detalle_platillo);
         ButterKnife.bind( this );
         if (Build.VERSION.SDK_INT > 16) {
             getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,

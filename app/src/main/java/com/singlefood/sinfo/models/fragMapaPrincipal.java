@@ -20,9 +20,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -31,7 +34,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -85,6 +87,7 @@ import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
 import com.singlefood.sinfo.models.productos.comentarios;
 import com.singlefood.sinfo.models.productos.platillos;
+import com.singlefood.sinfo.utils.Constants;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -102,7 +105,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class mapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
+public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
     private View view;
     private MapView mapView;
     private Uri fileImage;
@@ -110,10 +113,10 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     private Marker m;
     private final int TAKEFOTO=1;
     private final int GPS=51;
-    private RecyclerView.Adapter adapterRview;
+    private RecyclerView.Adapter adapterRVTarjetaPlatillo;
     private RecyclerView.LayoutManager layourRview;
     private RecyclerProductoAdapter mAdapter;
-    private RecyclerView Rview;
+    private RecyclerView rvListaPlatillos;
     private GoogleMap mMap;
     private ProgressDialog progressDialog;
     private FloatingActionButton fab_collapse;
@@ -131,6 +134,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     //Dialog datos
     Button dialogButtonsi;
     private AutoCompleteTextView acPlatillo;
+    private AutoCompleteTextView acBuscadorPlatillo;
     private EditText dialog_et_precio;
     private EditText dialog_et_direccion;
     private ImageView dialog_iv_foto;
@@ -144,123 +148,26 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     BottomSheetBehavior bottomSheetBehavior;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     final HashMap<String, String> markerMapPlatillos = new HashMap<String, String>();
+    ArrayList<platillos> arrayListPlatillos= new ArrayList<>();
     private Context context;
-    public mapsFragment() {
+    public fragMapaPrincipal() {
         // Required empty public constructor
     }
-
-    String[] foods = {"Adobo de chancho",
-            "Aguadito",
-            "Ajiaco de Papas",
-            "Ají de Gallina",
-            "Alverjado de Pollo",
-            "Anticuchos",
-            "Arroz a la jardinera",
-            "Arroz Chaufa",
-            "Arroz chaufa de mariscos",
-            "Arroz con mariscos",
-            "Arroz con pato",
-            "Arroz con pollo",
-            "Arroz tapado",
-            "Bistec a lo pobre",
-            "Bistec a la chorrilana",
-            "Cabrito a la norteña",
-            "Caldo de cabeza de carnero o cordero",
-            "Caldo de gallina",
-            "Cancancho o cordero al palo",
-            "Cau cau",
-            "Causa",
-            "Causa lambayecana o ferreñafana",
-            "Ceviche",
-            "Ceviche de conchas negras",
-            "Ceviche de camarones",
-            "Ceviche mixto",
-            "Carapulcra",
-            "Cuy chactado",
-            "Chacharada o cacharrada",
-            "Chairo",
-            "Chanfainita",
-            "Charquicán",
-            "Chaque",
-            "Chicharrones",
-            "Chilcano",
-            "Chinguirito",
-            "Chirimpico",
-            "Choros a la chalaca",
-            "Chupe de cangrejos",
-            "Chupe de camarones",
-            "Chupe verde o Yacuchupe",
-            "Escabeche",
-            "Escribano",
-            "Estofado",
-            "Espesado",
-            "Frito trujillano",
-            "Hígado encebollado",
-            "Huatía",
-            "Inchicapi",
-            "Jalea",
-            "Juane",
-            "Locro",
-            "Locro de gallina",
-            "Lomo saltado",
-            "Malaya",
-            "Majarisco",
-            "Menestrón",
-            "Migadito",
-            "Mondonguito a la italiana",
-            "Ocopa",
-            "Olluquito con charqui",
-            "Pachamanca",
-            "Papa a la Huancaína",
-            "Papa rellena",
-            "Parihuela",
-            "Patachi o sopa de trigo",
-            "Patarashca",
-            "Patasca",
-            "Patitas con maní",
-            "Pepian de choclo",
-            "Pesque de quinua",
-            "Pescado a lo macho",
-            "Picante a la tacneña",
-            "Picante de cuy",
-            "Pollo broaster",
-            "Pollo a la brasa",
-            "Pollo al sillao",
-            "Puca picante",
-            "Quinua atamalada",
-            "Rocoto relleno",
-            "Salchipapa",
-            "Sancochado",
-            "Seco de chabelo",
-            "Seco de res con frejoles",
-            "Seco a la norteña",
-            "Shambar",
-            "Solterito",
-            "Sopa criolla",
-            "Sopa de choros",
-            "Sopa seca",
-            "Sopa teóloga",
-            "Sudado de pescado",
-            "Tacacho con cecina",
-            "Tacu tacu",
-            "Tallarín saltado",
-            "Tallarines rojos con pollo",
-            "Tallarines verdes",
-            "Tiradito",
-            "Tortilla de raya",
-            "Trucha frita"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate( R.layout.fragment_maps, container, false );
+
+        view = inflater.inflate( R.layout.fra_mapa_principal, container, false );
         linearLayout=(LinearLayout) view.findViewById( R.id.crear_comida_dialog ) ;
         bottomSheetBehavior= BottomSheetBehavior.from( linearLayout );
-         fab_collapse = (FloatingActionButton) view.findViewById( R.id.fab_collapse_dialog );
+        fab_collapse = (FloatingActionButton) view.findViewById( R.id.fab_collapse_dialog );
         fab_hidden = (FloatingActionButton) view.findViewById( R.id.fab_hidden_dialog );
 
-         fab_collapse.setOnClickListener(this );
-         fab_hidden.setOnClickListener( this );
+
+
+        fab_collapse.setOnClickListener(this );
+        fab_hidden.setOnClickListener( this );
         context = getContext();
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
@@ -287,7 +194,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                             if (Build.VERSION.SDK_INT >= 26) {
                                 ft.setReorderingAllowed(false);
                             }
-                            ft.detach(mapsFragment.this).attach(mapsFragment.this).commit();
+                            ft.detach(fragMapaPrincipal.this).attach(fragMapaPrincipal.this).commit();
                         }
                     } )
                     .show();
@@ -316,40 +223,31 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             }
         } );
 
-//        store= FirebaseStorage.getInstance();
-//        storageReference= store.getReference();
 
-        searchView= (SearchView) view.findViewById( R.id.maps_search_view );
-        searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
+        //Buscador de platos en la parte superior
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>
+                (getContext(), android.R.layout.select_dialog_item, Constants.foods);
+
+        acBuscadorPlatillo = view.findViewById(R.id.acBuscarPlatillos);
+        acBuscadorPlatillo.setThreshold(1);//num de caracteres para iniciar el autocompletado
+        acBuscadorPlatillo.setAdapter(adapter);
+        acBuscadorPlatillo.setTextColor(Color.GREEN);
+
+        acBuscadorPlatillo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                String newlocation = searchView.getQuery().toString();
-                List<Address> addressList=null;
-                if(newlocation!=null || !newlocation.equals( "" )){
-                    Geocoder geocoder = new Geocoder( getContext() );
-                    try {
-                        addressList=geocoder.getFromLocationName( newlocation,1 );
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (addressList!=null){
-                        Address addressOther= addressList.get( 0 );
-                        LatLng latLngother= new LatLng( addressOther.getLatitude(),addressOther.getLongitude() );
-                        mMap.animateCamera( CameraUpdateFactory.newLatLngZoom( latLngother,15 ) );
-                    }else {
-                        Toast.makeText(getContext(),"Error no se encontraro lugar",Toast.LENGTH_LONG).show();
-                    }
-
-
-                }
-                return false;
+            public void onClick(View view) {
             }
-
+        });
+        acBuscadorPlatillo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public void onItemClick(AdapterView<?> p, View v, int pos, long id) {
+                InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(acBuscadorPlatillo.getWindowToken(), 0);
+
+                mMap.animateCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude()),14 ));
+                Toast.makeText( getContext(),"Disfrute de estas delicias!!" , Toast.LENGTH_SHORT ).show();
             }
-        } );
+        });
 
         return view;
     }
@@ -366,9 +264,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         //GPS ENABLE
         gpsEnable();
 
-        Rview = view.findViewById(R.id.my_recycler_view);
+        rvListaPlatillos = view.findViewById(R.id.rvListaPlatillos);
         layourRview = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        Rview.setLayoutManager(layourRview);
+        rvListaPlatillos.setLayoutManager(layourRview);
 
         mStorageReference= FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
@@ -425,6 +323,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.getUiSettings().setCompassEnabled( false );
         mMap.getUiSettings().setIndoorLevelPickerEnabled( false );
         mMap.setOnMarkerClickListener(this);
+
         if(mapView!=null){
             View locationButton=((View) mapView.findViewById( Integer.parseInt( "1" ) ).getParent()).findViewById( Integer.parseInt( "2" ) );
             RelativeLayout.LayoutParams layoutParams=(RelativeLayout.LayoutParams) locationButton.getLayoutParams();
@@ -441,13 +340,20 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     marker.remove();
                 }
                 ArrayList<String> llaves= new ArrayList<>();
-                 ArrayList<platillos> arrayListPlatillos= new ArrayList<>();
+
                  ArrayList<ArrayList<comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     platillos platillosc= snapshot.getValue( platillos.class);
                     Double latitud = platillosc.getPlaces().getLatitud();
                     Double longitud = platillosc.getPlaces().getLongitud();
-                    Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().position(new LatLng(latitud, longitud)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ico_marker_meat)));
+
+                    Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().
+                                                                    position(
+                                                                            new LatLng(latitud, longitud))
+                                                                    .icon(
+                                                                            BitmapDescriptorFactory.fromResource(
+                                                                                    R.drawable.ico_marker_meat))
+                                                                );
                     String idMarker = mUbicacionPlatillo.getId();
                     markerMapPlatillos.put(idMarker, platillosc.getNombrePlatillo());
 
@@ -458,7 +364,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 }
 
 
-                adapterRview = new RecyclerProductoAdapter(getContext(), R.layout.rv_comentarios_items, arrayListPlatillos,arrayKeys, new RecyclerProductoAdapter.OnItemClickListener() {
+                adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos,arrayKeys, new RecyclerProductoAdapter.OnItemClickListener() {
                     @Override
                     public void OnClickListener(platillos platillos, ArrayList<comentarios> arrayComentarios, int position) {
 
@@ -478,7 +384,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                     }
                 } );
 
-                Rview.setAdapter(adapterRview);
+                rvListaPlatillos.setAdapter(adapterRVTarjetaPlatillo);
 
                 realTimeMarkers.clear();
                 realTimeMarkers.addAll(tmpRealTimeMarkers);
@@ -528,7 +434,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 FirebaseAuth mAuth= FirebaseAuth.getInstance();
                 FirebaseUser user=mAuth.getCurrentUser();
                 if(user != null){
-                    cargarProducto(  );
+                    crearPlatillo();
                     bottomSheetBehavior.setState( BottomSheetBehavior.STATE_HALF_EXPANDED );
                     fab_hidden.setVisibility( View.VISIBLE );
                     fab_collapse.setVisibility( View.GONE );
@@ -575,9 +481,11 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         final Map<String,Object> datos=new HashMap<>(  );
         final Map<String,Object> base_datos=new HashMap<>(  );
         final Map<String,Object> comentarios=new HashMap<>(  );
+
         Date date = new Date();
         DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
         FirebaseAuth mauth=FirebaseAuth.getInstance();
         FirebaseUser user = mauth.getCurrentUser();
 
@@ -591,11 +499,11 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         comentarios.put("hora",hourFormat.format(date));
         comentarios.put("fecha",dateFormat.format(date));
 
-
         if(bitmap!=null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
             byte[] imageBytes = baos.toByteArray();
             String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
             //encode
@@ -639,16 +547,17 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
-    public  void cargarProducto(){
-
-        //findviewid
+    /**
+     * cargarProducto: se ejecuta para mostrar un modal y solicitar datos para registrar un platillo
+     * */
+    public void crearPlatillo(){
         dialog_et_precio= view.findViewById( R.id.dialog_edit_text_precio ) ;
         dialog_et_direccion= view.findViewById( R.id.dialog_text_view_direccion ) ;
         dialog_comentario= view.findViewById( R.id.dialog_comentario ) ;
-        //Creating the instance of ArrayAdapter containing list of fruit names
+
+        //Autocompletado cuando creas un platillo
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>
-                (getContext(), android.R.layout.select_dialog_item, foods);
-        //Getting the instance of AutoCompleteTextView
+                (getContext(), android.R.layout.select_dialog_item, Constants.foods);
         acPlatillo = (AutoCompleteTextView) view.findViewById(R.id.acPlatillos);
         acPlatillo.setThreshold(1);//will start working from first character
         acPlatillo.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
@@ -668,9 +577,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
             String locality=address.get( 0 ).getSubLocality(  ) ;
             dialog_et_direccion.setText( adress+" barrio "+ locality );
         }
-
-
-
     }
 
     @Override
@@ -679,9 +585,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
         switch (requestCode){
             case  TAKEFOTO:
                 if (resultCode==RESULT_OK){
-
                     bitmap=(Bitmap) data.getExtras().get( "data" );
-
                     dialog_iv_foto.setImageBitmap( bitmap );
                     fileImage = data.getData();
                 }else {
@@ -690,7 +594,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 break;
             case GPS:
                 if (resultCode==RESULT_OK){
-
                     getDeviceLocation();
 
                 }else {
@@ -698,13 +601,6 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                 }
                 break;
         }
-
-//        if (resultCode == Activity.RESULT_OK ) {
-//            Glide. with ( this ) .load ( imageFilePath ).centerCrop() .into ( dialog_iv_foto );
-//        }
-//        else if (resultCode == Activity.RESULT_CANCELED ) {
-//            // El usuario canceló la acción
-//        }
     }
 
     @SuppressLint("MissingPermission")
@@ -730,6 +626,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                                 locationRequest.setInterval( 10000 );
                                 locationRequest.setFastestInterval( 5000 );
                                 locationRequest.setPriority( LocationRequest.PRIORITY_HIGH_ACCURACY );
+
                                 locationCallback= new LocationCallback(){
                                     @Override
                                     public void onLocationResult(LocationResult locationResult) {
@@ -739,9 +636,7 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
                                         location = locationResult.getLastLocation();
 
                                         mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude() ),18) );
-//                                        circleMap.setCenter(  new LatLng( location.getLatitude(),location.getLongitude() ) );
-//                                        personcenter=new LatLng( location.getLatitude(),location.getLongitude() );
-//                                        geoQuery=geoFire.queryAtLocation( new GeoLocation( personcenter.latitude,personcenter.longitude  ),0.5f );
+
                                         try {
 
                                             geocoder= new Geocoder( context, Locale.getDefault() );
@@ -768,6 +663,9 @@ public class mapsFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public boolean onMarkerClick(Marker marker) {
 
+        for(int i = 0; i <  arrayListPlatillos.size(); i++)
+            if(arrayListPlatillos.get(i).getNombrePlatillo().equals(markerMapPlatillos.get(marker.getId())))
+                rvListaPlatillos.smoothScrollToPosition(i);
 
         return false;
     }

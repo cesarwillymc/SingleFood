@@ -101,7 +101,17 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
     }
     public interface OnItemClickListener{
         void OnClickListener(platillos platillos, ArrayList<comentarios> arrayComentarios, int position);
-
-
+    }
+    /**
+     * getPlatilloPosicion: Obtiene la posicion del platillo seleccionado
+     * strNombrePlatillo: nombre del platillo seleccionado
+     * */
+    public int getPlatilloPosicion(String strNombrePlatillo){
+        for(int i = 0; i <  arrayPlatillos.size(); i ++){
+            if(strNombrePlatillo.equals(arrayPlatillos.get(i).getNombrePlatillo())){
+                return i;
+            }
+        }
+        return 0;
     }
 }

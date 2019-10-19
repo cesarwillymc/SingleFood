@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.singlefood.sinfo.models.mapsFragment;
+import com.singlefood.sinfo.models.fragMapaPrincipal;
 
 public class MapsActivity extends AppCompatActivity {
     NavigationView navigationView;
@@ -80,7 +80,7 @@ public class MapsActivity extends AppCompatActivity {
                 Fragment frag = null;
                 switch (menuItem.getItemId()){
                     case R.id.menu_mapa:
-                        frag= new mapsFragment();
+                        frag= new fragMapaPrincipal();
                         transaccion = true;
                         break;
                     case R.id.menu_conten:
@@ -135,7 +135,7 @@ public class MapsActivity extends AppCompatActivity {
     void  setfragmetdefautl(){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace( R.id.content_frame,new mapsFragment() )
+                .replace( R.id.content_frame,new fragMapaPrincipal() )
                 .commit();
         MenuItem menuItem= navigationView.getMenu().getItem( 0);
         menuItem.setChecked( true );

@@ -4,21 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".models.mapsFragment"
+    tools:context=".models.fragMapaPrincipal"
 
     >
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
 
-    <androidx.appcompat.widget.SearchView
+    <AutoCompleteTextView
+        android:id="@+id/acBuscarPlatillos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/maps_search_view"
-        app:queryHint="Tu ubicacion actual"
-        app:iconifiedByDefault="false"
-        android:layout_margin="@dimen/drawable_15dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/capsule_border_comentarios"
+        android:fontFamily="@font/rubrik_light"
+        android:hint="Nombre del plato"
+        android:padding="10dp"
         android:elevation="@dimen/margin_top_5dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:background="@drawable/capsule_border_comentarios"/>
+        android:textColor="#534D4D"
+        android:textSize="@dimen/texto13sp" />
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
@@ -38,14 +45,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_margin="5dp"
-                android:clickable="true"
                 android:paddingBottom="80dp"
                 android:src="@drawable/ic_add_black_24dp"
                 app:backgroundTint="@color/quantum_yellow800" />
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/my_recycler_view"
+                android:id="@+id/rvListaPlatillos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -59,7 +65,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:clickable="true"
         android:paddingBottom="80dp"
         android:src="@drawable/ic_add_black_24dp"
         android:visibility="gone"
@@ -69,7 +74,7 @@
 
     <include
         android:id="@+id/crear_comida_dialog"
-        layout="@layout/activity_crear_producto"
+        layout="@layout/act_crear_platillo"
         app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior" />
 
 
