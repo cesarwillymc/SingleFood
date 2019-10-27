@@ -7,7 +7,7 @@ public class comentarios {
   @SerializedName("prioridad")
   @Expose
   private int prioridad;
-  @SerializedName("id_comentarios")
+  @SerializedName("idComentarios")
   @Expose
   private String idComentarios;
   @SerializedName("rating")

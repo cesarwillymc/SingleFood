@@ -1,5 +1,6 @@
 package com.singlefood.sinfo.models.productos;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,14 +24,14 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
     private Context mcontex;
     private  int layoutResources;
     private ArrayList<platillos> arrayPlatillos;
-    private ArrayList<ArrayList<comentarios>> arrayKeys;
+    //private ArrayList<ArrayList<comentarios>> arrayKeys;
     private OnItemClickListener Listen;
 
-    public RecyclerProductoAdapter(Context mcontex, int layoutResources, ArrayList<platillos> arrayPlatillos, ArrayList<ArrayList<comentarios>> arrayKeys, OnItemClickListener Listen) {
+    public RecyclerProductoAdapter(Context mcontex, int layoutResources, ArrayList<platillos> arrayPlatillos, OnItemClickListener Listen) {
         this.mcontex = mcontex;
         this.layoutResources = layoutResources;
         this.arrayPlatillos = arrayPlatillos;
-        this.arrayKeys = arrayKeys;
+        //this.arrayKeys = arrayKeys;
         this.Listen = Listen;
     }
 
@@ -43,7 +44,7 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        holder.bind(arrayPlatillos.get(position),Listen,arrayKeys.get( position ));
+        holder.bind(arrayPlatillos.get(position),Listen);
 
     }
 
@@ -70,18 +71,19 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
         }
 
 
-        public void bind(final platillos platillos, final OnItemClickListener listen, ArrayList<comentarios> arrayComentarios) {
+        @SuppressLint("SetTextI18n")
+        public void bind(final platillos platillos, final OnItemClickListener listen) {
             mNombre.setText( platillos.getNombrePlatillo());
             mPrecio.setText( platillos.getPrecio()+"" );
             mImage.setImageBitmap( StringToBitmap( platillos.getImagenbase64() ) );
-            ratingBar.setRating( promedioRating(arrayComentarios));
+            ratingBar.setRating( platillos.getRatingPromedio());
             DecimalFormat formato = new DecimalFormat();
             formato.setMaximumFractionDigits(2);
-            mStarts.setText(  formato.format(promedioRating( arrayComentarios )) );
+            mStarts.setText(  formato.format(platillos.getRatingPromedio()) );
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listen.OnClickListener(platillos,arrayComentarios,getAdapterPosition());
+                    listen.OnClickListener(platillos,getAdapterPosition());
                 }
             });
         }
@@ -90,17 +92,10 @@ public class RecyclerProductoAdapter extends RecyclerView.Adapter<RecyclerProduc
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             return decodedByte;
         }
-        public Float promedioRating(ArrayList<comentarios> arrayComentarios){
-            float temp=0;
-            for (int i=0;i<arrayComentarios.size();i++){
-                temp+=arrayComentarios.get(  i).getRating();
-            }
-            return temp/arrayComentarios.size();
 
-        }
     }
     public interface OnItemClickListener{
-        void OnClickListener(platillos platillos, ArrayList<comentarios> arrayComentarios, int position);
+        void OnClickListener(platillos platillos, int position);
     }
     /**
      * getPlatilloPosicion: Obtiene la posicion del platillo seleccionado

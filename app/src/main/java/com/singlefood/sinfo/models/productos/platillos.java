@@ -11,9 +11,9 @@ public class platillos {
   @SerializedName("direccion")
   @Expose
   private String direccion;
-  @SerializedName("id_user")
+  @SerializedName("idUser")
   @Expose
-  private String id_user;
+  private String idUser;
   @SerializedName("imagenbase64")
   @Expose
   private String imagenbase64;
@@ -29,7 +29,36 @@ public class platillos {
   @SerializedName("tipo")
   @Expose
   private String tipo;
+  @SerializedName("comentariosCount")
+  @Expose
+  private int comentariosCount;
+  @SerializedName("ratingPromedio")
+  @Expose
+  private float ratingPromedio;
 
+  public void setDireccion(String direccion) {
+    this.direccion = direccion;
+  }
+
+  public void setId_user(String idUser) {
+    this.idUser = idUser;
+  }
+
+  public int getComentarioscount() {
+    return comentariosCount;
+  }
+
+  public void setComentarioscount(int comentariosCount) {
+    this.comentariosCount = comentariosCount;
+  }
+
+  public float getRatingPromedio() {
+    return ratingPromedio;
+  }
+
+  public void setRatingPromedio(float ratingPromedio) {
+    this.ratingPromedio = ratingPromedio;
+  }
 
   public String getDireccion() {
     return direccion;
@@ -37,7 +66,7 @@ public class platillos {
 
 
   public String getId_user() {
-    return id_user;
+    return idUser;
   }
 
   public comentarios getComentarios() {

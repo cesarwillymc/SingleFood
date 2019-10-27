@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +84,6 @@ import com.google.firebase.storage.StorageReference;
 import com.singlefood.sinfo.LoginActivity;
 import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
-import com.singlefood.sinfo.models.productos.comentarios;
 import com.singlefood.sinfo.models.productos.platillos;
 import com.singlefood.sinfo.utils.Constants;
 
@@ -341,7 +339,7 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
                 }
                 ArrayList<String> llaves= new ArrayList<>();
 
-                 ArrayList<ArrayList<comentarios>> arrayKeys= new ArrayList<>();
+                // ArrayList<ArrayList<comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     platillos platillosc= snapshot.getValue( platillos.class);
                     Double latitud = platillosc.getPlaces().getLatitud();
@@ -358,25 +356,17 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
                     markerMapPlatillos.put(idMarker, platillosc.getNombrePlatillo());
 
                     llaves.add( snapshot.getKey() );
-                    arrayKeys.add( getCommts( snapshot.getKey() ) );
                     arrayListPlatillos.add( platillosc );
 
                 }
 
 
-                adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos,arrayKeys, new RecyclerProductoAdapter.OnItemClickListener() {
+                adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
                     @Override
-                    public void OnClickListener(platillos platillos, ArrayList<comentarios> arrayComentarios, int position) {
+                    public void OnClickListener(platillos platillos, int position) {
 
                         Intent i = new Intent(getActivity(), informacion_platillos.class);
-                        ArrayList<String> lista = new ArrayList<>(  );
-                        lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
-                        lista.add( arrayListPlatillos.get( position ).getNombrePlatillo() );
-                        lista.add( arrayListPlatillos.get( position ).getId_user() );
-                        lista.add( arrayListPlatillos.get( position ).getTipo() );
-                        lista.add( arrayListPlatillos.get( position ).getPrecio() );
-                        lista.add( arrayListPlatillos.get( position ).getDireccion() );
-                        i.putStringArrayListExtra( "lista",lista );
+
                         i.putExtra( "key",llaves.get( position ) );
 
                         startActivity(i);
@@ -396,28 +386,6 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
             }
         });
     }
-    private ArrayList<comentarios> getCommts(String Key) {
-        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );
-        ArrayList<comentarios> comentariosPlatillos= new ArrayList<>(  );
-        coment.addValueEventListener( new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    comentarios coment=snapshot.getValue(comentarios.class);
-                    comentariosPlatillos.add( coment );
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        } );
-        return comentariosPlatillos;
-    }
-
 
     @Override
     public boolean onMyLocationButtonClick() {
@@ -491,8 +459,8 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
 
         base_datos.put( "latitud", address.get( 0 ).getLatitude() );
         base_datos.put( "longitud", address.get( 0 ).getLongitude() );
-        base_datos.put( "id_user", user.getUid() );
-        comentarios.put( "id_comentarios",user.getUid() );
+        base_datos.put( "idUser", user.getUid() );
+        comentarios.put( "idComentarios",user.getUid() );
         comentarios.put( "texto",dialog_comentario.getText().toString() );
         comentarios.put( "rating",ratingBar_dialog.getRating() );
         comentarios.put( "prioridad",1);
@@ -513,7 +481,7 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
             datos.put( "tipo", "general" );
             datos.put( "imagenbase64", imageString );
             datos.put( "places",base_datos);
-            datos.put("id_user",user.getUid());
+            datos.put("idUser",user.getUid());
            // datos.put( "comentarios_platillo",comentarios );
 
             DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").push();

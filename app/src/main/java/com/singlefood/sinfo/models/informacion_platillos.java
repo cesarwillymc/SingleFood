@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +44,8 @@ import com.singlefood.sinfo.LoginActivity;
 import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.models.productos.RecyclerComentariosAdapter;
 import com.singlefood.sinfo.models.productos.comentarios;
+import com.singlefood.sinfo.models.productos.platillos;
+import com.singlefood.sinfo.models.productos.usuariosSingle;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,7 +60,6 @@ import io.reactivex.annotations.NonNull;
 
 public class informacion_platillos extends AppCompatActivity implements View.OnClickListener {
     private  GestureDetector gestureDetector;
-    private ArrayList<String> datos;
     String Key;
     private RecyclerView.Adapter adapterRview;
     private ProgressDialog progressDialog;
@@ -80,6 +82,8 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     FloatingActionButton btnLike;
     @BindView( R.id.button_comentar_collapse )
     Button button_coment_collapse;
+    @BindView(R.id.informacion_platillos_activity_comentarios_total)
+    TextView ComentariosTotal;
     //Button Sheep
     FloatingActionButton button_coment_hide;
     RatingBar rating_coment;
@@ -103,7 +107,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         obtener_datos();
         getCommts();
         configToolbar();
-        cargarImage();
+        //cargarImage();
         linearLayout=(LinearLayout) findViewById( R.id.crear_comentario_layout_dialog ) ;
         bottomSheetBehavior= BottomSheetBehavior.from( linearLayout );
         recyclerView_info=(RecyclerView) findViewById( R.id.recycler_view_info_platillos ) ;
@@ -146,7 +150,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     }
 
     private ArrayList<comentarios> getUser(String Key) {
-        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("usuarios_single").child( Key ).child( "comentarios" );
+        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("usuariosSingle").child( Key ).child( "comentarios" );
         ArrayList<comentarios> comentariosPlatillos= new ArrayList<>(  );
         coment.addValueEventListener( new ValueEventListener() {
             @Override
@@ -195,42 +199,62 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     }
     public void obtener_datos(){
         try{
-            datos =getIntent().getStringArrayListExtra(  "lista");
             Key = getIntent().getStringExtra("key");
-            toolbar_info.setTitle( datos.get( 1 ) );
-            Bundle args = new Bundle();
-
-            // Colocamos el String
-            args.putString("key", Key);
-            args.putString( "idUser", datos.get( 2 ) );
-            args.putString( "tipo", datos.get( 3 ) );
-            args.putString( "precio", datos.get( 4 ) );
-            args.putString( "direccion", datos.get( 5 ) );
-
-            // Supongamos que tu Fragment se llama TestFragment. Colocamos este nuevo Bundle como argumento en el fragmento.
-            Fragment newFragment = new info_comentario_principal();
-            newFragment.setArguments(args);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace( R.id.info_restaurant_frame,newFragment )
-                    .commit();
-            //  ArrayList<Comentarios> arrayComentarios= (ArrayList<Comentarios>) getIntent().getSerializableExtra( "comentarios" );
         }catch (Exception e){
         }
 
     }
 
     private void getCommts() {
+        DatabaseReference obtener=  FirebaseDatabase.getInstance().getReference("platillos").child( Key );
+        obtener.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@androidx.annotation.NonNull DataSnapshot dataSnapshot) {
+                ArrayList<platillos> arrayList= new ArrayList<>();
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    platillos coment=dataSnapshot.getValue(platillos.class);
+                    arrayList.add(coment);
+                }
+                ComentariosTotal.setText(arrayList.get(0).getComentarioscount()+"");
+                toolbar_info.setTitle(arrayList.get(0).getNombrePlatillo() );
+                cargarImage(arrayList.get(0).getImagenbase64());
+                Bundle args = new Bundle();
+
+                // Colocamos el String
+                args.putString("key", Key);
+                args.putString( "idUser", arrayList.get(0).getId_user() );
+                args.putString( "tipo", arrayList.get(0).getTipo() );
+                args.putString( "precio", arrayList.get(0).getPrecio() );
+                args.putString( "direccion", arrayList.get(0).getDireccion() );
+
+                // Supongamos que tu Fragment se llama TestFragment. Colocamos este nuevo Bundle como argumento en el fragmento.
+                Fragment newFragment = new info_comentario_principal();
+                newFragment.setArguments(args);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace( R.id.info_restaurant_frame,newFragment )
+                        .commit();
+
+            }
+
+            @Override
+            public void onCancelled(@androidx.annotation.NonNull DatabaseError databaseError) {
+
+            }
+        });
         DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );
 
         coment.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<comentarios> arrayListComentarios= new ArrayList<>();
+                ArrayList<usuariosSingle> arrayList= new ArrayList<>();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                     comentarios coment=snapshot.getValue(comentarios.class);
+                    //arrayList.add(obtenerImagenUser(coment.getIdComentarios()));
                     arrayListComentarios.add( coment );
                 }
+
                 //ratingtex.setText( promedioRating(arrayListComentarios).toString());
                 adapterRview = new RecyclerComentariosAdapter( informacion_platillos.this, R.layout.rv_comentarios, arrayListComentarios, new RecyclerComentariosAdapter.OnItemClickListener2() {
                     @Override
@@ -249,8 +273,13 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
             }
         } );
     }
-    private void cargarImage() {
-        byte[] decodedString = Base64.decode(datos.get( 0 ), Base64.DEFAULT);
+
+    private usuariosSingle obtenerImagenUser(String idComentarios) {
+        return null ;
+    }
+
+    private void cargarImage(String base) {
+        byte[] decodedString = Base64.decode(base, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         imageView_info.setImageBitmap( decodedByte );
     }
@@ -287,7 +316,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     if(user != null){
                         Map<String,Object> map = new HashMap<>(  );
-                        map.put( "id_comentarios",user.getUid() );
+                        map.put( "idComentarios",user.getUid() );
                         map.put( "rating",rating_coment.getRating() );
                         map.put( "texto",comentario_comment.getText().toString().trim() );
                         map.put( "prioridad",0 );

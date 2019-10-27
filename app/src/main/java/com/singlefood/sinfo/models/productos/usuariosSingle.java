@@ -3,7 +3,7 @@ package com.singlefood.sinfo.models.productos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class usuarios_single {
+public class usuariosSingle {
     @SerializedName("email")
     @Expose
     private String email;

@@ -168,7 +168,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             users.put("phone",telefono_string);
                             users.put("imagen","hola");
 
-                            mDatabase.child("usuarios_single").child(task.getResult().getUser().getUid()).setValue(users);
+                            mDatabase.child("usuariosSingle").child(task.getResult().getUser().getUid()).setValue(users);
                             progressBar.setVisibility( View.GONE );
                             updateUI(user);
                         } else {

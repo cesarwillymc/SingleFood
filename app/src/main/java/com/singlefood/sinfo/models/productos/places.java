@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class places {
 
 
-  @SerializedName("id_user")
+  @SerializedName("idUser")
   @Expose
   private String idUser;
   @SerializedName("latitud")
