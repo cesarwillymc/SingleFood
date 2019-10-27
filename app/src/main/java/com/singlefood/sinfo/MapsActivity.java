@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.singlefood.sinfo.models.fragMapaPrincipal;
 
 public class MapsActivity extends AppCompatActivity {
     NavigationView navigationView;
@@ -35,6 +34,7 @@ public class MapsActivity extends AppCompatActivity {
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate( savedInstanceState );
         FirebaseAuth mAuth= FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -80,7 +80,7 @@ public class MapsActivity extends AppCompatActivity {
                 Fragment frag = null;
                 switch (menuItem.getItemId()){
                     case R.id.menu_mapa:
-                        frag= new fragMapaPrincipal();
+                        frag= new MapaPrincipalComidas();
                         transaccion = true;
                         break;
                     case R.id.menu_conten:
@@ -117,7 +117,6 @@ public class MapsActivity extends AppCompatActivity {
         } );
         //setTolbar();
         image_header =(ImageView) findViewById( R.id.image_header );
-        //imagetoNavegationDrawer(  );
     }
 
 
@@ -135,7 +134,7 @@ public class MapsActivity extends AppCompatActivity {
     void  setfragmetdefautl(){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace( R.id.content_frame,new fragMapaPrincipal() )
+                .replace( R.id.content_frame,new MapaPrincipalComidas() )
                 .commit();
         MenuItem menuItem= navigationView.getMenu().getItem( 0);
         menuItem.setChecked( true );

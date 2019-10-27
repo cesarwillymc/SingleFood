@@ -85,4 +85,6 @@ dependencies {
     //glide
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    //mapbox
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.1'
 }
