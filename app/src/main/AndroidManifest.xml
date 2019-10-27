@@ -28,6 +28,7 @@
         </provider>
 
         <activity android:name=".LoginActivity"  />
+
         <activity
             android:name=".models.informacion_platillos"
             android:label="@string/title_activity_informacion_platillos"

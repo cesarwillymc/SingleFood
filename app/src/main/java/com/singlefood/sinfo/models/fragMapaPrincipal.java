@@ -141,7 +141,7 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
     private EditText dialog_comentario;
     private ArrayList<Marker> tmpRealTimeMarkers = new ArrayList<>(); //Array Marcadores temporales de almacenamiento para hacer llamado
     private ArrayList<Marker> realTimeMarkers = new ArrayList<>();     //Marcadores tiempo real
-//fabbbbbbbbbbbbbbbbbbbbbb
+    //fabbbbbbbbbbbbbbbbbbbbbb
     LinearLayout linearLayout;
     BottomSheetBehavior bottomSheetBehavior;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
@@ -207,10 +207,10 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
                         fab_hidden.setVisibility( View.GONE );
                         fab_collapse.setVisibility( View.VISIBLE );
                         break;
-                        case BottomSheetBehavior.STATE_COLLAPSED:
-                            fab_hidden.setVisibility( View.GONE );
-                            fab_collapse.setVisibility( View.VISIBLE );
-                            break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        fab_hidden.setVisibility( View.GONE );
+                        fab_collapse.setVisibility( View.VISIBLE );
+                        break;
 
                 }
             }
@@ -339,19 +339,19 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
                 }
                 ArrayList<String> llaves= new ArrayList<>();
 
-                // ArrayList<ArrayList<comentarios>> arrayKeys= new ArrayList<>();
+
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     platillos platillosc= snapshot.getValue( platillos.class);
                     Double latitud = platillosc.getPlaces().getLatitud();
                     Double longitud = platillosc.getPlaces().getLongitud();
 
                     Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().
-                                                                    position(
-                                                                            new LatLng(latitud, longitud))
-                                                                    .icon(
-                                                                            BitmapDescriptorFactory.fromResource(
-                                                                                    R.drawable.ico_marker_meat))
-                                                                );
+                            position(
+                                    new LatLng(latitud, longitud))
+                            .icon(
+                                    BitmapDescriptorFactory.fromResource(
+                                            R.drawable.ico_marker_meat))
+                    );
                     String idMarker = mUbicacionPlatillo.getId();
                     markerMapPlatillos.put(idMarker, platillosc.getNombrePlatillo());
 
@@ -582,7 +582,7 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
                             if(location!=null){
                                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude() ),18) );
 
-                              try {
+                                try {
 
                                     geocoder= new Geocoder( context, Locale.getDefault() );
                                     address= geocoder.getFromLocation( location.getLatitude(),location.getLongitude(),1 );
