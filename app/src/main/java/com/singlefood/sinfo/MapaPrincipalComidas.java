@@ -1,4 +1,5 @@
 package com.singlefood.sinfo;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -16,34 +17,33 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-// classes needed to initialize map
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -71,66 +71,63 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-
-// classes needed to add the location component
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
-
-// classes needed to add a marker
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.Point;
-import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
+import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
+import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.singlefood.sinfo.models.informacion_platillos;
+import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
+import com.singlefood.sinfo.models.productos.platillos;
+import com.singlefood.sinfo.utils.Constants;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
+// classes needed to initialize map
+// classes needed to add the location component
+// classes needed to add a marker
 // classes to calculate a route
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
-import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
-import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-import com.mapbox.api.directions.v5.models.DirectionsResponse;
-import com.mapbox.api.directions.v5.models.DirectionsRoute;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import android.util.Log;
-
 // classes needed to launch navigation UI
-import android.view.View;
-import android.widget.Button;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.singlefood.sinfo.models.informacion_platillos;
-import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
-import com.singlefood.sinfo.models.productos.comentarios;
-import com.singlefood.sinfo.models.productos.platillos;
-import com.singlefood.sinfo.utils.Constants;
 
 
-public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback, MapboxMap.OnMapClickListener, PermissionsListener, View.OnClickListener {
+public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback, MapboxMap.OnMapClickListener,MapboxMap.OnMarkerClickListener, PermissionsListener, View.OnClickListener {
     // variables for adding location layer
     private MapView mapView;
     private MapboxMap mapboxMap;
@@ -148,7 +145,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     private final int TAKEFOTO=1;
     private final int GPS=51;
     private Uri fileImage;
-
+    final HashMap<Long, String> markerMapPlatillos = new HashMap<Long, String>();
     //botones principales del mapa
     private FloatingActionButton fab_collapse;
     private FloatingActionButton fab_hidden;
@@ -338,7 +335,6 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                 }*/
                 ArrayList<String> llaves= new ArrayList<>();
 
-                ArrayList<ArrayList<comentarios>> arrayKeys= new ArrayList<>();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     platillos platillosc= snapshot.getValue( platillos.class);
                     Double latitud = platillosc.getPlaces().getLatitud();
@@ -347,10 +343,10 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
                     // Create an Icon object for the marker to use
                     IconFactory iconFactory = IconFactory.getInstance(context);
-                    Icon icon = iconFactory.fromResource(R.drawable.mapbox_marker_icon_default);
+                    Icon icon = iconFactory.fromResource(R.drawable.ico_marker_meat);
 
 // Add the marker to the map
-                    mapboxMap.addMarker(new MarkerOptions()
+                    Marker marcador=mapboxMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitud, longitud))
                             .icon(icon));
                    /* Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().
@@ -359,30 +355,20 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                             .icon(
                                     BitmapDescriptorFactory.fromResource(
                                             R.drawable.ico_marker_meat))
-                    );
-                    String idMarker = mUbicacionPlatillo.getId();
-                    markerMapPlatillos.put(idMarker, platillosc.getNombrePlatillo());
-*/
+                    );*/
+
                     llaves.add( snapshot.getKey() );
-                    arrayKeys.add( getCommts( snapshot.getKey() ) );
                     arrayListPlatillos.add( platillosc );
 
                 }
 
 
-                adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos,arrayKeys, new RecyclerProductoAdapter.OnItemClickListener() {
+                adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
                     @Override
-                    public void OnClickListener(platillos platillos, ArrayList<comentarios> arrayComentarios, int position) {
+                    public void OnClickListener(platillos platillos, int position) {
 
                         Intent i = new Intent(getActivity(), informacion_platillos.class);
-                        ArrayList<String> lista = new ArrayList<>(  );
-                        lista.add( arrayListPlatillos.get( position ).getImagenbase64() );
-                        lista.add( arrayListPlatillos.get( position ).getNombrePlatillo() );
-                        lista.add( arrayListPlatillos.get( position ).getId_user() );
-                        lista.add( arrayListPlatillos.get( position ).getTipo() );
-                        lista.add( arrayListPlatillos.get( position ).getPrecio() );
-                        lista.add( arrayListPlatillos.get( position ).getDireccion() );
-                        i.putStringArrayListExtra( "lista",lista );
+
                         i.putExtra( "key",llaves.get( position ) );
 
                         startActivity(i);
@@ -392,7 +378,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
                 rvListaPlatillos.setAdapter(adapterRVTarjetaPlatillo);
 
-                /*realTimeMarkers.clear();
+               /* realTimeMarkers.clear();
                 realTimeMarkers.addAll(tmpRealTimeMarkers);*/
             }
 
@@ -403,27 +389,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         });
     }
 
-    private ArrayList<comentarios> getCommts(String Key) {
-        DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );
-        ArrayList<comentarios> comentariosPlatillos= new ArrayList<>(  );
-        coment.addValueEventListener( new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    comentarios coment=snapshot.getValue(comentarios.class);
-                    comentariosPlatillos.add( coment );
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        } );
-        return comentariosPlatillos;
-    }
 
     private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
         loadedMapStyle.addImage("destination-icon-id",
@@ -728,8 +694,8 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
         base_datos.put( "latitud", address.get( 0 ).getLatitude() );
         base_datos.put( "longitud", address.get( 0 ).getLongitude() );
-        base_datos.put( "id_user", user.getUid() );
-        comentarios.put( "id_comentarios",user.getUid() );
+        base_datos.put( "idUser", user.getUid() );
+        comentarios.put( "idComentarios",user.getUid() );
         comentarios.put( "texto",dialog_comentario.getText().toString() );
         comentarios.put( "rating",ratingBar_dialog.getRating() );
         comentarios.put( "prioridad",1);
@@ -750,7 +716,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
             datos.put( "tipo", "general" );
             datos.put( "imagenbase64", imageString );
             datos.put( "places",base_datos);
-            datos.put("id_user",user.getUid());
+            datos.put("idUser",user.getUid());
             // datos.put( "comentarios_platillo",comentarios );
 
             DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").push();
@@ -840,5 +806,10 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                         }
                     }
                 } );
+    }
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        return false;
     }
 }
