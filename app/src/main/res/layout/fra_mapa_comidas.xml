@@ -6,26 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto">
 
-    <AutoCompleteTextView
-        android:id="@+id/acBuscarPlatillos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:background="@drawable/capsule_border_comentarios"
-        android:fontFamily="@font/rubrik_light"
-        android:hint="Nombre del plato"
-        android:padding="10dp"
-        android:elevation="@dimen/margin_top_5dp"
-        android:textColor="#534D4D"
-        android:textSize="@dimen/texto13sp" />
 
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:enabled="false"
-        android:text="Start navigation"/>
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
@@ -36,6 +17,27 @@
         mapbox:mapbox_cameraZoom="12" />
 
 
+    <AutoCompleteTextView
+        android:id="@+id/acBuscarPlatillos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:inputType="text"
+        android:imeOptions="actionSend"
+        android:background="@drawable/capsule_border_comentarios"
+        android:fontFamily="@font/rubrik_light"
+        android:hint="Nombre del plato"
+        android:padding="10dp"
+        android:elevation="@dimen/margin_top_5dp"
+        android:textColor="#534D4D"
+        android:textSize="@dimen/texto13sp" />
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:visibility="gone"
+        android:text="Start navigation"/>
 
     <LinearLayout
         android:layout_width="match_parent"

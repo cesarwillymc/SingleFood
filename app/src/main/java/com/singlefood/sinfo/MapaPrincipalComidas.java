@@ -314,6 +314,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        button.setVisibility(View.GONE);
                         boolean simulateRoute = false;
                         NavigationLauncherOptions options = NavigationLauncherOptions.builder()
                                 .directionsRoute(currentRoute)
@@ -367,6 +368,10 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                             for(int i = 0; i <  arrayListPlatillos.size(); i++)
                                 if(llaves.get(i).equals(marker.getTitle())){
                                     rvListaPlatillos.smoothScrollToPosition(i);
+                                    Point destinationPoint = Point.fromLngLat(arrayListPlatillos.get(i).getPlaces().getLongitud(), arrayListPlatillos.get(i).getPlaces().getLatitud());
+                                    Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
+                                            locationComponent.getLastKnownLocation().getLatitude());
+                                    getRoute(originPoint, destinationPoint);
                                 }
 
                             return true;
@@ -432,7 +437,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         }
 
         getRoute(originPoint, destinationPoint);
-        button.setEnabled(true);
+
         return true;
     }
 
@@ -471,6 +476,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                         Log.e(TAG, "Error: " + throwable.getMessage());
                     }
                 });
+        button.setVisibility(View.VISIBLE);
     }
 
     @SuppressWarnings( {"MissingPermission"})
@@ -656,7 +662,13 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         }else{
             String adress=address.get( 0 ).getAddressLine( 0 ) ;
             String locality=address.get( 0 ).getSubLocality(  ) ;
-            dialog_et_direccion.setText( adress+" barrio "+ locality );
+            if (adress.contains("null")||adress.contains("unde")){
+                dialog_et_direccion.setText( "" );
+                dialog_et_direccion.setHint( "Introduzca Direccion" );
+            }else{
+                dialog_et_direccion.setText( adress+" barrio " );
+            }
+
         }
     }
 

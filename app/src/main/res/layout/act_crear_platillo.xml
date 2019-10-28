@@ -22,12 +22,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:weightSum="10"
         android:paddingBottom="10dp">
 
       <LinearLayout
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:layout_weight="4"
+          android:layout_weight="6.5"
           android:orientation="vertical">
 
         <TextView
@@ -52,9 +53,9 @@
 
       <androidx.appcompat.widget.AppCompatImageView
           android:id="@+id/dialog_imageView"
-          android:layout_width="wrap_content"
+          android:layout_width="0dp"
           android:layout_height="80dp"
-          android:layout_weight="1.5"
+          android:layout_weight="3.5"
           android:background="@drawable/fui_idp_button_background_anonymous"
           android:backgroundTint="@color/coloramarillo"
           app:srcCompat="@android:drawable/ic_menu_camera" />
@@ -63,6 +64,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/acPlatillos"
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
@@ -70,6 +72,8 @@
         android:fontFamily="@font/rubrik_light"
         android:hint="Nombre del plato"
         android:padding="10dp"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
         android:paddingHorizontal="@dimen/dimen10"
         android:paddingVertical="@dimen/margin_top_5dp"
         android:textColor="#534D4D"
@@ -80,10 +84,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
+        android:inputType="text"
         android:background="@drawable/capsule_border_comentarios"
         android:fontFamily="@font/rubrik_light"
         android:hint="Lugar o Direccion"
         android:padding="10dp"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
         android:paddingHorizontal="@dimen/dimen10"
         android:paddingVertical="@dimen/margin_top_5dp"
         android:textSize="@dimen/texto13sp" />
@@ -98,6 +105,7 @@
         android:hint="Precio"
         android:inputType="number"
         android:padding="10dp"
+        android:imeOptions="actionNext"
         android:paddingHorizontal="@dimen/dimen10"
         android:paddingVertical="@dimen/margin_top_5dp"
         android:textSize="@dimen/texto13sp" />
@@ -107,12 +115,15 @@
         android:id="@+id/dialog_comentario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
         android:layout_gravity="top"
         android:layout_margin="2dp"
         android:background="@drawable/capsule_border_comentarios"
         android:fontFamily="@font/rubrik_light"
         android:hint="Comentarios"
         android:padding="10dp"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
         android:paddingHorizontal="@dimen/dimen10"
         android:paddingTop="@dimen/margin_top_5dp"
         android:paddingBottom="@dimen/drawable_15dp"

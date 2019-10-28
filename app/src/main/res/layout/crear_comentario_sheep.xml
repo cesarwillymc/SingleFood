@@ -37,6 +37,7 @@
         android:layout_marginHorizontal="@dimen/drawable_15dp"
         android:layout_marginVertical="@dimen/dimen10"
         android:orientation="vertical"
+        android:imeOptions="actionDone"
         tools:targetApi="o">
 
         <EditText
@@ -45,6 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:layout_marginBottom="@dimen/margin_top_5dp"
+            android:singleLine="true"
+            android:inputType="text"
             android:background="@drawable/capsule_border_comentarios"
             android:fontFamily="@font/rubrik_light"
             android:hint="¿Que opinas?"
