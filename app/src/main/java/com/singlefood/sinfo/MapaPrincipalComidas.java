@@ -348,7 +348,9 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 // Add the marker to the map
                     Marker marcador=mapboxMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitud, longitud))
+                            .title(snapshot.getKey())
                             .icon(icon));
+
                    /* Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().
                             position(
                                     new com.google.android.gms.maps.model.LatLng(latitud, longitud))
@@ -359,6 +361,17 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
                     llaves.add( snapshot.getKey() );
                     arrayListPlatillos.add( platillosc );
+                    mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(@NonNull Marker marker) {
+                            for(int i = 0; i <  arrayListPlatillos.size(); i++)
+                                if(llaves.get(i).equals(marker.getTitle())){
+                                    rvListaPlatillos.smoothScrollToPosition(i);
+                                }
+
+                            return true;
+                        }
+                    });
 
                 }
 
