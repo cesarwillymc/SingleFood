@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -30,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -75,7 +75,6 @@ import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
-import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Icon;
@@ -89,8 +88,6 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
@@ -116,9 +113,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
 // classes needed to initialize map
 // classes needed to add the location component
@@ -127,7 +121,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 // classes needed to launch navigation UI
 
 
-public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback, MapboxMap.OnMapClickListener,MapboxMap.OnMarkerClickListener, PermissionsListener, View.OnClickListener {
+public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback,MapboxMap.OnMarkerClickListener, PermissionsListener, View.OnClickListener {
     // variables for adding location layer
     private MapView mapView;
     private MapboxMap mapboxMap;
@@ -139,7 +133,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
     // variables needed to initialize navigation
-    private Button button;
+    private ImageButton button;
     private Context context;
 
     private final int TAKEFOTO=1;
@@ -186,7 +180,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         context = getContext();
 
         //cargamos el mapa principal
-        view = inflater.inflate( R.layout.fra_mapa_comidas, container, false );
+        view = inflater.inflate( R.layout.fra_mapa_principal, container, false );
         mapView = view.findViewById(R.id.mapView);
         if (mapView != null) {
             mapView.onCreate( savedInstanceState );
@@ -307,21 +301,27 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
             public void onStyleLoaded(@NonNull Style style) {
                 enableLocationComponent(style);
 
-                addDestinationIconSymbolLayer(style);
+               // addDestinationIconSymbolLayer(style);
 
-                mapboxMap.addOnMapClickListener(MapaPrincipalComidas.this);
+                //mapboxMap.addOnMapClickListener( MapaPrincipalComidas.this);
                 button = view.findViewById(R.id.startButton);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        button.setVisibility(View.GONE);
-                        boolean simulateRoute = false;
-                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                                .directionsRoute(currentRoute)
-                                .shouldSimulateRoute(simulateRoute)
-                                .build();
+
+                        if(currentRoute!=null){
+                            button.setVisibility(View.GONE);
+                            boolean simulateRoute = false;
+                            NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                                    .directionsRoute(currentRoute)
+                                    .shouldSimulateRoute(simulateRoute)
+                                    .build();
 // Call this method with Context from within an Activity
-                        NavigationLauncher.startNavigation(getActivity(), options);
+                            NavigationLauncher.startNavigation(getActivity(), options);
+                        }else{
+                            Toast.makeText(getContext(),"Espere un momento por favor!!!",Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 });
             }
@@ -384,7 +384,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                 adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
                     @Override
                     public void OnClickListener(platillos platillos, int position) {
-
+                        navigationMapRoute.onStop();
                         Intent i = new Intent(getActivity(), informacion_platillos.class);
 
                         i.putExtra( "key",llaves.get( position ) );
@@ -408,7 +408,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     }
 
 
-
+/*
     private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
         loadedMapStyle.addImage("destination-icon-id",
                 BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
@@ -421,10 +421,11 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                 iconIgnorePlacement(true)
         );
         loadedMapStyle.addLayer(destinationSymbolLayer);
-    }
+
+    }*/
 
     @SuppressWarnings( {"MissingPermission"})
-    @Override
+   /* @Override
     public boolean onMapClick(@NonNull LatLng point) {
 
         Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
@@ -439,7 +440,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         getRoute(originPoint, destinationPoint);
 
         return true;
-    }
+    }*/
 
     private void getRoute(Point origin, Point destination) {
         NavigationRoute.builder(context)
@@ -469,6 +470,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                             navigationMapRoute = new NavigationMapRoute(null, mapView, mapboxMap, R.style.NavigationMapRoute);
                         }
                         navigationMapRoute.addRoute(currentRoute);
+                        button.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -476,7 +478,8 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                         Log.e(TAG, "Error: " + throwable.getMessage());
                     }
                 });
-        button.setVisibility(View.VISIBLE);
+
+
     }
 
     @SuppressWarnings( {"MissingPermission"})

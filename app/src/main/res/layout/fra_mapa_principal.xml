@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".models.fragMapaPrincipal"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto">
 
-    >
-    <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="0px"
-        android:layout_height="0px"/>
+
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        mapbox:mapbox_cameraTargetLat="38.9098"
+        mapbox:mapbox_cameraTargetLng="-77.0295"
+        mapbox:mapbox_cameraZoom="12" />
+
 
     <AutoCompleteTextView
         android:id="@+id/acBuscarPlatillos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        android:inputType="text"
+        android:imeOptions="actionSend"
         android:background="@drawable/capsule_border_comentarios"
         android:fontFamily="@font/rubrik_light"
         android:hint="Nombre del plato"
@@ -26,11 +33,6 @@
         android:textColor="#534D4D"
         android:textSize="@dimen/texto13sp" />
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,16 +40,31 @@
         android:orientation="vertical"
         android:layout_gravity="bottom">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/startButton"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:background="@drawable/ic_time_to_leave_black_24dp"
+                android:visibility="gone"
+                android:layout_gravity="left"
+                android:layout_marginHorizontal="@dimen/drawable_15dp"
+                />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_collapse_dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_margin="5dp"
-            android:paddingBottom="80dp"
-            android:src="@drawable/ic_add_black_24dp"
-            app:backgroundTint="@color/quantum_yellow800" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_collapse_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_add_black_24dp"
+                app:backgroundTint="@color/quantum_yellow800"
+                tools:ignore="RtlHardcoded"
+                android:layout_marginHorizontal="@dimen/drawable_15dp"
+                />
+        </FrameLayout>
+
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -76,8 +93,4 @@
         android:id="@+id/crear_comida_dialog"
         layout="@layout/act_crear_platillo"
         app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior" />
-
-
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

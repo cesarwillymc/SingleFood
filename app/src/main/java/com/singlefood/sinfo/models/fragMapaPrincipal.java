@@ -253,7 +253,7 @@ public class fragMapaPrincipal extends Fragment implements OnMapReadyCallback, G
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated( view, savedInstanceState );
 
-        mapView = (MapView) view.findViewById( R.id.map );
+        mapView = (MapView) view.findViewById( R.id.mapView );
         if (mapView != null) {
             mapView.onCreate( null );
             mapView.onResume();
