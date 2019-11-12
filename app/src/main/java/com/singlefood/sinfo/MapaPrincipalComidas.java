@@ -133,6 +133,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
     // variables needed to initialize navigation
+
     private ImageButton button;
     private Context context;
 
@@ -143,6 +144,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     //botones principales del mapa
     private FloatingActionButton fab_collapse;
     private FloatingActionButton fab_hidden;
+    private FloatingActionButton fab_go;
     private AutoCompleteTextView acBuscadorPlatillo;
     private AutoCompleteTextView acPlatillo;
 
@@ -300,8 +302,9 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
             @Override
             public void onStyleLoaded(@NonNull Style style) {
                 enableLocationComponent(style);
-
+/*
                // addDestinationIconSymbolLayer(style);
+
 
                 //mapboxMap.addOnMapClickListener( MapaPrincipalComidas.this);
                 button = view.findViewById(R.id.startButton);
@@ -316,6 +319,18 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                                     .directionsRoute(currentRoute)
                                     .shouldSimulateRoute(simulateRoute)
                                     .build();
+*/
+                mapboxMap.addOnMapClickListener(MapaPrincipalComidas.this);
+                fab_go = view.findViewById(R.id.fab_go);
+                fab_go.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //fab_go.setVisibility(View.GONE);
+                        boolean simulateRoute = false;
+                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                                .directionsRoute(currentRoute)
+                                .shouldSimulateRoute(simulateRoute)
+                                .build();
 // Call this method with Context from within an Activity
                             NavigationLauncher.startNavigation(getActivity(), options);
                         }else{
@@ -331,11 +346,8 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                /*for(Marker marker:realTimeMarkers){
-                    marker.remove();
-                }*/
                 ArrayList<String> llaves= new ArrayList<>();
-
+                int i = 0;
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     platillos platillosc= snapshot.getValue( platillos.class);
                     Double latitud = platillosc.getPlaces().getLatitud();
@@ -344,21 +356,19 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
                     // Create an Icon object for the marker to use
                     IconFactory iconFactory = IconFactory.getInstance(context);
-                    Icon icon = iconFactory.fromResource(R.drawable.ico_marker_meat);
+                    Icon icon;
+                    
+                    if(i++ % 2 == 0)
+                        icon = iconFactory.fromResource(R.drawable.ico_marker_meat);
+                    else
+                        icon = iconFactory.fromResource(R.drawable.ico_marker_fish);
 
-// Add the marker to the map
+                    // Add the marker to the map
                     Marker marcador=mapboxMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitud, longitud))
                             .title(snapshot.getKey())
                             .icon(icon));
 
-                   /* Marker mUbicacionPlatillo = mMap.addMarker(new MarkerOptions().
-                            position(
-                                    new com.google.android.gms.maps.model.LatLng(latitud, longitud))
-                            .icon(
-                                    BitmapDescriptorFactory.fromResource(
-                                            R.drawable.ico_marker_meat))
-                    );*/
 
                     llaves.add( snapshot.getKey() );
                     arrayListPlatillos.add( platillosc );
@@ -386,18 +396,13 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                     public void OnClickListener(platillos platillos, int position) {
                         navigationMapRoute.onStop();
                         Intent i = new Intent(getActivity(), informacion_platillos.class);
-
                         i.putExtra( "key",llaves.get( position ) );
-
                         startActivity(i);
 
                     }
                 } );
 
                 rvListaPlatillos.setAdapter(adapterRVTarjetaPlatillo);
-
-               /* realTimeMarkers.clear();
-                realTimeMarkers.addAll(tmpRealTimeMarkers);*/
             }
 
             @Override
@@ -428,7 +433,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
    /* @Override
     public boolean onMapClick(@NonNull LatLng point) {
 
-        Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
+        /*Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
         Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
                 locationComponent.getLastKnownLocation().getLatitude());
 
@@ -478,8 +483,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                         Log.e(TAG, "Error: " + throwable.getMessage());
                     }
                 });
-
-
+        //button.setVisibility(View.VISIBLE);
     }
 
     @SuppressWarnings( {"MissingPermission"})
