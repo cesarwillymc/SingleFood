@@ -1,23 +1,18 @@
 package com.singlefood.sinfo;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,10 +32,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -88,7 +80,6 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
@@ -188,13 +179,13 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
             mapView.onCreate( savedInstanceState );
             mapView.onResume();
             mapView.getMapAsync( this );
+            getDeviceLocation();
         }
 
         context = getContext();
 
-        //GPS ENABLE
-        gpsEnable();
 
+        gpsEnable();
         rvListaPlatillos = view.findViewById(R.id.rvListaPlatillos);
         layourRview = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvListaPlatillos.setLayoutManager(layourRview);
@@ -203,7 +194,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
 
         //Solicitamos permisos de ubicacion para versiones anteriores
-        if (ActivityCompat.checkSelfPermission(container.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+        /*if (ActivityCompat.checkSelfPermission(container.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
             new AlertDialog.Builder( container.getContext() )
                     .setTitle( "Activa Permiso" )
@@ -233,7 +224,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                     } )
                     .show();
         }
-
+*/
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.crear_comida_dialog);
         bottomSheetBehavior = BottomSheetBehavior.from(linearLayout);
         fab_collapse = (FloatingActionButton) view.findViewById( R.id.fab_collapse_dialog );
@@ -298,120 +289,99 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+        getDeviceLocation();
         mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
-            @Override
-            public void onStyleLoaded(@NonNull Style style) {
-                enableLocationComponent(style);
-/*
-               // addDestinationIconSymbolLayer(style);
-
-
-                //mapboxMap.addOnMapClickListener( MapaPrincipalComidas.this);
-                button = view.findViewById(R.id.startButton);
-                button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onStyleLoaded(@NonNull Style style) {
+                        button = view.findViewById(R.id.startButton);
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentRoute != null) {
+                                        button.setVisibility(View.GONE);
+                                        boolean simulateRoute = false;
+                                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                                                .directionsRoute(currentRoute)
+                                                .shouldSimulateRoute(simulateRoute)
+                                                .build();
+                                    }
+                                }
+                            });
 
-                        if(currentRoute!=null){
-                            button.setVisibility(View.GONE);
-                            boolean simulateRoute = false;
-                            NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                                    .directionsRoute(currentRoute)
-                                    .shouldSimulateRoute(simulateRoute)
-                                    .build();
-*/
-                mapboxMap.addOnMapClickListener(MapaPrincipalComidas.this);
-                fab_go = view.findViewById(R.id.fab_go);
-                fab_go.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //fab_go.setVisibility(View.GONE);
-                        boolean simulateRoute = false;
-                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                                .directionsRoute(currentRoute)
-                                .shouldSimulateRoute(simulateRoute)
-                                .build();
-// Call this method with Context from within an Activity
-                            NavigationLauncher.startNavigation(getActivity(), options);
-                        }else{
-                            Toast.makeText(getContext(),"Espere un momento por favor!!!",Toast.LENGTH_SHORT).show();
                         }
 
-                    }
-                });
-            }
-        });
+                        });
 
-        mDatabase.child("platillos").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        mDatabase.child("platillos").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                ArrayList<String> llaves= new ArrayList<>();
-                int i = 0;
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    platillos platillosc= snapshot.getValue( platillos.class);
-                    Double latitud = platillosc.getPlaces().getLatitud();
-                    Double longitud = platillosc.getPlaces().getLongitud();
+                                ArrayList<String> llaves = new ArrayList<>();
+                                int i = 0;
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    platillos platillosc = snapshot.getValue(platillos.class);
+                                    Double latitud = platillosc.getPlaces().getLatitud();
+                                    Double longitud = platillosc.getPlaces().getLongitud();
 
 
-                    // Create an Icon object for the marker to use
-                    IconFactory iconFactory = IconFactory.getInstance(context);
-                    Icon icon;
-                    
-                    if(i++ % 2 == 0)
-                        icon = iconFactory.fromResource(R.drawable.ico_marker_meat);
-                    else
-                        icon = iconFactory.fromResource(R.drawable.ico_marker_fish);
+                                    // Create an Icon object for the marker to use
+                                    IconFactory iconFactory = IconFactory.getInstance(context);
+                                    Icon icon;
 
-                    // Add the marker to the map
-                    Marker marcador=mapboxMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(latitud, longitud))
-                            .title(snapshot.getKey())
-                            .icon(icon));
+                                    if (i++ % 2 == 0)
+                                        icon = iconFactory.fromResource(R.drawable.ico_marker_meat);
+                                    else
+                                        icon = iconFactory.fromResource(R.drawable.ico_marker_fish);
+
+                                    // Add the marker to the map
+                                    Marker marcador = mapboxMap.addMarker(new MarkerOptions()
+                                            .position(new LatLng(latitud, longitud))
+                                            .title(snapshot.getKey())
+                                            .icon(icon));
 
 
-                    llaves.add( snapshot.getKey() );
-                    arrayListPlatillos.add( platillosc );
-                    mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(@NonNull Marker marker) {
-                            for(int i = 0; i <  arrayListPlatillos.size(); i++)
-                                if(llaves.get(i).equals(marker.getTitle())){
-                                    rvListaPlatillos.smoothScrollToPosition(i);
-                                    Point destinationPoint = Point.fromLngLat(arrayListPlatillos.get(i).getPlaces().getLongitud(), arrayListPlatillos.get(i).getPlaces().getLatitud());
-                                    Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
-                                            locationComponent.getLastKnownLocation().getLatitude());
-                                    getRoute(originPoint, destinationPoint);
+                                    llaves.add(snapshot.getKey());
+                                    arrayListPlatillos.add(platillosc);
+                                    mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+                                        @Override
+                                        public boolean onMarkerClick(@NonNull Marker marker) {
+                                            for (int i = 0; i < arrayListPlatillos.size(); i++)
+                                                if (llaves.get(i).equals(marker.getTitle())) {
+                                                    rvListaPlatillos.smoothScrollToPosition(i);
+                                                    Point destinationPoint = Point.fromLngLat(arrayListPlatillos.get(i).getPlaces().getLongitud(), arrayListPlatillos.get(i).getPlaces().getLatitud());
+                                                    Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
+                                                            locationComponent.getLastKnownLocation().getLatitude());
+                                                    getRoute(originPoint, destinationPoint);
+                                                }
+
+                                            return true;
+                                        }
+                                    });
+
                                 }
 
-                            return true;
-                        }
-                    });
 
-                }
+                                adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void OnClickListener(platillos platillos, int position) {
+                                        navigationMapRoute.onStop();
+                                        Intent i = new Intent(getActivity(), informacion_platillos.class);
+                                        i.putExtra("key", llaves.get(position));
+                                        startActivity(i);
 
+                                    }
+                                });
 
-                adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
-                    @Override
-                    public void OnClickListener(platillos platillos, int position) {
-                        navigationMapRoute.onStop();
-                        Intent i = new Intent(getActivity(), informacion_platillos.class);
-                        i.putExtra( "key",llaves.get( position ) );
-                        startActivity(i);
+                                rvListaPlatillos.setAdapter(adapterRVTarjetaPlatillo);
+                            }
 
-                    }
-                } );
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                rvListaPlatillos.setAdapter(adapterRVTarjetaPlatillo);
-            }
+                            }
+                        });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
+        }
 
 /*
     private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
@@ -429,7 +399,6 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
     }*/
 
-    @SuppressWarnings( {"MissingPermission"})
    /* @Override
     public boolean onMapClick(@NonNull LatLng point) {
 
