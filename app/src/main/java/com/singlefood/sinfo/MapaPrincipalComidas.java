@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -75,11 +76,15 @@ import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
@@ -104,6 +109,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
 // classes needed to initialize map
 // classes needed to add the location component
@@ -179,7 +187,6 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
             mapView.onCreate( savedInstanceState );
             mapView.onResume();
             mapView.getMapAsync( this );
-            getDeviceLocation();
         }
 
         context = getContext();
@@ -289,22 +296,26 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-        getDeviceLocation();
         mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
+                        enableLocationComponent(style);
                         button = view.findViewById(R.id.startButton);
+
                         button.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (currentRoute != null) {
                                         button.setVisibility(View.GONE);
+                                        if (currentRoute==null)
+                                            button.setVisibility(View.VISIBLE);
+                                        else
+                                            button.setVisibility(View.GONE);
                                         boolean simulateRoute = false;
                                         NavigationLauncherOptions options = NavigationLauncherOptions.builder()
                                                 .directionsRoute(currentRoute)
                                                 .shouldSimulateRoute(simulateRoute)
                                                 .build();
-                                    }
+
                                 }
                             });
 
@@ -364,7 +375,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                                 adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
                                     @Override
                                     public void OnClickListener(platillos platillos, int position) {
-                                        navigationMapRoute.onStop();
+
                                         Intent i = new Intent(getActivity(), informacion_platillos.class);
                                         i.putExtra("key", llaves.get(position));
                                         startActivity(i);
@@ -383,7 +394,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
         }
 
-/*
+
     private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
         loadedMapStyle.addImage("destination-icon-id",
                 BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
@@ -397,7 +408,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         );
         loadedMapStyle.addLayer(destinationSymbolLayer);
 
-    }*/
+    }
 
    /* @Override
     public boolean onMapClick(@NonNull LatLng point) {
@@ -455,22 +466,6 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         //button.setVisibility(View.VISIBLE);
     }
 
-    @SuppressWarnings( {"MissingPermission"})
-    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
-// Check if permissions are enabled and if not request
-        if (PermissionsManager.areLocationPermissionsGranted(context)) {
-// Activate the MapboxMap LocationComponent to show user location
-// Adding in LocationComponentOptions is also an optional parameter
-            locationComponent = mapboxMap.getLocationComponent();
-            locationComponent.activateLocationComponent(context, loadedMapStyle);
-            locationComponent.setLocationComponentEnabled(true);
-// Set the component's camera mode
-            locationComponent.setCameraMode(CameraMode.TRACKING);
-        } else {
-            permissionsManager = new PermissionsManager(this);
-            permissionsManager.requestLocationPermissions(getActivity());
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode,@Nullable Intent data) {
@@ -813,4 +808,34 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     public boolean onMarkerClick(@NonNull Marker marker) {
         return false;
     }
+    @SuppressWarnings( {"MissingPermission"})
+    private void enableLocationComponent(Style style) {
+
+        // Check if permissions are enabled and if not request
+        if (PermissionsManager.areLocationPermissionsGranted(getContext())) {
+
+            // Get an instance of the component
+             locationComponent = mapboxMap.getLocationComponent();
+
+            // Activate with a built LocationComponentActivationOptions object
+            locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(getContext(), style).build());
+
+            // Enable to make component visible
+            locationComponent.setLocationComponentEnabled(true);
+
+            // Set the component's camera mode
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+
+            // Set the component's render mode
+            locationComponent.setRenderMode(RenderMode.COMPASS);
+
+        } else {
+
+            permissionsManager = new PermissionsManager(this);
+
+            permissionsManager.requestLocationPermissions(getActivity());
+
+        }
+    }
+
 }
