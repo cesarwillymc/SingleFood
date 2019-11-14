@@ -1,4 +1,4 @@
-package com.singlefood.sinfo.models.productos;
+package com.singlefood.sinfo.utils.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.singlefood.sinfo.R;
+import com.singlefood.sinfo.models.platillos;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

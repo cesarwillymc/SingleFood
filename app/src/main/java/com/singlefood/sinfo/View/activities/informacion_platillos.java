@@ -1,4 +1,4 @@
-package com.singlefood.sinfo.models;
+package com.singlefood.sinfo.View.activities;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -40,12 +40,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.singlefood.sinfo.LoginActivity;
 import com.singlefood.sinfo.R;
-import com.singlefood.sinfo.models.productos.RecyclerComentariosAdapter;
-import com.singlefood.sinfo.models.productos.comentarios;
-import com.singlefood.sinfo.models.productos.platillos;
-import com.singlefood.sinfo.models.productos.usuariosSingle;
+import com.singlefood.sinfo.View.dialog.dialog_comentario_principal;
+import com.singlefood.sinfo.utils.adapters.RecyclerComentariosAdapter;
+import com.singlefood.sinfo.models.comentarios;
+import com.singlefood.sinfo.models.platillos;
+import com.singlefood.sinfo.models.usuariosSingle;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -68,21 +68,21 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 
     LinearLayout linearLayout;
     BottomSheetBehavior bottomSheetBehavior;
-    @BindView( R.id.appbar_info )
+    @BindView( R.id.aic_appbar_info)
     AppBarLayout appBarLayout;
-    @BindView( R.id.collapsing_toolbar_info )
+    @BindView( R.id.aic_collapsing_toolbar_info)
     CollapsingToolbarLayout collapsingToolbarLayout;
-    @BindView( R.id.toolbar_info )
+    @BindView( R.id.aic_toolbar_info)
     Toolbar toolbar_info;
-    @BindView( R.id.image_view_info_heading )
+    @BindView( R.id.aic_image_view_info_heading)
     ImageView imageView_info;
-    @BindView( R.id.btnfComment )
+    @BindView( R.id.aic_fab_comment)
     FloatingActionButton btnfComment;
-    @BindView(R.id.btnfLike)
+    @BindView(R.id.aic_fab_like)
     FloatingActionButton btnLike;
-    @BindView( R.id.button_comentar_collapse )
+    @BindView( R.id.aic_button_comentar_collapse)
     Button button_coment_collapse;
-    @BindView(R.id.informacion_platillos_activity_comentarios_total)
+    @BindView(R.id.aic_text_view_comentarios_total)
     TextView ComentariosTotal;
     //Button Sheep
     FloatingActionButton button_coment_hide;
@@ -94,14 +94,14 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.act_detalle_platillo);
+        setContentView( R.layout.actividad_informacion_platillo);
         ButterKnife.bind( this );
         if (Build.VERSION.SDK_INT > 16) {
             getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN );
         }
 
-        button_coment_hide=(FloatingActionButton) findViewById( R.id.button_comentar_hide );
+        button_coment_hide=(FloatingActionButton) findViewById( R.id.aic_button_comentar_hide);
         button_coment_collapse.setOnClickListener( this );
         button_coment_hide.setOnClickListener( this );
         obtener_datos();
@@ -228,7 +228,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                 args.putString( "direccion", arrayList.get(0).getDireccion() );
 
                 // Supongamos que tu Fragment se llama TestFragment. Colocamos este nuevo Bundle como argumento en el fragmento.
-                Fragment newFragment = new info_comentario_principal();
+                Fragment newFragment = new dialog_comentario_principal();
                 newFragment.setArguments(args);
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -256,7 +256,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                 }
 
                 //ratingtex.setText( promedioRating(arrayListComentarios).toString());
-                adapterRview = new RecyclerComentariosAdapter( informacion_platillos.this, R.layout.rv_comentarios, arrayListComentarios, new RecyclerComentariosAdapter.OnItemClickListener2() {
+                adapterRview = new RecyclerComentariosAdapter( informacion_platillos.this, R.layout.dialog_recycler_comentarios, arrayListComentarios, new RecyclerComentariosAdapter.OnItemClickListener2() {
                     @Override
                     public void OnClickListener2(comentarios comentarios, int adapterPosition) {
                         Toast.makeText( informacion_platillos.this,"Prueba: "+comentarios.getTexto(),Toast.LENGTH_SHORT ).show();
@@ -331,7 +331,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 
 
                 break;
-            case R.id.button_comentar_collapse:
+            case R.id.aic_button_comentar_collapse:
                 auth =FirebaseAuth.getInstance();
                 user=auth.getCurrentUser();
 
@@ -347,13 +347,13 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                 }
 
                 break;
-            case R.id.button_comentar_hide:
+            case R.id.aic_button_comentar_hide:
                 bottomSheetBehavior.setState( BottomSheetBehavior.STATE_HIDDEN );
 
                 button_coment_collapse.setVisibility( View.VISIBLE );
                 button_coment_hide.setVisibility( View.GONE );
                 break;
-            case R.id.btnfComment:
+            case R.id.aic_fab_comment:
                 button_coment_collapse.requestFocus();
                 break;
         }

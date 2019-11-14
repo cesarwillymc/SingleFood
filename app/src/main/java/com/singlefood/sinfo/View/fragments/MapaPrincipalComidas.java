@@ -1,4 +1,4 @@
-package com.singlefood.sinfo;
+package com.singlefood.sinfo.View.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -88,9 +88,11 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-import com.singlefood.sinfo.models.informacion_platillos;
-import com.singlefood.sinfo.models.productos.RecyclerProductoAdapter;
-import com.singlefood.sinfo.models.productos.platillos;
+import com.singlefood.sinfo.R;
+import com.singlefood.sinfo.View.activities.LoginActivity;
+import com.singlefood.sinfo.View.activities.informacion_platillos;
+import com.singlefood.sinfo.utils.adapters.RecyclerProductoAdapter;
+import com.singlefood.sinfo.models.platillos;
 import com.singlefood.sinfo.utils.Constants;
 
 import java.io.ByteArrayOutputStream;
@@ -181,7 +183,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         context = getContext();
 
         //cargamos el mapa principal
-        view = inflater.inflate( R.layout.fra_mapa_principal, container, false );
+        view = inflater.inflate( R.layout.fragmento_mapa_principal, container, false );
         mapView = view.findViewById(R.id.mapView);
         if (mapView != null) {
             mapView.onCreate( savedInstanceState );
@@ -269,7 +271,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>
                 (getContext(), android.R.layout.select_dialog_item, Constants.foods);
 
-        acBuscadorPlatillo = view.findViewById(R.id.acBuscarPlatillos);
+        acBuscadorPlatillo = view.findViewById(R.id.aic_text_view_comentarios_total);
         acBuscadorPlatillo.setThreshold(1);//num de caracteres para iniciar el autocompletado
         acBuscadorPlatillo.setAdapter(adapter);
         acBuscadorPlatillo.setTextColor(Color.GREEN);
@@ -372,7 +374,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                                 }
 
 
-                                adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.rv_tarjeta_platillo, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
+                                adapterRVTarjetaPlatillo = new RecyclerProductoAdapter(getContext(), R.layout.dialog_recycler_platillo, arrayListPlatillos, new RecyclerProductoAdapter.OnItemClickListener() {
                                     @Override
                                     public void OnClickListener(platillos platillos, int position) {
 

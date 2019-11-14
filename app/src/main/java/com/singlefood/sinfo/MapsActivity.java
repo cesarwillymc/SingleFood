@@ -21,13 +21,12 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.singlefood.sinfo.View.fragments.MapaPrincipalComidas;
 
 public class MapsActivity extends AppCompatActivity {
-    NavigationView navigationView;
-    DrawerLayout drawer;
-    //Toolbar tv_tolbar;
-    ImageView image_header;
+    NavigationView ap_nav_view;
+    DrawerLayout ap_drawer;
+    ImageView ap_image_view;
     private final int LOCATION = 1;
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -36,8 +35,6 @@ public class MapsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate( savedInstanceState );
-        FirebaseAuth mAuth= FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (Build.VERSION.SDK_INT > 16) {
             getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -47,12 +44,11 @@ public class MapsActivity extends AppCompatActivity {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE},LOCATION);
 
-
-        setContentView( R.layout.activity_maps );
-        drawer = findViewById( R.id.drawer_layout );
-        navigationView = findViewById( R.id.nav_view );
+        setContentView( R.layout.actividad_principal);
+        ap_drawer = findViewById( R.id.ap_drawer_layout_main );
+        ap_nav_view = findViewById( R.id.ap_nav_view );
         setfragmetdefautl();
-        drawer.addDrawerListener( new DrawerLayout.DrawerListener() {
+        ap_drawer.addDrawerListener( new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 
@@ -73,7 +69,7 @@ public class MapsActivity extends AppCompatActivity {
 
             }
         } );
-        navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
+        ap_nav_view.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Boolean transaccion=false;
@@ -98,7 +94,7 @@ public class MapsActivity extends AppCompatActivity {
                     case R.id.SignOut:
                         FirebaseAuth.getInstance().signOut();
                         menuItem.setChecked( true );
-                        drawer.closeDrawers();
+                        ap_drawer.closeDrawers();
                         break;
                 }
                 if(transaccion){
@@ -109,46 +105,47 @@ public class MapsActivity extends AppCompatActivity {
 
                     menuItem.setChecked( true );
 
-                    drawer.closeDrawers();
+                    ap_drawer.closeDrawers();
                 }
 
                 return false;
             }
         } );
-        //setTolbar();
-        image_header =(ImageView) findViewById( R.id.image_header );
+        ap_image_view =(ImageView) findViewById( R.id.lnd_image_view_header );
     }
 
-
+    //abre el open drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
             case android.R.id.home:
-                drawer.openDrawer( GravityCompat.START);
+                ap_drawer.openDrawer( GravityCompat.START);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
+    //selecciona fragmento por defecto
     void  setfragmetdefautl(){
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace( R.id.content_frame,new MapaPrincipalComidas() )
                 .commit();
-        MenuItem menuItem= navigationView.getMenu().getItem( 0);
+        MenuItem menuItem= ap_nav_view.getMenu().getItem( 0);
         menuItem.setChecked( true );
-        drawer.closeDrawers();
+        ap_drawer.closeDrawers();
     }
+    //gestos
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById( R.id.drawer_layout );
+        DrawerLayout drawer = findViewById( R.id.ap_drawer_layout_main );
         if (drawer.isDrawerOpen( GravityCompat.START )) {
             drawer.closeDrawer( GravityCompat.START );
         } else {
             super.onBackPressed();
         }
     }
+    //permisos para mapa 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {

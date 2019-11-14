@@ -1,4 +1,4 @@
-package com.singlefood.sinfo;
+package com.singlefood.sinfo.View.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.singlefood.sinfo.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth=FirebaseAuth.getInstance();
         mDatabase= FirebaseDatabase.getInstance().getReference();
         user=mAuth.getCurrentUser();
-        setContentView( R.layout.activity_login );
+        setContentView( R.layout.actividad_logeo);
         ButterKnife.bind( this );
         configToolbar();
         logeo.setOnClickListener(this);

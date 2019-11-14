@@ -1,4 +1,4 @@
-package com.singlefood.sinfo.models.productos;
+package com.singlefood.sinfo.utils.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.singlefood.sinfo.R;
+import com.singlefood.sinfo.models.comentarios;
 
 import java.util.ArrayList;
 

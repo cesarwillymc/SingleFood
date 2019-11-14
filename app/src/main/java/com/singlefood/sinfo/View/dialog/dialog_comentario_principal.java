@@ -1,4 +1,4 @@
-package com.singlefood.sinfo.models;
+package com.singlefood.sinfo.View.dialog;
 
 
 import android.content.Context;
@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.singlefood.sinfo.R;
-import com.singlefood.sinfo.models.productos.comentarios;
+import com.singlefood.sinfo.models.comentarios;
 
 import java.util.ArrayList;
 
@@ -28,32 +28,32 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class info_comentario_principal extends Fragment {
+public class dialog_comentario_principal extends Fragment {
 
     View view;
     String Key, id_user, tipo, precio,direccion;
     ArrayList<comentarios> arrayListComentarios;
     //Otro
-    @BindView( R.id.text_view_info_direccion )
+    @BindView( R.id.dcp_text_view_direccion)
     TextView textview_direccion;
-    @BindView( R.id.text_view_info_precio )
+    @BindView( R.id.dcp_text_view_precio)
     TextView textview_precio;
-    @BindView( R.id.text_view_info_tipo_comida )
+    @BindView( R.id.dcp_text_view_comida)
     TextView textview_tipo_comida;
-    @BindView( R.id.rating_info_text_rating )
+    @BindView( R.id.dcp_text_view_rating)
     TextView textview_rating;
     //Otro comentario principal
-    @BindView( R.id.rv_comentarios_name_user_principal )
+    @BindView( R.id.dcp_text_view_nombre_user)
     TextView textview_nombre_user;
-    @BindView( R.id.rv_comentarios_text_user_comentarios_principal )
+    @BindView( R.id.dcp_text_view_comentario_user)
     TextView textview_comentarios_user;
-    @BindView( R.id.rv_comentarios_imagen_user_image_principal )
+    @BindView( R.id.dcp_image_view_foto_user)
     ImageView imageview_user;
-    @BindView( R.id.rv_comentarios_text_user_fech_principal )
+    @BindView( R.id.dcp_text_view_fecha)
     TextView textview_fech;
 
 
-    public info_comentario_principal() {
+    public dialog_comentario_principal() {
         // Required empty public constructor
     }
 
@@ -71,7 +71,7 @@ public class info_comentario_principal extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view= inflater.inflate( R.layout.fragment_info_comentario_principal, container, false );
+        view= inflater.inflate( R.layout.dialog_informacion_principal, container, false );
         ButterKnife.bind( this,view );
         getdatacoment();
 

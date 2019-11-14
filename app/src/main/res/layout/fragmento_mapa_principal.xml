@@ -19,7 +19,7 @@
 
 
     <AutoCompleteTextView
-        android:id="@+id/acBuscarPlatillos"
+        android:id="@+id/aic_text_view_comentarios_total"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -91,6 +91,6 @@
 
     <include
         android:id="@+id/crear_comida_dialog"
-        layout="@layout/act_crear_platillo"
+        layout="@layout/dialog_nuevo_platillo"
         app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

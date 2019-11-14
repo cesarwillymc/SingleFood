@@ -27,11 +27,11 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".LoginActivity"
+        <activity android:name=".View.activities.LoginActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
         <activity
-            android:name=".models.informacion_platillos"
+            android:name=".View.activities.informacion_platillos"
             android:label="@string/title_activity_informacion_platillos"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize"/>

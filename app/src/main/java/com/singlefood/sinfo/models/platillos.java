@@ -1,4 +1,4 @@
-package com.singlefood.sinfo.models.productos;
+package com.singlefood.sinfo.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,7 +7,7 @@ public class platillos {
 
   @SerializedName("comentarios")
   @Expose
-  private comentarios comentarios;
+  private com.singlefood.sinfo.models.comentarios comentarios;
   @SerializedName("direccion")
   @Expose
   private String direccion;
