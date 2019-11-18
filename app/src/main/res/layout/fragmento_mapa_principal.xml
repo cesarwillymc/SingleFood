@@ -19,7 +19,7 @@
 
 
     <AutoCompleteTextView
-        android:id="@+id/aic_text_view_comentarios_total"
+        android:id="@+id/fmp_text_view_buscador"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"

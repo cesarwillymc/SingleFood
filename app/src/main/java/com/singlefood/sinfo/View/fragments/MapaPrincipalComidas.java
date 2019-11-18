@@ -175,6 +175,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
     private View view;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -271,7 +272,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>
                 (getContext(), android.R.layout.select_dialog_item, Constants.foods);
 
-        acBuscadorPlatillo = view.findViewById(R.id.aic_text_view_comentarios_total);
+        acBuscadorPlatillo = view.findViewById(R.id.fmp_text_view_buscador);
         acBuscadorPlatillo.setThreshold(1);//num de caracteres para iniciar el autocompletado
         acBuscadorPlatillo.setAdapter(adapter);
         acBuscadorPlatillo.setTextColor(Color.GREEN);
@@ -365,10 +366,12 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                                                     Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
                                                             locationComponent.getLastKnownLocation().getLatitude());
                                                     getRoute(originPoint, destinationPoint);
+                                                    return true;
                                                 }
 
                                             return true;
                                         }
+
                                     });
 
                                 }
@@ -384,7 +387,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
                                     }
                                 });
-
+                                rvListaPlatillos.setHasFixedSize(true);
                                 rvListaPlatillos.setAdapter(adapterRVTarjetaPlatillo);
                             }
 
