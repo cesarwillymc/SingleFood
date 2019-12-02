@@ -326,7 +326,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
                         });
 
-                        mDatabase.child("platillos").addValueEventListener(new ValueEventListener() {
+                        mDatabase.child("platillos").orderByChild("ratingPromedio").startAt(1.5).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 

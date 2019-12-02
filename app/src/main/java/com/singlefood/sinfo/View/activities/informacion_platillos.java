@@ -244,7 +244,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         });
         DatabaseReference coment= FirebaseDatabase.getInstance().getReference("platillos").child( Key ).child( "comentarios" );
 
-        coment.addValueEventListener( new ValueEventListener() {
+        coment.limitToFirst(10).addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<comentarios> arrayListComentarios= new ArrayList<>();
