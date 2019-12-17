@@ -16,22 +16,45 @@
         mapbox:mapbox_cameraTargetLat="38.9098"
         mapbox:mapbox_cameraTargetLng="-77.0295"
         mapbox:mapbox_cameraZoom="12" />
-
-
-    <AutoCompleteTextView
-        android:id="@+id/fmp_text_view_buscador"
+    <ImageButton
+        android:id="@+id/mylocation"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/ic_my_location_black_24dp"/>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:inputType="text"
-        android:imeOptions="actionSend"
-        android:background="@drawable/capsule_border_comentarios"
-        android:fontFamily="@font/rubrik_light"
-        android:hint="Nombre del plato"
-        android:padding="10dp"
-        android:elevation="@dimen/margin_top_5dp"
-        android:textColor="#534D4D"
-        android:textSize="@dimen/texto13sp" />
+        android:orientation="horizontal"
+        android:weightSum="10">
+        <AutoCompleteTextView
+            android:id="@+id/fmp_text_view_buscador"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="40dp"
+            android:layout_margin="15dp"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:background="@drawable/capsule_border_comentarios"
+            android:fontFamily="@font/rubrik_light"
+            android:hint="@string/nombre_del_plato"
+            android:padding="10dp"
+            android:elevation="@dimen/margin_top_5dp"
+            android:textColor="#534D4D"
+            android:textSize="@dimen/texto13sp" />
+        <ImageButton
+            android:id="@+id/fmp_image_button_buscador"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="40dp"
+            android:background="@drawable/capsule_border_comentarios"
+            android:padding="10dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_search_black_24dp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
 
 
     <LinearLayout

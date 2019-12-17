@@ -10,7 +10,7 @@
         android:scaleType="centerCrop"
         android:padding="0dp"
         android:layout_margin="0dp"
-        android:background="@drawable/com_facebook_profile_picture_blank_square"
+        android:background="@drawable/basuraazul"
         android:id="@+id/lnd_image_view_header"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

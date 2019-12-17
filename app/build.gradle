@@ -79,7 +79,6 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     //Youtube
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     //multidesk
     implementation 'com.android.support:multidex:1.0.3'
     //glide

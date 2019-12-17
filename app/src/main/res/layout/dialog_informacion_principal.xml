@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
                     android:fontFamily="@font/rubrik_semibold"
-                    android:text="Restaurante la Nacional"
+                    android:text="@string/restaurante_la_nacional"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -52,7 +52,7 @@
                     android:backgroundTint="#764CC4"
                     android:fontFamily="@font/rubrik_light"
                     android:gravity="center"
-                    android:text="ABIERTO"
+                    android:text="@string/abierto"
                     android:textColor="@color/white"
                     android:textSize="9sp"
                     android:textStyle="bold" />
@@ -111,7 +111,7 @@
                     android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
                     android:fontFamily="@font/rubrik_semibold"
                     android:gravity="center|left"
-                    android:text="Menu criollo"
+                    android:text="@string/menu_criollo"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 

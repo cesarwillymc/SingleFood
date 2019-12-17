@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Yofood</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">Yofood</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_informacion_platillos">informacion_platillos</string>
     <string name="facebook_app_id">1125958114267363</string>
     <string name="fb_login_protocol_scheme">fb1125958114267363</string>
     <string name="sign_in_with_gmail">Sign In with gmail</string>
@@ -14,4 +13,19 @@
     <string name="access_token" translatable="false">pk.eyJ1IjoiZWxpYXNjYW5hemEiLCJhIjoiY2sxenNkYmVqMHFqZjNjcTh0c2dwNjE5NyJ9.RHJeIjo94sUhKde4lCWmBg</string>
     <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
     <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
+    <string name="tu_nombre">Tu nombre</string>
+    <string name="email">Email</string>
+    <string name="celular">Celular</string>
+    <string name="registrarme">Registrarme</string>
+    <string name="restaurante_la_nacional">Restaurante la Nacional</string>
+    <string name="abierto">ABIERTO</string>
+    <string name="menu_criollo">Menu criollo</string>
+    <string name="tu_calificaci_n">Tu calificación:</string>
+    <string name="que_opinas">¿Que opinas?</string>
+    <string name="publicar">PUBLICAR</string>
+    <string name="nuevo_platillo">Nuevo Platillo</string>
+    <string name="nombre_del_plato">Nombre del plato</string>
+    <string name="lugar_o_direccion">Lugar o Direccion</string>
+    <string name="precio">Precio</string>
+    <string name="mas_comentado">Mas comentado</string>
 </resources>

@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -74,6 +73,7 @@ import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
@@ -91,9 +91,9 @@ import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.View.activities.LoginActivity;
 import com.singlefood.sinfo.View.activities.informacion_platillos;
-import com.singlefood.sinfo.utils.adapters.RecyclerProductoAdapter;
 import com.singlefood.sinfo.models.platillos;
 import com.singlefood.sinfo.utils.Constants;
+import com.singlefood.sinfo.utils.adapters.RecyclerProductoAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -174,8 +174,8 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     ArrayList<platillos> arrayListPlatillos= new ArrayList<>();
 
     private View view;
-
-
+    private ImageButton mylocation;
+    private ImageButton buscadorbutton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -202,7 +202,8 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
         mStorageReference= FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference(); //Instanciar BD Firebase
-
+        mylocation=view.findViewById(R.id.mylocation);
+        mylocation.setOnClickListener(this);
         //Solicitamos permisos de ubicacion para versiones anteriores
         /*if (ActivityCompat.checkSelfPermission(container.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
@@ -273,25 +274,13 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                 (getContext(), android.R.layout.select_dialog_item, Constants.foods);
 
         acBuscadorPlatillo = view.findViewById(R.id.fmp_text_view_buscador);
+
         acBuscadorPlatillo.setThreshold(1);//num de caracteres para iniciar el autocompletado
         acBuscadorPlatillo.setAdapter(adapter);
         acBuscadorPlatillo.setTextColor(Color.GREEN);
+        buscadorbutton=view.findViewById(R.id.fmp_image_button_buscador);
+        buscadorbutton.setOnClickListener(this);
 
-        acBuscadorPlatillo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-        acBuscadorPlatillo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> p, View v, int pos, long id) {
-                InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(acBuscadorPlatillo.getWindowToken(), 0);
-
-                //mMap.animateCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude()),14 ));
-                Toast.makeText( getContext(),"Disfrute de estas delicias!!" , Toast.LENGTH_SHORT ).show();
-            }
-        });
 
         return view;
     }
@@ -299,6 +288,8 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+        mapboxMap.getUiSettings().setCompassEnabled(false);
+        //this.mapboxMap.getUiSettings().setCompassMargins(0,0,0,120);
         mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
@@ -383,6 +374,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
 
                                         Intent i = new Intent(getActivity(), informacion_platillos.class);
                                         i.putExtra("key", llaves.get(position));
+                                        i.putExtra("nombre", platillos.getNombrePlatillo());
                                         startActivity(i);
 
                                     }
@@ -583,6 +575,13 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                 fab_hidden.setVisibility( View.GONE );
                 fab_collapse.setVisibility( View.VISIBLE );
                 break;
+            case R.id.mylocation:
+                Location lastKnownLocation = mapboxMap.getLocationComponent().getLastKnownLocation();
+
+                mapboxMap.moveCamera(CameraUpdateFactory.newLatLng(
+                        new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude())));
+
+                break;
             case  R.id.dialog_yes:
                 progressDialog=new ProgressDialog( getContext());
                 progressDialog.setMessage( "Compartiendo tu recomendación" );
@@ -605,6 +604,26 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                 intent.setAction(  MediaStore.ACTION_IMAGE_CAPTURE );
                 startActivityForResult( intent,TAKEFOTO );
                 //openCameraIntent();
+                break;
+            case R.id.fmp_image_button_buscador:
+                InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(acBuscadorPlatillo.getWindowToken(), 0);
+                if (!acBuscadorPlatillo.getText().equals("")||acBuscadorPlatillo.getText() !=null){
+                    for (int i = 0; i < arrayListPlatillos.size(); i++){
+                        if (acBuscadorPlatillo.getText().toString().trim().equals(arrayListPlatillos.get(i).getNombrePlatillo())) {
+                            rvListaPlatillos.smoothScrollToPosition(i);
+                            Point destinationPoint = Point.fromLngLat(arrayListPlatillos.get(i).getPlaces().getLongitud(), arrayListPlatillos.get(i).getPlaces().getLatitud());
+                            Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
+                                    locationComponent.getLastKnownLocation().getLatitude());
+                            getRoute(originPoint, destinationPoint);
+                            return ;
+                        }
+                    }
+                    Toast.makeText( getContext(),"No se encuentran coincidencias" , Toast.LENGTH_SHORT ).show();
+                }
+
+                //mMap.animateCamera( CameraUpdateFactory.newLatLngZoom( new LatLng( location.getLatitude(),location.getLongitude()),14 ));
+                Toast.makeText( getContext(),"El campo esta vacio" , Toast.LENGTH_SHORT ).show();
                 break;
 
         }

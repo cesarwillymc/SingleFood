@@ -17,6 +17,8 @@ public class usuariosSingle {
     @Expose
     private String celular;
 
+
+
     public String getEmail() {
         return email;
     }

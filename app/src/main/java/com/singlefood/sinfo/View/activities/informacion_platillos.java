@@ -42,10 +42,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.singlefood.sinfo.R;
 import com.singlefood.sinfo.View.dialog.dialog_comentario_principal;
-import com.singlefood.sinfo.utils.adapters.RecyclerComentariosAdapter;
 import com.singlefood.sinfo.models.comentarios;
 import com.singlefood.sinfo.models.platillos;
 import com.singlefood.sinfo.models.usuariosSingle;
+import com.singlefood.sinfo.utils.adapters.RecyclerComentariosAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -104,9 +104,11 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         button_coment_hide=(FloatingActionButton) findViewById( R.id.aic_button_comentar_hide);
         button_coment_collapse.setOnClickListener( this );
         button_coment_hide.setOnClickListener( this );
-        obtener_datos();
-        getCommts();
         configToolbar();
+        obtener_datos();
+
+        getCommts();
+
         //cargarImage();
         linearLayout=(LinearLayout) findViewById( R.id.crear_comentario_layout_dialog ) ;
         bottomSheetBehavior= BottomSheetBehavior.from( linearLayout );
@@ -122,9 +124,6 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                 switch (i)
                 {
                     case BottomSheetBehavior.STATE_HIDDEN:
-                        button_coment_hide.setVisibility( View.GONE );
-                        button_coment_collapse.setVisibility( View.VISIBLE );
-                        break;
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         button_coment_hide.setVisibility( View.GONE );
                         button_coment_collapse.setVisibility( View.VISIBLE );
@@ -138,16 +137,9 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 
             }
         } );
-        //gestos
-        gestos();
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void gestos() {
-
-
-    }
 
     private ArrayList<comentarios> getUser(String Key) {
         DatabaseReference coment= FirebaseDatabase.getInstance().getReference("usuariosSingle").child( Key ).child( "comentarios" );
@@ -200,6 +192,8 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
     public void obtener_datos(){
         try{
             Key = getIntent().getStringExtra("key");
+            toolbar_info.setTitle(  getIntent().getStringExtra("nombre"));
+            getSupportActionBar().setTitle( getIntent().getStringExtra("nombre"));
         }catch (Exception e){
         }
 
@@ -207,25 +201,23 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
 
     private void getCommts() {
         DatabaseReference obtener=  FirebaseDatabase.getInstance().getReference("platillos").child( Key );
-        obtener.addValueEventListener(new ValueEventListener() {
+        obtener.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onDataChange(@androidx.annotation.NonNull DataSnapshot dataSnapshot) {
-                ArrayList<platillos> arrayList= new ArrayList<>();
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    platillos coment=dataSnapshot.getValue(platillos.class);
-                    arrayList.add(coment);
-                }
-                ComentariosTotal.setText(arrayList.get(0).getComentarioscount()+"");
-                toolbar_info.setTitle(arrayList.get(0).getNombrePlatillo() );
-                cargarImage(arrayList.get(0).getImagenbase64());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                platillos coment=dataSnapshot.getValue(platillos.class);
+
+                ComentariosTotal.setText(coment.getComentarioscount()+"");
+
+                cargarImage(coment.getImagenbase64());
                 Bundle args = new Bundle();
 
                 // Colocamos el String
                 args.putString("key", Key);
-                args.putString( "idUser", arrayList.get(0).getId_user() );
-                args.putString( "tipo", arrayList.get(0).getTipo() );
-                args.putString( "precio", arrayList.get(0).getPrecio() );
-                args.putString( "direccion", arrayList.get(0).getDireccion() );
+                args.putString( "idUser", coment.getId_user() );
+                args.putString( "tipo",coment.getTipo() );
+                args.putString( "precio", coment.getPrecio() );
+                args.putString( "direccion", coment.getDireccion() );
 
                 // Supongamos que tu Fragment se llama TestFragment. Colocamos este nuevo Bundle como argumento en el fragmento.
                 Fragment newFragment = new dialog_comentario_principal();
@@ -288,6 +280,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
         setSupportActionBar( toolbar_info );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
 
+
     }
 
 
@@ -317,6 +310,7 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                     if(user != null){
                         Map<String,Object> map = new HashMap<>(  );
                         map.put( "idComentarios",user.getUid() );
+                        map.put( "user",FirebaseDatabase.getInstance().getReference("usuariosSingle").child(user.getUid()).child("nombre").getKey() );
                         map.put( "rating",rating_coment.getRating() );
                         map.put( "texto",comentario_comment.getText().toString().trim() );
                         map.put( "prioridad",0 );

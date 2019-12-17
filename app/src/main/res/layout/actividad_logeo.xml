@@ -40,7 +40,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/capsule_border_comentarios"
-            android:hint="Tu nombre"
+            android:hint="@string/tu_nombre"
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:textSize="14sp"
@@ -54,7 +54,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/capsule_border_comentarios"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:textSize="14sp"
@@ -68,7 +68,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/capsule_border_comentarios"
-            android:hint="Celular"
+            android:hint="@string/celular"
             android:inputType="number"
             android:padding="10dp"
             android:visibility="visible" />
@@ -84,8 +84,8 @@
             android:background="@drawable/capsule_border_comentarios"
             android:backgroundTint="@color/coloramarillo"
             android:fontFamily="@font/rubrik_semibold"
-            android:text="Registrarme"
-            android:textColor="@color/com_facebook_button_background_color_focused"
+            android:text="@string/registrarme"
+            android:textColor="@color/white"
             tools:targetApi="lollipop" />
     </LinearLayout>
 

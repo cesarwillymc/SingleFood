@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubrik_semibold"
-            android:text="Nuevo Platillo"
+            android:text="@string/nuevo_platillo"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
         android:layout_margin="2dp"
         android:background="@drawable/capsule_border_comentarios"
         android:fontFamily="@font/rubrik_light"
-        android:hint="Nombre del plato"
+        android:hint="@string/nombre_del_plato"
         android:padding="10dp"
         android:singleLine="true"
         android:imeOptions="actionNext"
@@ -87,7 +87,7 @@
         android:inputType="text"
         android:background="@drawable/capsule_border_comentarios"
         android:fontFamily="@font/rubrik_light"
-        android:hint="Lugar o Direccion"
+        android:hint="@string/lugar_o_direccion"
         android:padding="10dp"
         android:singleLine="true"
         android:imeOptions="actionNext"
@@ -102,7 +102,7 @@
         android:layout_margin="2dp"
         android:background="@drawable/capsule_border_comentarios"
         android:fontFamily="@font/rubrik_light"
-        android:hint="Precio"
+        android:hint="@string/precio"
         android:inputType="number"
         android:padding="10dp"
         android:imeOptions="actionNext"
@@ -120,7 +120,7 @@
         android:layout_margin="2dp"
         android:background="@drawable/capsule_border_comentarios"
         android:fontFamily="@font/rubrik_light"
-        android:hint="Comentarios"
+        android:hint="@string/comentarios"
         android:padding="10dp"
         android:singleLine="true"
         android:imeOptions="actionDone"
@@ -138,8 +138,8 @@
         android:background="@drawable/capsule_border_comentarios"
         android:backgroundTint="@color/coloramarillo"
         android:fontFamily="@font/rubrik_semibold"
-        android:text="PUBLICAR"
-        android:textColor="@color/com_facebook_button_background_color_focused"
+        android:text="@string/publicar"
+        android:textColor="@color/white"
         android:textSize="@dimen/texto13sp" />
   </LinearLayout>
 

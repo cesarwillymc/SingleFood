@@ -61,8 +61,8 @@
                         android:layout_marginHorizontal="10dp"
                         android:clickable="true"
                         android:focusable="true"
+                        android:backgroundTint="@color/white"
                         android:src="@drawable/ico_like"
-                        app:backgroundTint="@color/com_facebook_button_background_color_focused"
                         app:fabSize="normal"
                         app:maxImageSize="35dp"
                         tools:targetApi="o" />
@@ -75,7 +75,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:src="@drawable/ico_comment"
-                        app:backgroundTint="@color/com_facebook_button_background_color_focused"
+                        android:backgroundTint="@color/white"
                         app:fabSize="normal"
                         app:maxImageSize="35dp"
                         tools:targetApi="o" />
@@ -189,8 +189,8 @@
                 android:focusableInTouchMode="true"
                 android:fontFamily="@font/rubrik_semibold"
                 android:text="@string/comentar"
-                android:textColor="@color/com_facebook_button_background_color_focused"
                 android:textSize="18sp"
+
                 tools:targetApi="o" />
 
 

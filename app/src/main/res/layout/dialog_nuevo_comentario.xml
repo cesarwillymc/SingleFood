@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen10"
         android:fontFamily="@font/rubrik_semibold"
-        android:text="Tu calificación:"
+        android:text="@string/tu_calificaci_n"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
             android:inputType="text"
             android:background="@drawable/capsule_border_comentarios"
             android:fontFamily="@font/rubrik_light"
-            android:hint="¿Que opinas?"
+            android:hint="@string/que_opinas"
             android:paddingLeft="@dimen/margin_top_5dp"
             android:paddingTop="@dimen/margin_top_5dp"
             android:paddingBottom="30dp"
@@ -67,8 +67,8 @@
 
             android:fontFamily="@font/rubrik_semibold"
 
-            android:text="PUBLICAR"
-            android:textColor="@color/com_facebook_button_background_color_focused"
+            android:text="@string/publicar"
+            android:textColor="@color/white"
             android:textSize="@dimen/texto13sp" />
     </LinearLayout>
 

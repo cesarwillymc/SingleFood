@@ -19,6 +19,20 @@ public class comentarios {
   @SerializedName("fecha")
   @Expose
   private String fecha;
+  @SerializedName("user")
+  @Expose
+  private String user;
+  @SerializedName("hora")
+  @Expose
+  private String hora;
+
+  public String getUser() {
+    return user;
+  }
+
+  public void setUser(String user) {
+    this.user = user;
+  }
 
   public String getFecha() {
     return fecha;
@@ -36,9 +50,7 @@ public class comentarios {
     this.hora = hora;
   }
 
-  @SerializedName("hora")
-  @Expose
-  private String hora;
+
 
 
 

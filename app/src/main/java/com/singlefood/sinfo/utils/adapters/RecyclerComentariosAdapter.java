@@ -61,7 +61,7 @@ public class RecyclerComentariosAdapter extends RecyclerView.Adapter< RecyclerCo
 
         public ViewHolder(@NonNull View itemView) {
             super( itemView );
-//            mTituloComentario=(TextView) itemView.findViewById( R.id.rv_comentarios_text_precio );
+            mFecha=(TextView) itemView.findViewById( R.id.rv_comentarios_text_user_fech );
 //            mTituloComentario.setVisibility( View.GONE );
             mComentario=(TextView) itemView.findViewById( R.id.rv_comentarios_text_user_comentarios );
             mNombreuser=(TextView) itemView.findViewById( R.id.rv_comentarios_name_user );
@@ -73,10 +73,11 @@ public class RecyclerComentariosAdapter extends RecyclerView.Adapter< RecyclerCo
 
 
         public void bind(final comentarios comentarios, final OnItemClickListener2 listen) {
-            // mNombreuser.setText( platillos.getNombrePlatillo());
+            mNombreuser.setText( comentarios.getUser());
             mComentario.setText( comentarios.getTexto() );
             // mImage.setImageBitmap( StringToBitmap(comentarios.) );
             ratingBar.setRating( comentarios.getRating());
+            mFecha.setText(comentarios.getFecha()+" " +comentarios.getHora());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
