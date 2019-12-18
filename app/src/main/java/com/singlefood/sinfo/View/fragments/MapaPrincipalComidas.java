@@ -85,6 +85,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
@@ -294,21 +295,25 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         enableLocationComponent(style);
+                       // addDestinationIconSymbolLayer(style);
                         button = view.findViewById(R.id.startButton);
 
                         button.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                        button.setVisibility(View.GONE);
-                                        if (currentRoute==null)
-                                            button.setVisibility(View.VISIBLE);
-                                        else
-                                            button.setVisibility(View.GONE);
-                                        boolean simulateRoute = false;
-                                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                                                .directionsRoute(currentRoute)
-                                                .shouldSimulateRoute(simulateRoute)
-                                                .build();
+                                button.setVisibility(View.GONE);
+                                if (currentRoute==null)
+                                    button.setVisibility(View.VISIBLE);
+                                else
+                                    button.setVisibility(View.GONE);
+                                boolean simulateRoute = false;
+                                NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                                        .directionsRoute(currentRoute)
+                                        .shouldSimulateRoute(simulateRoute)
+                                        .build();
+// Call this method with Context from within an Activity
+                                NavigationLauncher.startNavigation(getActivity(), options);
+
 
                                 }
                             });
@@ -434,7 +439,7 @@ public class MapaPrincipalComidas extends Fragment implements OnMapReadyCallback
                     @Override
                     public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
 // You can get the generic HTTP info about the response
-                        Log.d(TAG, "Response code: " + response.code());
+                        Log.d(TAG, "Response code: " + response.body());
                         if (response.body() == null) {
                             Log.e(TAG, "No routes found, make sure you set the right user and access token.");
                             return;

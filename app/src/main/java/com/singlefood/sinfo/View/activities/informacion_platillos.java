@@ -308,15 +308,28 @@ public class informacion_platillos extends AppCompatActivity implements View.OnC
                     DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     if(user != null){
-                        Map<String,Object> map = new HashMap<>(  );
-                        map.put( "idComentarios",user.getUid() );
-                        map.put( "user",FirebaseDatabase.getInstance().getReference("usuariosSingle").child(user.getUid()).child("nombre").getKey() );
-                        map.put( "rating",rating_coment.getRating() );
-                        map.put( "texto",comentario_comment.getText().toString().trim() );
-                        map.put( "prioridad",0 );
-                        map.put("hora",hourFormat.format(date));
-                        map.put("fecha",dateFormat.format(date));
-                        PublicComment( map );
+                        DatabaseReference a =FirebaseDatabase.getInstance().getReference("usuariosSingle").child(user.getUid()).child("nombre");
+                        a.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@androidx.annotation.NonNull DataSnapshot dataSnapshot) {
+                                Map<String,Object> map = new HashMap<>(  );
+                                map.put( "idComentarios",user.getUid() );
+                                map.put( "user",dataSnapshot.getValue() );
+                                map.put( "rating",rating_coment.getRating() );
+                                map.put( "texto",comentario_comment.getText().toString().trim() );
+                                map.put( "prioridad",0 );
+                                map.put("hora",hourFormat.format(date));
+                                map.put("fecha",dateFormat.format(date));
+                                PublicComment( map );
+
+                            }
+
+                            @Override
+                            public void onCancelled(@androidx.annotation.NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }else{
                         progressDialog.dismiss();
                         Intent intent = new Intent( this, LoginActivity.class);
